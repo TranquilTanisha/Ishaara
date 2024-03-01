@@ -4,6 +4,7 @@ from mtranslate import translate
 import requests
 
 from preprocess import preprocess
+# from encoder import encoder
 
 app=Flask(__name__)
 app.secret_key='secret'
