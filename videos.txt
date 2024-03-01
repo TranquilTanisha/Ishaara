@@ -1,4 +1,17 @@
-tie 7
-Authorisation 11
-Judgement 10
-Repurchase 6
+tie
+Authorisation
+Judgement
+Repurchase
+Despatch
+Subscription
+Manure
+Specimen
+Expert
+Forged
+Produce
+Crossing
+Teller
+Verification
+Incompetence
+Visitor
+Provision

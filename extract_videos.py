@@ -3,29 +3,35 @@ from pytube import YouTube
 from moviepy.editor import VideoFileClip, concatenate_videoclips, vfx
 import os
 
+def delete_files():
+    for file in os.listdir('/'):
+        if file.endswith('.mp4'):
+            os.remove('videos/'+file)
+
 def create_duplicates(title):
-    # path='videos/'+title+'.mp4'
     path=title+'.mp4'
     clip = VideoFileClip(path)
     dur=clip.duration
     print(dur)
-    os.remove(path)
-    title.lower()
+    title=title.lower()
+    path='videos/'+title+'/'
+    os.makedirs(path, exist_ok=True)
     clip1 = clip.subclip(0, dur/2)
-    clip1.write_videofile('videos/'+title+'1.mp4', codec="libx264", fps=24)
-    clip2 = clip.subclip(dur/2, dur)
-    clip2.write_videofile('videos/'+title+'2.mp4', codec="libx264", fps=24)
+    clip1.write_videofile(path+title+'1.mp4', codec="libx264", fps=24)
+    # clip2 = clip.subclip(dur/2, dur)
+    # clip2.write_videofile('videos/'+title+'2.mp4', codec="libx264", fps=24)
     mirrored_clip = clip1.fx(vfx.mirror_x)
-    mirrored_clip.write_videofile('videos/'+title+'3.mp4', codec="libx264", fps=24)
+    mirrored_clip.write_videofile(path+title+'2.mp4', codec="libx264", fps=24)
     
 def view_contents():
     for file in os.listdir('videos/'):
         create_duplicates(file.split('.')[0])
+    delete_files()
 
 def extract_videos():
     videos = scrapetube.get_channel("UCmM7KPLEthAXiPVAgBF6rhA")
     
-    # f=open('videos.txt', 'w')
+    f=open('videos.txt', 'w')
     for video in videos:
         details=video['title']['accessibility']['accessibilityData']['label']
         title=video['title']['runs'][0]['text']
@@ -41,7 +47,7 @@ def extract_videos():
                     stream = yt.streams.get_highest_resolution()
                     stream.download()
                     # stream.download(output_path='videos/')
-                    # f.write(title+' '+str(dur)+'\n')
+                    f.write(title+'\n')
                     create_duplicates(title)
                     
                 except Exception as e:
