@@ -17,7 +17,7 @@ def create_duplicates(title):
     mirrored_clip.write_videofile(path+title+'2.mp4', codec="libx264", fps=24)
     
 def delete_original():
-    for file in os.listdir('videos/'):
+    for file in os.listdir('video_extractor/videos/'):
         if file.endswith('.mp4'):
             os.remove('videos/'+file)
 

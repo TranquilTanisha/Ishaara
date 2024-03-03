@@ -1,9 +1,8 @@
 import os
 
-
-
 def look_for_videos_in_folder(folder_path):
     for folder in os.listdir(folder_path):
+        print(folder)
         folder_p = os.path.join(folder_path, folder)
         if os.path.isdir(folder_p):
             process_videos_in_folder(folder_p)

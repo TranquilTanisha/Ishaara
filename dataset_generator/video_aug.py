@@ -88,7 +88,6 @@ def save_video(video, video_path, video_name):
 
 
 
-# Specify the folder path containing your folders of videos
 folder_path = 'Words'
 # Look for videos in each folder and apply the augmentation pipeline
 look_for_videos_in_folder(folder_path)
