@@ -39,10 +39,10 @@ def process_videos_in_folder(folder_path):
 def process_video(video_path):
     cap = cv2.VideoCapture(video_path)
     fps = cap.get(cv2.CAP_PROP_FPS)
+    frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
     # Calculate the number of frames to skip
-    skip_frames = max(int(fps / 8), 4)
-
+    skip_frames = (int(frame_count/20))
     frame_c = 0
     frame_list = []
 
