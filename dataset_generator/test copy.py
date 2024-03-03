@@ -14,9 +14,9 @@ df = pd.DataFrame(columns=['Class Label', 'Landmarks'])
 
 def look_for_videos_in_folder(folder_path):
     for folder in os.listdir(folder_path):
-        folder_path = os.path.join(folder_path, folder)
-        if os.path.isdir(folder_path):
-            process_videos_in_folder(folder_path)
+        current_folder_path = os.path.join(folder_path, folder)
+        if os.path.isdir(current_folder_path):
+            process_videos_in_folder(current_folder_path)
 
 def process_videos_in_folder(folder_path):
     for video_file in os.listdir(folder_path):
