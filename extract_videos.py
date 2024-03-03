@@ -18,15 +18,13 @@ def create_duplicates(title):
     
 def delete_original():
     for file in os.listdir('videos/'):
-        print(file)
         if file.endswith('.mp4'):
-    #         print(file)
             os.remove('videos/'+file)
 
 def extract_videos():
     videos = scrapetube.get_channel("UCmM7KPLEthAXiPVAgBF6rhA")
     
-    f=open('videos.txt', 'w')
+    # f=open('videos.txt', 'w')
     for video in videos:
         details=video['title']['accessibility']['accessibilityData']['label']
         title=video['title']['runs'][0]['text']
@@ -42,7 +40,7 @@ def extract_videos():
                     stream = yt.streams.get_highest_resolution()
                     # stream.download()
                     stream.download(output_path='videos/')
-                    f.write(title+'\n')
+                    # f.write(title+'\n')
                     create_duplicates(title)
                     
                 except Exception as e:
@@ -50,5 +48,5 @@ def extract_videos():
                     
     # f.close()
                     
-extract_videos()
+# extract_videos()
 delete_original()
