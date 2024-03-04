@@ -13,26 +13,34 @@ mp_pose = mp.solutions.pose
 pose = mp_pose.Pose()
 mp_drawing = mp.solutions.drawing_utils
 # X = pd.DataFrame(columns=['Class Label', 'Landmarks'])
-X = {'Landmarks':[], 'Length':[]}
-Y={'Class Label':[]}
+# X = {'Landmarks':[], 'Length':[]}
+# Y={'Class Label':[]}
+landmarks={}
+length={}
+label={}
+count=0
 
 def process_videos_in_folder(folder_path):
+    global count
     for video_file in os.listdir(folder_path):
         # data = []
         if video_file.endswith(('.mp4')):
+            label[count]=[]
+            length[count]=[]
+            landmarks[count]=[]
+            
             video_path = os.path.join(folder_path, video_file)
             print(f"Processing {video_file}")
             
-            # print(video_path)
             folder_name = video_path.split('/')[-2]
-            # data.append(folder_name)
-            Y['Class Label'] += [labels[folder_name]]
+            # Y['Class Label'] += [labels[folder_name]]
+            label[count] += [labels[folder_name]]
 
             frame_list = process_video(video_path)
             print(len(frame_list))
-            X['Length']+=[len(frame_list)]
-            frame_list = np.array(frame_list)
-            X['Landmarks'] += [frame_list] #1D nd array
+            length[count]+=[len(frame_list)]
+            landmarks[count] += [frame_list] #1D nd array
+            count+=1
 
 def append_landmarks(frame, left_hand_landmarks, right_hand_landmarks, pose_landmarks):
     if left_hand_landmarks is not None:
@@ -156,29 +164,38 @@ with open('data.json', 'r') as f:
 # process_videos_in_folder('dataset_generator/words/I/')
 # process_videos_in_folder('dataset_generator/words/Name/')
 # process_videos_in_folder('dataset_generator/words/Parents/')
-# process_videos_in_folder('dataset_generator/words/Sister/')
+process_videos_in_folder('dataset_generator/words/Sister/')
 # process_videos_in_folder('dataset_generator/words/Sleep/')
 # process_videos_in_folder('dataset_generator/words/This/')
 # process_videos_in_folder('dataset_generator/words/You/')
 
 
 # process_videos_in_folder('dataset_generator/words/Mother/')
-process_videos_in_folder('dataset_generator/words/Namaste/')
+# process_videos_in_folder('dataset_generator/words/Namaste/')
 
-X=pd.DataFrame(X)
-Y=pd.DataFrame(Y)
+# X=pd.DataFrame(X)
+# Y=pd.DataFrame(Y)
 
-if os.path.exists('landmarks.csv'):
-    print(True)
-    landmarks=pd.read_csv('landmarks.csv')
-    labels=pd.read_csv('labels.csv')
-    landmarks=pd.concat([landmarks, X], ignore_index=True)
-    labels=pd.concat([labels, Y], ignore_index=True)
-    os.remove('landmarks.csv')
-    os.remove('labels.csv')
-    landmarks.to_csv('landmarks.csv', index=False)
-    labels.to_csv('labels.csv', index=False)
-else:
-    print(False)
-    X.to_csv('landmarks.csv', index=False)
-    Y.to_csv('labels.csv', index=False)
+# if os.path.exists('landmarks.csv'):
+#     print(True)
+#     landmarks=pd.read_csv('landmarks.csv')
+#     labels=pd.read_csv('labels.csv')
+#     landmarks=pd.concat([landmarks, X], ignore_index=True)
+#     labels=pd.concat([labels, Y], ignore_index=True)
+#     os.remove('landmarks.csv')
+#     os.remove('labels.csv')
+#     landmarks.to_csv('landmarks.csv', index=False)
+#     labels.to_csv('labels.csv', index=False)
+# else:
+#     print(False)
+#     X.to_csv('landmarks.csv', index=False)
+#     Y.to_csv('labels.csv', index=False)
+
+with open('landmarks.json', 'w') as f:
+    json.dump(landmarks, f)
+    
+with open('label.json', 'w') as f:
+    json.dump(landmarks, f)
+    
+with open('length.json', 'w') as f:
+    json.dump(landmarks, f)
