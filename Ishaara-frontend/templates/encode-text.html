@@ -37,7 +37,26 @@
 
         var playerAvailableToPlay = true;
     </script>
-<!-- <script language="javascript" src="js/animationPlayer.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function trans_please() {
+            var text = document.getElementsByClassName("input-sentence")[0].value;
+            
+            // Make an Ajax request to the Flask endpoint
+            $.ajax({
+                type: 'POST',
+                url: '/translate',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    'text': text,
+                }),
+                success: function(response) {
+                    document.getElementsByClassName("input-sentence")[0].value = response['preprocess_text'];
+                    prepSentence();
+                }
+            });
+        }
+    </script>
 <style type="text/css">
     body {
         overflow-y: hidden !important;
@@ -51,6 +70,7 @@
 
 function playText(stext) {
     var sigml = '<sigml>'+stext+'</sigml>';
+    console.log(sigml);
 	CWASA.playSiGMLText(sigml);
 }
 
@@ -64,7 +84,7 @@ function setSiGMLURL() {
 	// console.log("Location Dir: "+locDir);
 	sigmlURL = locDir + "/SignFiles/" + sigmlURL +".sigml";
     // console.log("here");
-	console.log("URL "+sigmlURL);
+	// console.log("URL "+sigmlURL);
 	document.getElementById("URLText").value = sigmlURL;
     startPlayer(sigmlURL);
 	// return sigmlURL;
@@ -72,7 +92,7 @@ function setSiGMLURL() {
 // starts the player animation
 function startPlayer(sigmlURL) {
 	// sigmlURL = setSiGMLURL(sigmlURL);
-	console.log("URL "+sigmlURL);
+	// console.log("URL "+sigmlURL);
     // Equivalent to click on Sign button
     CWASA.getLogger("myLog","warn");
 	CWASA.playSiGMLURL(sigmlURL);
@@ -100,7 +120,7 @@ function prepSentence() {
         return response.text();
       })
       .then(sigmlContent => {
-        sigmlContent = sigmlContent.replace(/^<sigml>/, '').replace(/<\/sigml>$/, '');
+        sigmlContent = sigmlContent.replaceAll('<sigml>', '').replaceAll('</sigml>', '');
         // Add the sigml content to the array
         sigmlContents.push(sigmlContent);
 
@@ -118,24 +138,6 @@ function prepSentence() {
   });
 }
 
-
-function appendSigmlContents(sigmlFilePaths) {
-  // Variable to store the combined content
-  let combinedContent = '<sigml>';
-
-  // Iterate through each sigml file
-  sigmlFilePaths.forEach((sigmlFilePath) => {
-    // Read the content of the sigml file
-    const sigmlContent = fs.readFileSync(sigmlFilePath, 'utf-8');
-
-    // Remove <sigml> and </sigml> tags and append to the combined content
-    const cleanedContent = sigmlContent.replace(/<\/?sigml>/g, '');
-    combinedContent += cleanedContent;
-  });
-  
-  combinedContent += '</sigml>';
-  return combinedContent;
-}
 </script>
 <div class="main">
     <nav class="navbar">
@@ -144,9 +146,9 @@ function appendSigmlContents(sigmlFilePaths) {
             <div class="heading text-lg" style="font-size:1.25rem ; justify-content: center;"><h2 class='font-bold'>Ishaara</h2></div>
         </div>
         <div class='menu-items flex flex-row items-center justify-end' style="display: flex;flex-direction: row; justify-items: center;justify-content: end;">
-          <div class="menu-item mx-8" style="margin: 1rem; font-size: 20px;">Home</div>
-          <div class="menu-item mx-8" style="margin: 1rem; font-size: 20px;">Login</div>
-          <div class="menu-item mx-8" style="margin: 1rem; font-size: 20px;">About</div>
+          <a class="menu-item mx-8" style="margin: 1rem; font-size: 20px;">Home</a>
+          <a class="menu-item mx-8" style="margin: 1rem; font-size: 20px;">Text To ISL</a>
+          <a class="menu-item mx-8" style="margin: 1rem; font-size: 20px;">ISL To Text</a>
         </div>
     </nav>
     <div class="fullBg">
@@ -156,6 +158,7 @@ function appendSigmlContents(sigmlFilePaths) {
             <div class="input-text" style="display: flex;align-items: center; margin-top: 1rem;">
                 <h3 style="width: 30%;">Input Text: </h3>
                 <input type="text" class="input-sentence" style="margin-left: 2rem;padding:0.75rem;border-radius: 0.25rem;padding-left: 1rem; background-color: rgb(37, 37, 68); color: white;border: none;" value="" >
+                <!-- <input type="button" style="margin-left: 2rem;padding:0.75rem;border-radius: 0.25rem;padding-left: 1rem; background-color: rgb(37, 37, 68); color: white;border: none;" value="Translate To English" onclick="trans_please()" > -->
             </div>
             <div class="worNo" style="display: flex;align-items: center; margin-top: 1rem;">
                 <h3 style="width: 30%;">Word: </h3>
@@ -163,7 +166,7 @@ function appendSigmlContents(sigmlFilePaths) {
                 </select>
             </div>
             <div class="substring" style="display: flex;align-items: center; margin-top: 1rem;width: 100%;justify-content: end;">
-                <input type="button" style="margin-left: 2rem;padding:0.75rem;border-radius: 0.25rem;padding-left: 1rem; background-color: rgb(37, 37, 68); color: white;border: none;" value="Sign" onclick="prepSentence()" >
+                <input type="button" style="margin-left: 2rem;padding:0.75rem;border-radius: 0.25rem;padding-left: 1rem; background-color: rgb(37, 37, 68); color: white;border: none;" value="Sign" onclick="trans_please()" >
             </div>
 
 
@@ -177,25 +180,16 @@ function appendSigmlContents(sigmlFilePaths) {
             <div class="speedd" style="display: flex;align-items: center; margin-top: 1rem;">
                 <h3 style="width: 30%;">Speed: </h3>
                 <span class="CWASASpeed av0" ></span>
-                <!-- <input type="number" style="margin-left: 2rem;padding:0.75rem;border-radius: 0.25rem;padding-left: 1rem; background-color: rgb(37, 37, 68); color: white;border: none;" value="1" > -->
             </div>
             <div class="frameNo" style="display: flex;align-items: center; margin-top: 1rem;">
                 <h3 style="width: 30%;">No of Frame: </h3>
                 <input class="txtSF av0" value="0/0" type="text" style="margin-left: 2rem;padding:0.75rem;border-radius: 0.25rem;padding-left: 1rem; background-color: rgb(37, 37, 68); color: white;border: none;">
-                <!-- <input type="text" style="margin-left: 2rem;padding:0.75rem;border-radius: 0.25rem;padding-left: 1rem; background-color: rgb(37, 37, 68); color: white;border: none;" value="1/10" > -->
             </div>
             <div class="Gloss" style="display: flex;align-items: center; margin-top: 1rem;">
                 <h3 style="width: 30%;">Gloss: </h3>
                 <input class="txtGloss av0" value="[none]" type="text" style="margin-left: 2rem;padding:0.75rem;border-radius: 0.25rem;padding-left: 1rem; background-color: rgb(37, 37, 68); color: white;border: none;" value="[None]">
-                <!-- <input type="text" style="margin-left: 2rem;padding:0.75rem;border-radius: 0.25rem;padding-left: 1rem; background-color: rgb(37, 37, 68); color: white;border: none;" value="[None]" > -->
             </div>
             <input type="text" id="URLText" class="txtSiGMLURL av0 undisplayed" value="" />
-            <!-- <div class="Signn" style="display: flex;align-items: center; margin-top: 1rem;justify-content: end;">
-                <input type="button" value="Sign" class="bttnPlaySiGMLURL av0" style="margin-left: 2rem;padding:0.75rem;border-radius: 0.25rem;padding-left: 1rem; background-color: rgb(37, 37, 68); color: white;border: none;" />
-                <input type="button" style="margin-left: 2rem;padding:0.75rem;border-radius: 0.25rem;padding-left: 1rem; background-color: rgb(37, 37, 68); color: white;border: none;" value="Reset" >
-                <input type="button" value="Reset" class="bttnStop av0" style="margin-left: 2rem;padding:0.75rem;border-radius: 0.25rem;padding-left: 1rem; background-color: rgb(37, 37, 68); color: white;border: none;"/>
-                <input type="button" style="margin-left: 2rem;padding:0.75rem;border-radius: 0.25rem;padding-left: 1rem; background-color: rgb(37, 37, 68); color: white;border: none;" value="Sign" >
-            </div> -->
             </div>
         </div>
         <div class="col1" style="width: 50%;height: 100%; padding: 1rem; overflow: hidden;">
@@ -203,10 +197,10 @@ function appendSigmlContents(sigmlFilePaths) {
         </div>
     </div>
     <script language="javascript">
-        // setSiGMLURL("SignFiles/A.sigml");
+        setSiGMLURL("SignFiles/A.sigml");
     </script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/player.js') }}"></script>
     <script>
         var coll = document.getElementsByClassName("collapsible");

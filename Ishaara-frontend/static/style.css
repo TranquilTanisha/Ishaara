@@ -84,12 +84,13 @@
 }
 
 .collapsible{
-    margin-top: 1rem;
+  border-radius: 25px;
+  margin-top: 1rem;
 }
 
-.active,
-.heading-button:hover {
+.active{
   background-color: rgb(36, 36, 82);
+  border-radius: 25px 25px 0 0;
 }
 
 .content {
