@@ -5,7 +5,7 @@ import requests
 import speech_recognition as sr
 from googletrans import Translator
 
-from preprocess import preprocess
+from preprocess import preprocess, remove_punctuation
 # from encoder import encoder
 
 app=Flask(__name__)
@@ -54,6 +54,7 @@ def home():
 def encoder():
     if request.method=='POST':
         text=request.form.get('text')
+        text=remove_punctuation(text)
         curr_lang=detect(text)
         if curr_lang!='en':
             text = translate_to_english(text, 'en', curr_lang)
@@ -73,10 +74,39 @@ def voice():
                     print("Say something")
                     audio = r.listen(source)
 
+            try:
+                text = r.recognize_google(audio, language=languages[lang])
+                print("You said:", text)
                 try:
                     text = r.recognize_google(audio, language='hi-IN')
                     print("You said:", text)
 
+                if lang!='English':
+                    translated_text = translate_to_english(text, 'en', lang)
+                    print("Translated text (English):", translated_text)
+                preprocess_text=preprocess(text)
+                return render_template('encode-text.html', text=text, lang=lang, ptext=preprocess_text)
+            except:
+                text=""
+                return render_template('encode-voice.html')
+        
+    return render_template('encode-voice.html')
+
+@app.route('/encode/file/', methods=['GET', 'POST'])
+def file_input():
+    if request.method=='POST':
+        if 'fileInput' not in request.files:
+            return 'No file part'
+
+        file = request.files['fileInput']
+        if file:
+            # file.save('/path/to/save/' + file.filename)
+            print('File uploaded successfully')
+    return render_template('encode-file.html')
+
+# @app.route('/decode')
+# def video_input():
+      
                     translated_text = translate_to_english(text, 'en', lang)
                     print("Translated text (English):", translated_text)
                     preprocess_text=preprocess(text)
