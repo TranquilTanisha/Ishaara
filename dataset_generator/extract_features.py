@@ -128,17 +128,27 @@ def process_video(video_path):
 def look_for_videos_in_folder():
     for folder in os.listdir('dataset_generator/words/'):
         folder_path = 'dataset_generator/words/' + folder + '/'
-        # if os.path.isdir(folder_path):
         process_videos_in_folder(folder_path)
 
 
 with open('data.json', 'r') as f:
     labels = json.load(f)
 
-look_for_videos_in_folder()
-process_videos_in_folder('dataset_generator/words/Boy')
+# look_for_videos_in_folder()
+process_videos_in_folder('dataset_generator/words/Boy/')
 
 X=pd.DataFrame(X)
-X.to_csv('landmarks.csv', index=False)
 Y=pd.DataFrame(Y)
-Y.to_csv('labels.csv', index=False)
+
+if os.path.exists('/landmarks.csv'):
+    print(True)
+    landmarks=pd.read_csv('landmarks.csv')
+    labels=pd.read_csv('labels.csv')
+    landmarks=pd.concat([landmarks, X], ignore_index=True)
+    labels=pd.concat([labels, Y], ignore_index=True)
+    landmarks.to_csv('landmarks.csv', index=False)
+    labels.to_csv('labels.csv', index=False)
+else:
+    print(False)
+    X.to_csv('landmarks.csv', index=False)
+    Y.to_csv('labels.csv', index=False)
