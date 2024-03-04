@@ -5,6 +5,7 @@ import csv
 import numpy as np
 import pandas as pd
 import json
+from screeninfo import get_monitors
 
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands()
@@ -12,7 +13,7 @@ mp_pose = mp.solutions.pose
 pose = mp_pose.Pose()
 mp_drawing = mp.solutions.drawing_utils
 # X = pd.DataFrame(columns=['Class Label', 'Landmarks'])
-X = {'Landmarks':[]}
+X = {'Landmarks':[], 'Length':[]}
 Y={'Class Label':[]}
 
 def process_videos_in_folder(folder_path):
@@ -20,7 +21,6 @@ def process_videos_in_folder(folder_path):
         # data = []
         if video_file.endswith(('.mp4')):
             video_path = os.path.join(folder_path, video_file)
-            print(video_path)
             print(f"Processing {video_file}")
             
             # print(video_path)
@@ -29,15 +29,14 @@ def process_videos_in_folder(folder_path):
             Y['Class Label'] += [labels[folder_name]]
 
             frame_list = process_video(video_path)
-            frame_list = np.array([frame_list])
-            # print(frame_list.shape)
-            X['Landmarks'] += [frame_list] #shape of (1, 3564)
-            # data.append(frame_list)
+            print(len(frame_list))
+            X['Length']+=[len(frame_list)]
+            frame_list = np.array(frame_list)
+            X['Landmarks'] += [frame_list] #1D nd array
 
 def append_landmarks(frame, left_hand_landmarks, right_hand_landmarks, pose_landmarks):
     if left_hand_landmarks is not None:
         for id, lm in enumerate(left_hand_landmarks.landmark):
-            # The landmark coordinates are in normalized image space.
             x, y, z = lm.x, lm.y, lm.z
             frame[id] = x
             frame[id+66] = y
@@ -45,7 +44,6 @@ def append_landmarks(frame, left_hand_landmarks, right_hand_landmarks, pose_land
 
     if right_hand_landmarks is not None:
         for id, lm in enumerate(right_hand_landmarks.landmark):
-            # The landmark coordinates are in normalized image space.
             x, y, z = lm.x, lm.y, lm.z
             frame[id+21] = x
             frame[id+87] = y
@@ -53,7 +51,6 @@ def append_landmarks(frame, left_hand_landmarks, right_hand_landmarks, pose_land
     
     if pose_landmarks is not None:
         for id, lm in enumerate(pose_landmarks.landmark):
-            # The landmark coordinates are in normalized image space.
             if id == 24:
                 break
             x, y, z = lm.x, lm.y, lm.z
@@ -79,8 +76,21 @@ def append_landmarks(frame, left_hand_landmarks, right_hand_landmarks, pose_land
 
     return frame  
 
+def capture_video():
+    monitors = get_monitors()
+    monitor = monitors[0]
+    width, height = monitor.width, monitor.height
+    cap = cv2.VideoCapture(0)
+    cap.set(3, width)
+    cap.set(4, height)
+    cap.set(10, 150) #brightness
+    return cap
+
 def process_video(video_path):
-    cap = cv2.VideoCapture(video_path)
+    if type(video_path)==str:
+        cap = cv2.VideoCapture(video_path)
+    else:
+        cap=capture_video()
     fps = cap.get(cv2.CAP_PROP_FPS)
     frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
@@ -135,16 +145,25 @@ with open('data.json', 'r') as f:
     labels = json.load(f)
 
 # look_for_videos_in_folder()
+# process_videos_in_folder('dataset_generator/words/Boy/')
+# process_videos_in_folder('dataset_generator/words/Can/')
+# process_videos_in_folder('dataset_generator/words/Eat/')
+# process_videos_in_folder('dataset_generator/words/Fine/')
+# process_videos_in_folder('dataset_generator/words/Girl/')
+# process_videos_in_folder('dataset_generator/words/Help/')
+# process_videos_in_folder('dataset_generator/words/How/')
+# process_videos_in_folder('dataset_generator/words/Hungry/')
+# process_videos_in_folder('dataset_generator/words/I/')
 # process_videos_in_folder('dataset_generator/words/Name/')
 # process_videos_in_folder('dataset_generator/words/Parents/')
 # process_videos_in_folder('dataset_generator/words/Sister/')
 # process_videos_in_folder('dataset_generator/words/Sleep/')
 # process_videos_in_folder('dataset_generator/words/This/')
-process_videos_in_folder('dataset_generator/words/You/')
+# process_videos_in_folder('dataset_generator/words/You/')
 
 
 # process_videos_in_folder('dataset_generator/words/Mother/')
-# process_videos_in_folder('dataset_generator/words/Namaste/')
+process_videos_in_folder('dataset_generator/words/Namaste/')
 
 X=pd.DataFrame(X)
 Y=pd.DataFrame(Y)
