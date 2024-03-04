@@ -135,17 +135,28 @@ with open('data.json', 'r') as f:
     labels = json.load(f)
 
 # look_for_videos_in_folder()
-process_videos_in_folder('dataset_generator/words/Boy/')
+# process_videos_in_folder('dataset_generator/words/Name/')
+# process_videos_in_folder('dataset_generator/words/Parents/')
+# process_videos_in_folder('dataset_generator/words/Sister/')
+# process_videos_in_folder('dataset_generator/words/Sleep/')
+# process_videos_in_folder('dataset_generator/words/This/')
+process_videos_in_folder('dataset_generator/words/You/')
+
+
+# process_videos_in_folder('dataset_generator/words/Mother/')
+# process_videos_in_folder('dataset_generator/words/Namaste/')
 
 X=pd.DataFrame(X)
 Y=pd.DataFrame(Y)
 
-if os.path.exists('/landmarks.csv'):
+if os.path.exists('landmarks.csv'):
     print(True)
     landmarks=pd.read_csv('landmarks.csv')
     labels=pd.read_csv('labels.csv')
     landmarks=pd.concat([landmarks, X], ignore_index=True)
     labels=pd.concat([labels, Y], ignore_index=True)
+    os.remove('landmarks.csv')
+    os.remove('labels.csv')
     landmarks.to_csv('landmarks.csv', index=False)
     labels.to_csv('labels.csv', index=False)
 else:
