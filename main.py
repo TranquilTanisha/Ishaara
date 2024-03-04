@@ -50,7 +50,7 @@ def translate_to_english(text, target_language, current_language):
 def home():
     return render_template('home.html')
 
-@app.route('/encode/', methods=['GET', 'POST'])
+@app.route('/encode/text/', methods=['GET', 'POST'])
 def encoder():
     if request.method=='POST':
         text=request.form.get('text')
@@ -59,27 +59,23 @@ def encoder():
         if curr_lang!='en':
             text = translate_to_english(text, 'en', curr_lang)
         preprocess_text=preprocess(text)
-        return render_template('encode.html', text=text, lang=curr_lang, ptext=preprocess_text)
-    return render_template('encode.html')
+        return render_template('encode-text.html', text=text, lang=curr_lang, ptext=preprocess_text)
+    return render_template('encode-text.html')
 
-@app.route('/encode/', methods=['GET', 'POST'])
+@app.route('/encode/voice/', methods=['GET', 'POST'])
 def voice():
     if request.method=='POST':
-        if request.form.get('type')=='voice':
-            lang=request.form.get('lang')
-            print(lang)
-            if lang!='None' or lang!=None:
-                r = sr.Recognizer()
-                with sr.Microphone() as source:
-                    print("Say something")
-                    audio = r.listen(source)
+        lang=request.form.get('lang')
+        print(lang)
+        if lang!='None' or lang!=None:
+            r = sr.Recognizer()
+            with sr.Microphone() as source:
+                print("Say something")
+                audio = r.listen(source)
 
             try:
                 text = r.recognize_google(audio, language=languages[lang])
                 print("You said:", text)
-                try:
-                    text = r.recognize_google(audio, language='hi-IN')
-                    print("You said:", text)
 
                 if lang!='English':
                     translated_text = translate_to_english(text, 'en', lang)
@@ -107,22 +103,6 @@ def file_input():
 # @app.route('/decode')
 # def video_input():
       
-                    translated_text = translate_to_english(text, 'en', lang)
-                    print("Translated text (English):", translated_text)
-                    preprocess_text=preprocess(text)
-                    return render_template('encode.html', text=text, lang=lang, ptext=preprocess_text)
-                except:
-                    text=""
-                    return render_template('encode.html')
-        elif request.form.get('type')=='text':
-            text=request.form.get('text')
-            curr_lang=detect(text)
-            if curr_lang!='en':
-                text = translate_to_english(text, 'en', curr_lang)
-            preprocess_text=preprocess(text)
-            return render_template('encode.html', text=text, lang=curr_lang, ptext=preprocess_text)
-
-    return render_template('encode.html')
     
 if __name__=='__main__':
     app.run(debug=True)
