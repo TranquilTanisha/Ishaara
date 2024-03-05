@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from langdetect import detect
 from mtranslate import translate
 import requests
@@ -6,6 +6,7 @@ import speech_recognition as sr
 from googletrans import Translator
 
 from preprocess import preprocess, remove_punctuation
+from dataset_generator.extract_features import process_video
 # from encoder import encoder
 
 app=Flask(__name__)
@@ -71,6 +72,7 @@ def voice():
             r = sr.Recognizer()
             with sr.Microphone() as source:
                 print("Say something")
+                flash('Recognizing speech')
                 audio = r.listen(source)
 
             try:
@@ -100,8 +102,11 @@ def file_input():
             print('File uploaded successfully')
     return render_template('encode-file.html')
 
-# @app.route('/decode')
-# def video_input():
+@app.route('/decode/')
+def video_input():
+    final_list=process_video(0)
+    print(len(final_list))
+    print(final_list)
       
     
 if __name__=='__main__':

@@ -31,7 +31,6 @@ def translate_to_english(text, target_language, current_language):
     except Exception as e:
         return str(e)
 
-
 @app.route('/',methods=['GET'])
 def text():
 	# clear_all();
