@@ -1,8 +1,8 @@
 from langdetect import detect
 from mtranslate import translate
-import requests
+# import requests
 import speech_recognition as sr
-from googletrans import Translator
+# from googletrans import Translator
 
 from preprocess import preprocess
 from flask import Flask,request,render_template,send_from_directory,jsonify
@@ -80,7 +80,7 @@ def transcript():
                 audio = r.listen(source)
 
             try:
-                text = r.recognize_google(audio, language='en-IN')
+                text = r.recognize_google(audio, language=languages[lang])
                 print("You said:", text)
 
                 translated_text = translate_to_english(text, 'en', lang)

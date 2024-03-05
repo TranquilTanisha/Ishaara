@@ -202,7 +202,7 @@
                   <option value="Punjabi">Punjabi</option>
                   <option value="Assamese">Assamese</option>
                 </select>
-                <button type="submit" style="margin-left: 2rem; padding: 0.75rem; border-radius: 0.25rem; border: 1px solid rgb(37, 37, 68); background-color: rgb(255, 255, 255); font-weight: 700; color: rgb(37, 37, 68);">Record Audio</button>
+                <button type="submit" class="record-audio" style="margin-left: 2rem; padding: 0.75rem; border-radius: 0.25rem; border: 1px solid rgb(37, 37, 68); background-color: rgb(255, 255, 255); font-weight: 700; color: rgb(37, 37, 68);">Record Audio</button>
               </form>
           </div>
           <div
@@ -361,6 +361,16 @@
           });
         }
     </script>
+    <!-- <script>
+      var coll = document.getElementsByClassName("record-audio");
+      var i;
+      
+      for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+          alert("Your voice is being recorded\nTo stop recording, you can stop speaking");
+        });
+      }
+  </script> -->
 
 </body>
 </html>
