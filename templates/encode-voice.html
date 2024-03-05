@@ -6,6 +6,16 @@
     <title>Document</title>
 </head>
 <body>
+    {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
 <h1>Select the language and record your audio!!!</h1>
     <form action="/encode/voice" method="post">
         <label for="dropdown">Choose a language:</label>

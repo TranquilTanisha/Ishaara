@@ -13,33 +13,35 @@ mp_pose = mp.solutions.pose
 pose = mp_pose.Pose()
 mp_drawing = mp.solutions.drawing_utils
 # X = pd.DataFrame(columns=['Class Label', 'Landmarks'])
-# X = {'Landmarks':[], 'Length':[]}
-# Y={'Class Label':[]}
+# L = {'Length':[]}
+Y={'Class Label':[]}
 landmarks={}
 length={}
-label={}
+# label={}
 count=0
 
 def process_videos_in_folder(folder_path):
     global count
     for video_file in os.listdir(folder_path):
-        # data = []
         if video_file.endswith(('.mp4')):
-            label[count]=[]
-            length[count]=[]
-            landmarks[count]=[]
+            print(count)
+            # label[count]=[]
+            # length[count]=0
+            # landmarks[count]=[]
             
             video_path = os.path.join(folder_path, video_file)
             print(f"Processing {video_file}")
             
             folder_name = video_path.split('/')[-2]
-            # Y['Class Label'] += [labels[folder_name]]
-            label[count] += [labels[folder_name]]
+            Y['Class Label'] += [labels[folder_name]]
+            # print(labels[folder_name])
+            # label[count] = labels[folder_name]
 
             frame_list = process_video(video_path)
             print(len(frame_list))
-            length[count]+=[len(frame_list)]
-            landmarks[count] += [frame_list] #1D nd array
+            # Length['Length']=len(frame_list)
+            length[count]=len(frame_list)
+            landmarks[count] = [frame_list] #1D nd array
             count+=1
 
 def append_landmarks(frame, left_hand_landmarks, right_hand_landmarks, pose_landmarks):
@@ -98,6 +100,8 @@ def process_video(video_path):
     if type(video_path)==str:
         cap = cv2.VideoCapture(video_path)
     else:
+        print('Live streaming')
+        final=[]
         cap=capture_video()
     fps = cap.get(cv2.CAP_PROP_FPS)
     frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -141,14 +145,18 @@ def process_video(video_path):
         frame_c += 1
 
     cap.release()
-    return frame_list
+    if type(video_path)!=str:
+        if frame_list!=[]:
+            final.append(frame_list)
+    else:
+        return frame_list
 
 def look_for_videos_in_folder():
     for folder in os.listdir('dataset_generator/words/'):
         folder_path = 'dataset_generator/words/' + folder + '/'
         process_videos_in_folder(folder_path)
 
-
+labels=None
 with open('data.json', 'r') as f:
     labels = json.load(f)
 
@@ -164,7 +172,7 @@ with open('data.json', 'r') as f:
 # process_videos_in_folder('dataset_generator/words/I/')
 # process_videos_in_folder('dataset_generator/words/Name/')
 # process_videos_in_folder('dataset_generator/words/Parents/')
-process_videos_in_folder('dataset_generator/words/Sister/')
+# process_videos_in_folder('dataset_generator/words/Sister/')
 # process_videos_in_folder('dataset_generator/words/Sleep/')
 # process_videos_in_folder('dataset_generator/words/This/')
 # process_videos_in_folder('dataset_generator/words/You/')
@@ -191,11 +199,15 @@ process_videos_in_folder('dataset_generator/words/Sister/')
 #     X.to_csv('landmarks.csv', index=False)
 #     Y.to_csv('labels.csv', index=False)
 
-with open('landmarks.json', 'w') as f:
-    json.dump(landmarks, f)
+# with open('landmarks.json', 'w') as f:
+#     json.dump(landmarks, f)
     
-with open('label.json', 'w') as f:
-    json.dump(landmarks, f)
+# # with open('label.json', 'w') as f:
+# #     json.dump(label, f)
     
-with open('length.json', 'w') as f:
-    json.dump(landmarks, f)
+# with open('length.json', 'w') as f:
+#     json.dump(length, f)
+
+# # L.to_csv('length.csv', index=False)
+# Y=pd.DataFrame(Y)
+Y.to_csv('labels.csv', index=False)
