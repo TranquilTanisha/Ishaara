@@ -104,9 +104,10 @@ def file_input():
 
 @app.route('/decode/')
 def video_input():
-    final_list=process_video(0)
-    print(len(final_list))
-    print(final_list)
+    # final_list=process_video(0)
+    # print(len(final_list))
+    # print(final_list)
+    
       
     
 if __name__=='__main__':

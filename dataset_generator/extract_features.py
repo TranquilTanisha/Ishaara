@@ -161,28 +161,7 @@ with open('data.json', 'r') as f:
     labels = json.load(f)
 
 # look_for_videos_in_folder()
-# process_videos_in_folder('dataset_generator/words/Boy/')
-# process_videos_in_folder('dataset_generator/words/Can/')
-# process_videos_in_folder('dataset_generator/words/Eat/')
-# process_videos_in_folder('dataset_generator/words/Fine/')
-# process_videos_in_folder('dataset_generator/words/Girl/')
-# process_videos_in_folder('dataset_generator/words/Help/')
-# process_videos_in_folder('dataset_generator/words/How/')
-# process_videos_in_folder('dataset_generator/words/Hungry/')
-# process_videos_in_folder('dataset_generator/words/I/')
-# process_videos_in_folder('dataset_generator/words/Name/')
-# process_videos_in_folder('dataset_generator/words/Parents/')
-# process_videos_in_folder('dataset_generator/words/Sister/')
-# process_videos_in_folder('dataset_generator/words/Sleep/')
-# process_videos_in_folder('dataset_generator/words/This/')
-# process_videos_in_folder('dataset_generator/words/You/')
 
-
-# process_videos_in_folder('dataset_generator/words/Mother/')
-# process_videos_in_folder('dataset_generator/words/Namaste/')
-
-# X=pd.DataFrame(X)
-# Y=pd.DataFrame(Y)
 
 # if os.path.exists('landmarks.csv'):
 #     print(True)
@@ -201,13 +180,9 @@ with open('data.json', 'r') as f:
 
 # with open('landmarks.json', 'w') as f:
 #     json.dump(landmarks, f)
-    
-# # with open('label.json', 'w') as f:
-# #     json.dump(label, f)
-    
+
 # with open('length.json', 'w') as f:
 #     json.dump(length, f)
 
-# # L.to_csv('length.csv', index=False)
 # Y=pd.DataFrame(Y)
-Y.to_csv('labels.csv', index=False)
+# Y.to_csv('labels.csv', index=False)
