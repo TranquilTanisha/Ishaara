@@ -102,8 +102,8 @@ def file_input():
             print('File uploaded successfully')
     return render_template('encode-file.html')
 
-@app.route('/decode/')
-def video_input():
+# @app.route('/decode/')
+# def video_input():
     # final_list=process_video(0)
     # print(len(final_list))
     # print(final_list)
