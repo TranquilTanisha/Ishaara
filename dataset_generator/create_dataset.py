@@ -47,7 +47,7 @@ def process_video(video_path):
     skip_frames = (int(frame_count/target_frames))
     frame_c = 0
     frame_list = {'Class Label': folder_name}
-    n_frame = 0
+    n_frame = 1
 
     while cap.isOpened():
         ret, frame = cap.read()
