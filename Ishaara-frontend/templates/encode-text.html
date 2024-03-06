@@ -138,6 +138,16 @@ function prepSentence() {
   });
 }
 
+function clickedtext() {
+    location.href="/";
+}
+function clickedaudio() {
+    location.href="/audio";
+}
+function clickedisl() {
+    location.href="/video";
+}
+
 </script>
 <div class="main">
     <nav class="navbar">
@@ -146,9 +156,9 @@ function prepSentence() {
             <div class="heading text-lg" style="font-size:1.25rem ; justify-content: center;"><h2 class='font-bold'>Ishaara</h2></div>
         </div>
         <div class='menu-items flex flex-row items-center justify-end' style="display: flex;flex-direction: row; justify-items: center;justify-content: end;">
-          <a class="menu-item mx-8" style="margin: 1rem; font-size: 20px;">Home</a>
-          <a class="menu-item mx-8" style="margin: 1rem; font-size: 20px;">Text To ISL</a>
-          <a class="menu-item mx-8" style="margin: 1rem; font-size: 20px;">ISL To Text</a>
+          <a class="menu-item mx-8" style="margin: 1rem; font-size: 20px;" onclick="clickedaudio()">Audio To ISL</a>
+          <a class="menu-item mx-8" style="margin: 1rem; font-size: 20px;" onclick="clickedtext()">Text To ISL</a>
+          <a class="menu-item mx-8" style="margin: 1rem; font-size: 20px;" onclick="clickedisl()">ISL To Text</a>
         </div>
     </nav>
     <div class="fullBg">

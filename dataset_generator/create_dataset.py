@@ -47,7 +47,7 @@ def process_video(video_path):
     skip_frames = (int(frame_count/target_frames))
     frame_c = 0
     frame_list = {'Class Label': folder_name}
-    n_frame = 0
+    n_frame = 1
 
     while cap.isOpened():
         ret, frame = cap.read()
@@ -120,15 +120,15 @@ def append_landmarks(left_hand_landmarks, right_hand_landmarks, pose_landmarks, 
 
     #Shift origin of the points relative to the shoulder (index 159)
     for i in range(66):
-        frame_list[f'X{i}{n_frame}'] -= frame_list[159]
-        frame_list[f'Y{i}{n_frame}'] -= frame_list[160]
-        frame_list[f'Z{i}{n_frame}'] -= frame_list[161]
+        frame_list[f'X{i}{n_frame}'] -= frame_list[f'X{54}{n_frame}']
+        frame_list[f'Y{i}{n_frame}'] -= frame_list[f'Y{54}{n_frame}']
+        frame_list[f'Z{i}{n_frame}'] -= frame_list[f'Z{54}{n_frame}']
 
     #Normalize the points with respect to the shoulder landmarks (index 156)
     for i in range(66):
-        frame_list[f'X{i}{n_frame}'] /= frame_list[156]
-        frame_list[f'Y{i}{n_frame}'] /= frame_list[157]
-        frame_list[f'Z{i}{n_frame}'] /= frame_list[158]
+        frame_list[f'X{i}{n_frame}'] /= frame_list[f'X{53}{n_frame}']
+        frame_list[f'Y{i}{n_frame}'] /= frame_list[f'Y{53}{n_frame}']
+        frame_list[f'Z{i}{n_frame}'] /= frame_list[f'Z{53}{n_frame}']
 
     return frame_list 
 
