@@ -5,7 +5,7 @@ import speech_recognition as sr
 # from googletrans import Translator
 
 from preprocess import preprocess
-from flask import Flask,request,render_template,send_from_directory,jsonify
+from flask import Flask,request,render_template,send_from_directory,jsonify, redirect
 
 app =Flask(__name__,static_folder='static', static_url_path='')
 app.config['TEMPLATES_AUTO_RELOAD'] = True
@@ -41,6 +41,10 @@ def audio():
     # clear_all();
     return render_template('encode-audio.html')
 
+@app.route('/video/',methods=['GET'])
+def video():
+    return render_template('decode-video.html')
+
 # serve sigml files for animation
 @app.route('/static/<path:path>')
 def serve_signfiles(path):
@@ -67,8 +71,9 @@ def trans():
     
 	return jsonify(response_data)
 
-@app.route('/transcript', methods=['POST'])
+@app.route('/transcript', methods=['GET', 'POST'])
 def transcript():
+    print(request.method)
     if request.method=='POST':
         lang=request.form.get('lang')
         print(lang)
@@ -82,13 +87,16 @@ def transcript():
                 text = r.recognize_google(audio, language=languages[lang])
                 print("You said:", text)
 
-                translated_text = translate_to_english(text, 'en', lang)
-                print("Translated text (English):", translated_text)
-                preprocess_text=preprocess(translated_text)
+                if lang!='English':
+                    translated_text = translate_to_english(text, 'en', lang)
+                    print("Translated text (English):", translated_text)
+                preprocess_text=preprocess(text)
                 return render_template('encode-audio.html', text=text, lang=lang, ptext=preprocess_text)
             except:
-                text=""
+                text="Did not detect anything"
                 return render_template('encode-audio.html')
+        else:
+            return redirect('/audio/')
 
 
 if __name__=="__main__":
