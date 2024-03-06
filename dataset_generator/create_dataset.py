@@ -118,17 +118,17 @@ def append_landmarks(left_hand_landmarks, right_hand_landmarks, pose_landmarks, 
             frame_list[f'Y{id+42}{n_frame}'] = y
             frame_list[f'Z{id+42}{n_frame}'] = z
 
-    # #Shift origin of the points relative to the shoulder (index 159)
-    # for i in range(66):
-    #     frame[i*3] -= frame[159]
-    #     frame[i*3 + 1] -= frame[160]
-    #     frame[i*3 + 2] -= frame[161]
+    #Shift origin of the points relative to the shoulder (index 159)
+    for i in range(66):
+        frame_list[f'X{i}{n_frame}'] -= frame_list[159]
+        frame_list[f'Y{i}{n_frame}'] -= frame_list[160]
+        frame_list[f'Z{i}{n_frame}'] -= frame_list[161]
 
-    # #Normalize the points with respect to the shoulder landmarks (index 156)
-    # for i in range(66):
-    #     frame[i*3] /= frame[156]
-    #     frame[i*3 + 1] /= frame[157]
-    #     frame[i*3 + 2] /= frame[158]
+    #Normalize the points with respect to the shoulder landmarks (index 156)
+    for i in range(66):
+        frame_list[f'X{i}{n_frame}'] /= frame_list[156]
+        frame_list[f'Y{i}{n_frame}'] /= frame_list[157]
+        frame_list[f'Z{i}{n_frame}'] /= frame_list[158]
 
     return frame_list 
 
