@@ -103,12 +103,12 @@ def process_video(frames):
                 pose_landmarks = results_pose.pose_landmarks
 
             frame_list = append_landmarks(left_hand_landmarks, right_hand_landmarks, pose_landmarks, n_frame, frame_list)
-            print(f"Frame {n_frame}: {len(frame_list)} values appended")
+            # print(f"Frame {n_frame}: {len(frame_list)} values appended")
             n_frame += 1
         frame_c += 1
 
     print('Preprocessed frame')
-    print(f"Total values in frame_list: {len(frame_list)}")
+    print(len(frame_list))
     # print(frame_list.keys())
     frame_list=normalize_dict(frame_list)
     #prediction of the model
