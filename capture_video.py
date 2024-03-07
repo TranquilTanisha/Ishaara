@@ -32,25 +32,25 @@ def normalize_dict(data):
        
 def append_landmarks(left_hand_landmarks, right_hand_landmarks, pose_landmarks, n_frame, frame_list):
     for i in range(66):
-        frame_list[f'X{i}{n_frame}'] = 0
-        frame_list[f'Y{i}{n_frame}'] = 0
-        frame_list[f'Z{i}{n_frame}'] = 0
+        frame_list[f'X{"{:02d}".format(i)}{"{:02d}".format(n_frame)}'] = 0
+        frame_list[f'Y{"{:02d}".format(i)}{"{:02d}".format(n_frame)}'] = 0
+        frame_list[f'Z{"{:02d}".format(i)}{"{:02d}".format(n_frame)}'] = 0
 
     if left_hand_landmarks is not None:
         for id, lm in enumerate(left_hand_landmarks.landmark):
             # The landmark coordinates are in normalized image space.
             x, y, z = lm.x, lm.y, lm.z
-            frame_list[f'X{id}{n_frame}'] = x
-            frame_list[f'Y{id}{n_frame}'] = y
-            frame_list[f'Z{id}{n_frame}'] = z
+            frame_list[f'X{"{:02d}".format(id)}{"{:02d}".format(n_frame)}'] = x
+            frame_list[f'Y{"{:02d}".format(id)}{"{:02d}".format(n_frame)}'] = y
+            frame_list[f'Z{"{:02d}".format(id)}{"{:02d}".format(n_frame)}'] = z
 
     if right_hand_landmarks is not None:
         for id, lm in enumerate(right_hand_landmarks.landmark):
             # The landmark coordinates are in normalized image space.
             x, y, z = lm.x, lm.y, lm.z
-            frame_list[f'X{id+21}{n_frame}'] = x
-            frame_list[f'Y{id+21}{n_frame}'] = y
-            frame_list[f'Z{id+21}{n_frame}'] = z
+            frame_list[f'X{(id+21)}{"{:02d}".format(n_frame)}'] = x
+            frame_list[f'Y{(id+21)}{"{:02d}".format(n_frame)}'] = y
+            frame_list[f'Z{(id+21)}{"{:02d}".format(n_frame)}'] = z
     
     if pose_landmarks is not None:
         for id, lm in enumerate(pose_landmarks.landmark):
@@ -58,21 +58,20 @@ def append_landmarks(left_hand_landmarks, right_hand_landmarks, pose_landmarks, 
             if id == 24:
                 break
             x, y, z = lm.x, lm.y, lm.z
-            frame_list[f'X{id+42}{n_frame}'] = x
-            frame_list[f'Y{id+42}{n_frame}'] = y
-            frame_list[f'Z{id+42}{n_frame}'] = z
+            frame_list[f'X{(id+42)}{"{:02d}".format(n_frame)}'] = x
+            frame_list[f'Y{(id+42)}{"{:02d}".format(n_frame)}'] = y
+            frame_list[f'Z{(id+42)}{"{:02d}".format(n_frame)}'] = z
 
     #Shift origin of the points relative to the shoulder (index 54--)
     for i in range(66):
-        frame_list[f'X{i}{n_frame}'] -= frame_list[f'X{54}{n_frame}']
-        frame_list[f'Y{i}{n_frame}'] -= frame_list[f'Y{54}{n_frame}']
-        frame_list[f'Z{i}{n_frame}'] -= frame_list[f'Z{54}{n_frame}']
-
+        frame_list[f'X{"{:02d}".format(i)}{"{:02d}".format(n_frame)}'] -= frame_list[f'X54{"{:02d}".format(n_frame)}']
+        frame_list[f'Y{"{:02d}".format(i)}{"{:02d}".format(n_frame)}'] -= frame_list[f'Y54{"{:02d}".format(n_frame)}']
+        frame_list[f'Z{"{:02d}".format(i)}{"{:02d}".format(n_frame)}'] -= frame_list[f'Z54{"{:02d}".format(n_frame)}']
     #Normalize the points with respect to the shoulder landmarks (index 53--)
     for i in range(66):
-        frame_list[f'X{i}{n_frame}'] /= frame_list[f'X{53}{n_frame}']
-        frame_list[f'Y{i}{n_frame}'] /= frame_list[f'Y{53}{n_frame}']
-        frame_list[f'Z{i}{n_frame}'] /= frame_list[f'Z{53}{n_frame}']
+        frame_list[f'X{"{:02d}".format(i)}{"{:02d}".format(n_frame)}'] -= frame_list[f'X53{"{:02d}".format(n_frame)}']
+        frame_list[f'Y{"{:02d}".format(i)}{"{:02d}".format(n_frame)}'] -= frame_list[f'Y53{"{:02d}".format(n_frame)}']
+        frame_list[f'Z{"{:02d}".format(i)}{"{:02d}".format(n_frame)}'] -= frame_list[f'Z53{"{:02d}".format(n_frame)}']
 
     return frame_list 
 
