@@ -79,23 +79,30 @@ def process_video(frames):
     frame_count = len(frames)
     target_frames = 20
     skip_frames = max(1, int(frame_count/target_frames))
-    print(f"Skip frames: {skip_frames}")
+    print(f'Interval: {skip_frames}')
     frame_c = 0
     frame_list = {}
     n_frame = 1
 
     for frame in frames:
         image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        results_hands = hands.process(image)
-        results_pose = pose.process(image)
 
+        # Process the frame to detect hands
+        results_hands = hands.process(image)
+        # Process the frame to detect pose
+        results_pose = pose.process(image)
+        print(f"Skip?: {frame_c % skip_frames != 0}")
         if frame_c % skip_frames == 0:
-            left_hand_landmarks = right_hand_landmarks = pose_landmarks = None
+            # Extract and print landmark coordinates
+            left_hand_landmarks = None
+            right_hand_landmarks = None
+            pose_landmarks = None
 
             if results_hands.multi_hand_landmarks:
                 for id, hand_landmarks in enumerate(results_hands.multi_hand_landmarks):
                     if results_hands.multi_handedness[id].classification[0].label == 'Left':
                         left_hand_landmarks = hand_landmarks
+                    
                     if results_hands.multi_handedness[id].classification[0].label == 'Right':
                         right_hand_landmarks = hand_landmarks
 
@@ -103,12 +110,15 @@ def process_video(frames):
                 pose_landmarks = results_pose.pose_landmarks
 
             frame_list = append_landmarks(left_hand_landmarks, right_hand_landmarks, pose_landmarks, n_frame, frame_list)
-            print(f"Frame {n_frame}: {len(frame_list)} values appended")
+            
+            # Adjust skip_frames based on the current progress
+            if(len(frame_list)/198 != target_frames):
+                skip_frames = max(1, int((frame_count - frame_c) / (target_frames - len(frame_list)/198)))
+                print(f"Interval: {skip_frames}")
             n_frame += 1
         frame_c += 1
 
-    print('Preprocessed frame')
-    print(f"Total values in frame_list: {len(frame_list)}")
+    print(f'Preprocessed frames:{len(frame_list)/198}')
     # print(frame_list.keys())
     frame_list=normalize_dict(frame_list)
     #prediction of the model
