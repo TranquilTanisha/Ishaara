@@ -146,6 +146,7 @@ def process_video(frames, final, lang):
     # res=model.predict(np.array([list(frame_list.values())]))
     final.append(words[res[0]])
     speaker.say(translate_to_english(words[res[0]], lang, 'en'))
+    speaker.runAndWait()
 
 def capture_video(lang):    
     monitors = get_monitors()
