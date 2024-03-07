@@ -224,6 +224,27 @@ function clickedisl() {
             {% endif %}
           </div>
           <div
+              class="Gloss"
+              style="display: flex; align-items: center; margin-top: 1rem"
+            >
+              <h3 style="width: 30%">Gloss:</h3>
+              <input
+                class="txtGloss av0"
+                value="[none]"
+                type="text"
+                style="
+                  margin-left: 2rem;
+                  padding: 0.75rem;
+                  border-radius: 0.25rem;
+                  padding-left: 1rem;
+                  background-color: rgb(37, 37, 68);
+                  color: white;
+                  border: none;
+                "
+                value="[None]"
+              />
+            </div>
+          <div
             class="substring"
             style="
               display: flex;
@@ -248,7 +269,6 @@ function clickedisl() {
               onclick="prepSentence()"
             />
           </div>
-          {% if text %}
           <button type="button" class="collapsible heading-button">
             Advanced
           </button>
@@ -284,27 +304,6 @@ function clickedisl() {
                 "
               />
             </div>
-            <div
-              class="Gloss"
-              style="display: flex; align-items: center; margin-top: 1rem"
-            >
-              <h3 style="width: 30%">Gloss:</h3>
-              <input
-                class="txtGloss av0"
-                value="[none]"
-                type="text"
-                style="
-                  margin-left: 2rem;
-                  padding: 0.75rem;
-                  border-radius: 0.25rem;
-                  padding-left: 1rem;
-                  background-color: rgb(37, 37, 68);
-                  color: white;
-                  border: none;
-                "
-                value="[None]"
-              />
-            </div>
             <input
               type="text"
               id="URLText"
@@ -312,7 +311,6 @@ function clickedisl() {
               value=""
             />
           </div>
-          {% endif %}
         </div>
         <div class="col1" style="width: 50%;height: 100%; padding: 1rem; overflow: hidden;">
             <div class="CWASAAvatar av0" align="center" ></div>
@@ -340,7 +338,7 @@ function clickedisl() {
           });
         }
     </script>
-    <!-- <script>
+    <script>
       var coll = document.getElementsByClassName("record-audio");
       var i;
       
@@ -349,7 +347,7 @@ function clickedisl() {
           alert("Your voice is being recorded\nTo stop recording, you can stop speaking");
         });
       }
-  </script> -->
+  </script>
 
 </body>
 </html>

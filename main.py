@@ -90,25 +90,5 @@ def voice():
         
     return render_template('encode-voice.html')
 
-@app.route('/encode/file/', methods=['GET', 'POST'])
-def file_input():
-    if request.method=='POST':
-        if 'fileInput' not in request.files:
-            return 'No file part'
-
-        file = request.files['fileInput']
-        if file:
-            # file.save('/path/to/save/' + file.filename)
-            print('File uploaded successfully')
-    return render_template('encode-file.html')
-
-# @app.route('/decode/')
-# def video_input():
-    # final_list=process_video(0)
-    # print(len(final_list))
-    # print(final_list)
-    
-      
-    
 if __name__=='__main__':
     app.run(debug=True)

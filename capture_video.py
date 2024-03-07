@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 from screeninfo import get_monitors
 import math
+import pickle
 
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands()
@@ -13,9 +14,10 @@ mp_pose = mp.solutions.pose
 pose = mp_pose.Pose()
 mp_drawing = mp.solutions.drawing_utils
 
+with open('model.pkl', 'rb') as f:
+    model = pickle.load(f)
+
 def normalize_dict(data):
-    # Extract numeric values and find min and max
-    # values = [value for key, value in data.items() if key.startswith(('X', 'Y', 'Z'))]
     values=list(data.values())
     min_value = min(values)
     max_value = max(values)
@@ -77,11 +79,9 @@ def append_landmarks(left_hand_landmarks, right_hand_landmarks, pose_landmarks, 
 def process_video(frames):
     frame_count = len(frames)
 
-    # Calculate the number of frames to skip
     target_frames = 20
-    skip_frames = math.ceil(frame_count/target_frames)
+    skip_frames = max(1, int(frame_count/target_frames))
     frame_c = 0
-    # frame_list = {'Class Label': folder_name} #You are right, Class Label is our Y, we need to predict that
     frame_list = {}
     n_frame = 1
 
@@ -115,12 +115,15 @@ def process_video(frames):
         frame_c += 1
 
     print('Preprocessed frame')
-    print(len(frame_list))
+    print(len(frame_list)/198)
     # print(frame_list.keys())
     frame_list=normalize_dict(frame_list)
     #prediction of the model
+    # res=model.predict([list(frame_list.values())])
+    res=model.predict(np.array([list(frame_list.values())]))
+    print(res)
 
-def capture_video():
+def capture_video():    
     monitors = get_monitors()
     monitor = monitors[0]
     width, height = monitor.width, monitor.height
@@ -140,6 +143,7 @@ def capture_video():
 
         results_hands = hands.process(image)
         results_pose = pose.process(image)
+        
         if results_pose.pose_landmarks:
             left_shoulder = results_pose.pose_landmarks.landmark[11].visibility>=0.86
             right_shoulder=results_pose.pose_landmarks.landmark[12].visibility>=0.86
@@ -153,7 +157,6 @@ def capture_video():
                 cv2.putText(frame, "Detecting gestures", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
                 
             else:
-                # final.append(frames)
                 if len(frames)==0:
                     cv2.putText(frame, "No hands detected", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
                 else:

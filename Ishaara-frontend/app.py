@@ -88,8 +88,8 @@ def transcript():
                 print("You said:", text)
 
                 if lang!='English':
-                    translated_text = translate_to_english(text, 'en', lang)
-                    print("Translated text (English):", translated_text)
+                    text = translate_to_english(text, 'en', lang)
+                    print("Translated text (English):", text)
                 preprocess_text=preprocess(text)
                 return render_template('encode-audio.html', text=text, lang=lang, ptext=preprocess_text)
             except:
@@ -97,6 +97,18 @@ def transcript():
                 return render_template('encode-audio.html')
         else:
             return redirect('/audio/')
+
+# @app.route('/encode/file/', methods=['GET', 'POST'])
+# def file_input():
+#     if request.method=='POST':
+#         if 'fileInput' not in request.files:
+#             return 'No file part'
+
+#         file = request.files['fileInput']
+#         if file:
+#             # file.save('/path/to/save/' + file.filename)
+#             print('File uploaded successfully')
+#     return render_template('encode-file.html')
 
 
 if __name__=="__main__":
