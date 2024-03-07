@@ -14,8 +14,8 @@ mp_pose = mp.solutions.pose
 pose = mp_pose.Pose()
 mp_drawing = mp.solutions.drawing_utils
 
-# with open('model.pkl', 'rb') as f:
-#     model = pickle.load(f)
+with open('model.pkl', 'rb') as f:
+    model = pickle.load(f)
 
 def normalize_dict(data):
     values=list(data.values())
@@ -28,8 +28,7 @@ def normalize_dict(data):
     for key, value in data.items():
         data[key] = (value - min_value) / range_value
     return data
-
-       
+    
 def append_landmarks(left_hand_landmarks, right_hand_landmarks, pose_landmarks, n_frame, frame_list):
     for i in range(66):
         frame_list[f'X{"{:02d}".format(i)}{"{:02d}".format(n_frame)}'] = 0
@@ -122,9 +121,9 @@ def process_video(frames):
     # print(frame_list.keys())
     frame_list=normalize_dict(frame_list)
     #prediction of the model
-    # res=model.predict([list(frame_list.values())])
-    # res=model.predict(np.array([list(frame_list.values())]))
-    # print(res)
+    res=model.predict([list(frame_list.values())])
+    res=model.predict(np.array([list(frame_list.values())]))
+    print(res)
 
 def capture_video():    
     monitors = get_monitors()
@@ -133,6 +132,7 @@ def capture_video():
     cap = cv2.VideoCapture(0)
     cap.set(3, width)
     cap.set(4, height)
+    cap.set(5, 20) 
     cap.set(10, 150) #brightness
     
     frames=[]
@@ -169,7 +169,10 @@ def capture_video():
                     print('Collected frames')
                     # print(frames)
                     print(len(frames))
-                    process_video(frames)
+                    if(len(frames)>18):
+                        process_video(frames)
+                    else:
+                        cv2.putText(frame, "Please gesture slowly, the system could not catch that", (10, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
                     frames=[]
             
         else:
