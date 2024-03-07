@@ -1,12 +1,11 @@
 import cv2
 import mediapipe as mp
-import os
-import csv
 import numpy as np
 import pandas as pd
 from screeninfo import get_monitors
-import math
+import pyttsx3
 import pickle
+from app import translate_to_english
 
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands()
@@ -14,8 +13,29 @@ mp_pose = mp.solutions.pose
 pose = mp_pose.Pose()
 mp_drawing = mp.solutions.drawing_utils
 
-# with open('model.pkl', 'rb') as f:
-#     model = pickle.load(f)
+speaker=pyttsx3.init()
+voices=speaker.getProperty('voices')
+speaker.setProperty('voice', voices[1].id)
+speaker.setProperty('rate', 120)
+
+with open('model.pkl', 'rb') as f:
+    model = pickle.load(f)
+    
+with open ('words.txt', 'r') as f:
+    words = f.read().splitlines()
+    
+languages={'Hindi': 'hi-IN',
+'Bengali': 'bn-IN',
+'Telugu': 'te-IN',
+'Marathi': 'mr-IN',
+'Tamil': 'ta-IN',
+'Urdu': 'ur-IN',
+'Gujarati': 'gu-IN',
+'Malayalam': 'ml-IN',
+'Kannada': 'kn-IN',
+'Odia': 'or-IN',
+'Punjabi': 'pa-IN',
+'Assamese': 'as-IN'}
 
 def normalize_dict(data):
     values=list(data.values())
@@ -74,11 +94,11 @@ def append_landmarks(left_hand_landmarks, right_hand_landmarks, pose_landmarks, 
 
     return frame_list 
 
-def process_video(frames):
+def process_video(frames, final, lang):
     frame_count = len(frames)
     target_frames = 20
     skip_frames = max(1, int(frame_count/target_frames))
-    print(f'Interval: {skip_frames}')
+    # print(f'Interval: {skip_frames}')
     frame_c = 0
     frame_list = {}
     n_frame = 1
@@ -90,7 +110,7 @@ def process_video(frames):
         results_hands = hands.process(image)
         # Process the frame to detect pose
         results_pose = pose.process(image)
-        print(f"Skip?: {frame_c % skip_frames != 0}")
+        # print(f"Skip?: {frame_c % skip_frames != 0}")
         if frame_c % skip_frames == 0:
             # Extract and print landmark coordinates
             left_hand_landmarks = None
@@ -113,7 +133,6 @@ def process_video(frames):
             # Adjust skip_frames based on the current progress
             if(len(frame_list)/198 != target_frames):
                 skip_frames = max(1, int((frame_count - frame_c) / (target_frames - len(frame_list)/198)))
-                print(f"Interval: {skip_frames}")
             n_frame += 1
         frame_c += 1
 
@@ -121,11 +140,12 @@ def process_video(frames):
     # print(frame_list.keys())
     frame_list=normalize_dict(frame_list)
     #prediction of the model
-    # res=model.predict([list(frame_list.values())])
+    res=model.predict([list(frame_list.values())])
     # res=model.predict(np.array([list(frame_list.values())]))
-    # print(res)
+    final.append(words[res[0]])
+    speaker.say(translate_to_english(words[res[0]], lang, 'en'))
 
-def capture_video():    
+def capture_video(lang):    
     monitors = get_monitors()
     monitor = monitors[0]
     width, height = monitor.width, monitor.height
@@ -136,6 +156,7 @@ def capture_video():
     cap.set(10, 150) #brightness
     
     frames=[]
+    final=[]
     threshold = 0
     while cap.isOpened():
         ret, frame = cap.read()
@@ -170,12 +191,14 @@ def capture_video():
                     # print(frames)
                     print(len(frames))
                     if(len(frames)>18):
-                        process_video(frames)
+                        process_video(frames, final, lang)
                     else:
                         cv2.putText(frame, "Please gesture slowly, the system could not catch that", (10, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
                     frames=[]
             
         else:
+            # speaker.say(translate_to_english("Shouders not detected", lang, 'en'))
+            # speaker.say(translate_to_english("Start now", lang, 'en'))
             cv2.putText(frame, "Both shoulders not detected. Kindly repeat your gesture.", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 5)
             frames=[]
         cv2.imshow('Sign Detection', frame)
@@ -184,8 +207,8 @@ def capture_video():
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
     
-    
+    print(final)
     cap.release()
     cv2.destroyAllWindows()
     
-capture_video()
+capture_video('Hindi')
