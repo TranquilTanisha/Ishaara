@@ -131,8 +131,10 @@ def process_video(frames, final, lang):
             frame_list = append_landmarks(left_hand_landmarks, right_hand_landmarks, pose_landmarks, n_frame, frame_list)
             
             # Adjust skip_frames based on the current progress
-            if(len(frame_list)/198 != target_frames):
+            if(len(frame_list)/198 < target_frames - 1):
                 skip_frames = max(1, int((frame_count - frame_c) / (target_frames - len(frame_list)/198)))
+            else:
+                break
             n_frame += 1
         frame_c += 1
 
