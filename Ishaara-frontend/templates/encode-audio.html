@@ -53,10 +53,10 @@
     </script>
     <style type="text/css">
       body {
-        overflow-y: hidden !important;
-        overflow-x: hidden !important;
+          overflow-y: scroll !important;
+          overflow-x: hidden !important;
       }
-    </style>
+  </style>
   </head>
   <body onload="CWASA.init(initCfg);">
     <script language="javascript">
@@ -165,8 +165,7 @@ function clickedisl() {
           >
             <h3 style="width: 30%">Choose Language:</h3>
             <form action="/transcript" method="post">
-                <select id="dropdown" name="lang">
-                  <option value="None">None</option>
+                <select id="dropdown" name="lang" required>
                   <option value="English">English</option>
                   <option value="Hindi">Hindi</option>
                   <option value="Bengali">Bengali</option>
@@ -227,7 +226,7 @@ function clickedisl() {
               class="Gloss"
               style="display: flex; align-items: center; margin-top: 1rem"
             >
-              <h3 style="width: 30%">Gloss:</h3>
+              <h3 style="width: 30%">Current Word:</h3>
               <input
                 class="txtGloss av0"
                 value="[none]"

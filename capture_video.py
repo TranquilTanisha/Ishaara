@@ -14,8 +14,8 @@ mp_pose = mp.solutions.pose
 pose = mp_pose.Pose()
 mp_drawing = mp.solutions.drawing_utils
 
-with open('model.pkl', 'rb') as f:
-    model = pickle.load(f)
+# with open('model.pkl', 'rb') as f:
+#     model = pickle.load(f)
 
 def normalize_dict(data):
     values=list(data.values())
@@ -78,9 +78,9 @@ def append_landmarks(left_hand_landmarks, right_hand_landmarks, pose_landmarks, 
 
 def process_video(frames):
     frame_count = len(frames)
-
     target_frames = 20
     skip_frames = max(1, int(frame_count/target_frames))
+    print(f"Skip frames: {skip_frames}")
     frame_c = 0
     frame_list = {}
     n_frame = 1
@@ -91,15 +91,12 @@ def process_video(frames):
         results_pose = pose.process(image)
 
         if frame_c % skip_frames == 0:
-            left_hand_landmarks = None
-            right_hand_landmarks = None
-            pose_landmarks = None
+            left_hand_landmarks = right_hand_landmarks = pose_landmarks = None
 
             if results_hands.multi_hand_landmarks:
                 for id, hand_landmarks in enumerate(results_hands.multi_hand_landmarks):
                     if results_hands.multi_handedness[id].classification[0].label == 'Left':
                         left_hand_landmarks = hand_landmarks
-                    
                     if results_hands.multi_handedness[id].classification[0].label == 'Right':
                         right_hand_landmarks = hand_landmarks
 
@@ -107,21 +104,18 @@ def process_video(frames):
                 pose_landmarks = results_pose.pose_landmarks
 
             frame_list = append_landmarks(left_hand_landmarks, right_hand_landmarks, pose_landmarks, n_frame, frame_list)
-            
-            # Adjust skip_frames based on the current progress
-            if(len(frame_list) != target_frames):
-                skip_frames = max(1, int((frame_count - frame_c) / (target_frames - len(frame_list))))
+            print(f"Frame {n_frame}: {len(frame_list)} values appended")
             n_frame += 1
         frame_c += 1
 
     print('Preprocessed frame')
-    print(len(frame_list)/198)
+    print(f"Total values in frame_list: {len(frame_list)}")
     # print(frame_list.keys())
     frame_list=normalize_dict(frame_list)
     #prediction of the model
     # res=model.predict([list(frame_list.values())])
-    res=model.predict(np.array([list(frame_list.values())]))
-    print(res)
+    # res=model.predict(np.array([list(frame_list.values())]))
+    # print(res)
 
 def capture_video():    
     monitors = get_monitors()
@@ -133,7 +127,7 @@ def capture_video():
     cap.set(10, 150) #brightness
     
     frames=[]
-    
+    threshold = 0
     while cap.isOpened():
         ret, frame = cap.read()
         if not ret:
@@ -154,10 +148,12 @@ def capture_video():
         if left_shoulder and right_shoulder:
             if results_hands.multi_hand_landmarks:
                 frames.append(frame)
+                threshold = 0
                 cv2.putText(frame, "Detecting gestures", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
                 
             else:
-                if len(frames)==0:
+                if threshold < 5 or len(frames) == 0:
+                    threshold += 1
                     cv2.putText(frame, "No hands detected", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
                 else:
                     cv2.putText(frame, "Preprocessing your frame. Kindly wait.", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
