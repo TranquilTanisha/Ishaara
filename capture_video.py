@@ -14,8 +14,8 @@ mp_pose = mp.solutions.pose
 pose = mp_pose.Pose()
 mp_drawing = mp.solutions.drawing_utils
 
-with open('model.pkl', 'rb') as f:
-    model = pickle.load(f)
+# with open('model.pkl', 'rb') as f:
+#     model = pickle.load(f)
 
 def normalize_dict(data):
     values=list(data.values())
@@ -121,9 +121,9 @@ def process_video(frames):
     # print(frame_list.keys())
     frame_list=normalize_dict(frame_list)
     #prediction of the model
-    res=model.predict([list(frame_list.values())])
-    res=model.predict(np.array([list(frame_list.values())]))
-    print(res)
+    # res=model.predict([list(frame_list.values())])
+    # res=model.predict(np.array([list(frame_list.values())]))
+    # print(res)
 
 def capture_video():    
     monitors = get_monitors()

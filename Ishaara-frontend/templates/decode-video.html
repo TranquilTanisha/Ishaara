@@ -1,224 +1,105 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>ISHAARA</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-      crossorigin="anonymous"
-    />
-    <script
-      src="https://code.jquery.com/jquery-3.6.0.min.js"
-      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-      crossorigin="anonymous"
-    ></script>
-    <link
-      rel="stylesheet"
-      type="text/css"
-      media="screen"
-      href="{{url_for('static',filename='./style.css')}}"
-    />
 
-    <meta http-equiv="Access-Control-Allow-Methods" content="GET" />
-    <link
-      rel="stylesheet"
-      href="{{url_for('static',filename='css/cwasa.css')}}"
-    />
-    <script
-      type="text/javascript"
-      src="{{url_for('static',filename='js/allcsa.js')}}"
-    ></script>
-    <!-- player css and js files -->
-    <!-- <link rel="stylesheet" href="css/cwasa.css" /> -->
-    <!-- <script type="text/javascript" src="js/allcsa.js"></script> -->
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>ISHAARA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" type="text/css" media="screen" href="{{url_for('static',filename='./style.css')}}" />
 
-    <script language="javascript">
-      // Initial configuration
-      var initCfg = {
-        avsbsl: ["luna", "siggi", "anna", "marc", "francoise"],
-        avSettings: { avList: "avsbsl", initAv: "marc" },
-      };
+  <meta http-equiv="Access-Control-Allow-Methods" content="GET" />
+  <link rel="stylesheet" href="{{url_for('static',filename='css/cwasa.css')}}" />
+  <script type="text/javascript" src="{{url_for('static',filename='js/allcsa.js')}}"></script>
+  <!-- player css and js files -->
+  <!-- <link rel="stylesheet" href="css/cwasa.css" /> -->
+  <!-- <script type="text/javascript" src="js/allcsa.js"></script> -->
 
-      // global variable to store the sigmal list
-      var sigmlList = null;
+  <script language="javascript">
+    // Initial configuration
+    var initCfg = {
+      avsbsl: ["luna", "siggi", "anna", "marc", "francoise"],
+      avSettings: { avList: "avsbsl", initAv: "marc" },
+    };
 
-      // global variable to tell if avatar is ready or not
-      var tuavatarLoaded = false;
+    // global variable to store the sigmal list
+    var sigmlList = null;
 
-      var playerAvailableToPlay = true;
-    </script>
-    <style type="text/css">
-      body {
-          overflow-y: scroll !important;
-          overflow-x: hidden !important;
-      }
+    // global variable to tell if avatar is ready or not
+    var tuavatarLoaded = false;
+
+    var playerAvailableToPlay = true;
+  </script>
+  <style type="text/css">
+    body {
+      overflow-y: scroll !important;
+      overflow-x: hidden !important;
+    }
   </style>
-  </head>
-  <body onload="CWASA.init(initCfg);">
-    <script language="javascript">
-      function playText(stext) {
-        var sigml = "<sigml>" + stext + "</sigml>";
-        CWASA.playSiGMLText(sigml);
-      }
+</head>
 
-      // sets url for sigml
-      function setSiGMLURL() {
-        var e = document.getElementById("word");
-        var sigmlURL = e.value;
-        var loc = window.location.href;
-        var locDir = loc.substring(0, loc.lastIndexOf("/"));
-        // console.log("SiGML: "+sigmlURL);
-        // console.log("Location Dir: "+locDir);
-        sigmlURL = locDir + "/SignFiles/" + sigmlURL + ".sigml";
-        // console.log("here");
-        console.log("URL " + sigmlURL);
-        document.getElementById("URLText").value = sigmlURL;
-        startPlayer(sigmlURL);
-        // return sigmlURL;
-      }
-      // starts the player animation
-      function startPlayer(sigmlURL) {
-        // sigmlURL = setSiGMLURL(sigmlURL);
-        console.log("URL " + sigmlURL);
-        // Equivalent to click on Sign button
-        CWASA.getLogger("myLog", "warn");
-        CWASA.playSiGMLURL(sigmlURL);
-        CWASA.getLogger("myLog", "warn");
-      }
+<body>
+  <script language="javascript">
+    function captureVideo() {
+      var result = document.getElementsByClassName("result_sentence")[0];
+    }
 
-      function prepSentence() {
-        var text = document.getElementsByClassName("input-sentence")[0].value;
-        var words = text.split(" ");
-        var loc = window.location.href;
-        var locDir = loc.substring(0, loc.lastIndexOf("/"));
-        var folderPath = locDir + "/SignFiles/";
-
-        const sigmlContents = [];
-
-        // Fetch sigml content for each word
-        words.forEach((word) => {
-          var sigmlFilePath = `${folderPath}${word}.sigml`;
-
-          fetch(sigmlFilePath)
-            .then((response) => {
-              if (!response.ok) {
-                return "";
-              }
-              return response.text();
-            })
-            .then((sigmlContent) => {
-              sigmlContent = sigmlContent.replaceAll('<sigml>', '').replaceAll('</sigml>', '');
-              // Add the sigml content to the array
-              sigmlContents.push(sigmlContent);
-
-              // If all sigml contents are fetched, you can proceed further
-              if (sigmlContents.length === words.length) {
-                finalSigml = sigmlContents.join("");
-                console.log(finalSigml);
-
-                playText(finalSigml);
-              }
-            })
-            .catch((error) => {
-              console.log(error.message);
-            });
-        });
-      }
-
-function clickedtext() {
-    location.href="/";
-}
-function clickedaudio() {
-    location.href="/audio";
-}
-function clickedisl() {
-    location.href="/video";
-}
-    </script>
-    <div class="main">
-      <nav class="navbar">
-        <div
-          class="logo flex items-center"
-          style="display: flex; justify-content: center; align-items: center"
-        >
-          <div class="img mx-3" style="margin-left: 3rem">
-            <img
-              src="./logo.jpg"
-              alt="img"
-              width="40px"
-              style="border-radius: 50%; border: 2px solid black"
-            />
-          </div>
-          <div
-            class="heading text-lg"
-            style="font-size: 1.25rem; justify-content: center"
-          >
-            <h2 class="font-bold">Ishaara</h2>
-          </div>
+    function clickedtext() {
+      location.href = "/";
+    }
+    function clickedaudio() {
+      location.href = "/audio";
+    }
+    function clickedisl() {
+      location.href = "/video";
+    }
+  </script>
+  <div class="main">
+    <nav class="navbar">
+      <div class="logo flex items-center" style="display: flex; justify-content: center; align-items: center">
+        <div class="heading text-lg" style="font-size: 1.25rem; justify-content: center">
+          <h2 class="font-bold" style="padding-left: 2rem;">Ishaara</h2>
         </div>
-        <div
-          class="menu-items flex flex-row items-center justify-end"
-          style="
-            display: flex;
-            flex-direction: row;
-            justify-items: center;
-            justify-content: end;
-          "
-        >
+      </div>
+      <div class="menu-items flex flex-row items-center justify-end"
+        style="display: flex; flex-direction: row; justify-items: center; justify-content: end;">
         <a class="menu-item mx-8" style="margin: 1rem; font-size: 20px;" onclick="clickedaudio()">Audio To ISL</a>
         <a class="menu-item mx-8" style="margin: 1rem; font-size: 20px;" onclick="clickedtext()">Text To ISL</a>
         <a class="menu-item mx-8" style="margin: 1rem; font-size: 20px;" onclick="clickedisl()">ISL To Text</a>
+      </div>
+    </nav>
+    <div class="fullBg">
+      <div class="col1" style="width: 50%;height: 100%; padding: 2rem; overflow: hidden;">
+        <!-- Write instructions to use the ISL to Text tool -->
+        <div style="margin-top: 2rem;">
+          <h1 style="font-size: 2rem; font-weight: 700; margin-bottom: 2rem; color: rgb(60, 60, 60);">ISL to Text</h1>
+          <p style="font-size: 1.25rem; font-weight: 500; margin-bottom: 2rem; color: gray">Record a video of the sign language
+            sentence you want to convert to text. Click on the button on the right to start recording.</p>
+          <p style="font-size: 1.25rem; font-weight: 500; margin-bottom: 2rem; color: gray">There are a few things to keep in mind
+            while recording the video:</p>
+          <ol style="font-size: 1.25rem; font-weight: 500; margin-bottom: 2rem; color: gray">
+            <li>Make sure that the your shoulders are always visible</li>
+            <li>The system will keep recording till you move your hands out of the frame</li>
+            <li>Move at a reasonable speed or the system will not be able to detect it</li>
+            <li>Make sure that the lighting is good</li>
+            <li>The hands and body should be facing the camera while signing</li>
+          </ol>
         </div>
-      </nav>
-      <div class="fullBg">
-        <div
-          class="col2"
-          style="width: 50%; height: 100vh; padding: 2rem; overflow-y: auto; display: flex; justify-content: center;align-items: center;"
-        >
-            <button
-            style="
+      </div>
+      <div class="col2" style="width: 50%; height: 100vh; padding: 2rem; margin-top: 2rem; overflow-y: auto; display: flex; flex-direction: column;align-items: center;">
+        <button style="padding: 4rem; width: 100%; background-color: rgb(37, 37, 68); color: white; border: none; border-radius: 0.75rem; font-weight: 700;" onclick="captureVideo()">
+          Record Video For Signing
+        </button>
+        <textarea class="result_sentence" style="width: 100%; height: 50%; margin-top: 2rem; padding: 1rem; border-radius: 0.25rem; border-radius: 0.75rem;" placeholder="Your Signed Video Will Appear Here" readonly></textarea>
 
-                padding: 4rem;
-                border-radius: 0.25rem;
-                background-color: rgb(37, 37, 68);
-                color: white;
-                border: none;
-                border-radius: 0.75rem;
-              "
-              onclick="prepSentence()"> Sign
-            </button>
-            
-        </div>
-        <div class="col1" style="width: 50%;height: 100%; padding: 1rem; overflow: hidden;">
-            
-        </div>
+      </div>
     </div>
-    <script language="javascript">
-        setSiGMLURL("SignFiles/A.sigml");
-    </script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/player.js') }}"></script>
-    <script>
-        var coll = document.getElementsByClassName("collapsible");
-        var i;
-        
-        for (i = 0; i < coll.length; i++) {
-          coll[i].addEventListener("click", function() {
-            this.classList.toggle("active");
-            var content = this.nextElementSibling;
-            if (content.style.display === "block") {
-              content.style.display = "none";
-            } else {
-              content.style.display = "block";
-            }
-          });
-        }
-    </script>
 
 </body>
+
 </html>
