@@ -3,7 +3,7 @@ from mtranslate import translate
 # import requests
 import speech_recognition as sr
 # from googletrans import Translator
-
+from capture_video import capture_video
 from preprocess import preprocess
 from flask import Flask,request,render_template,send_from_directory,jsonify, redirect
 
@@ -94,21 +94,23 @@ def transcript():
                 return render_template('encode-audio.html', text=text, lang=lang, ptext=preprocess_text)
             except:
                 text="Did not detect anything"
-                return render_template('encode-audio.html')
+                return redirect('/audio/')
         else:
             return redirect('/audio/')
 
-# @app.route('/encode/file/', methods=['GET', 'POST'])
-# def file_input():
-#     if request.method=='POST':
-#         if 'fileInput' not in request.files:
-#             return 'No file part'
-
-#         file = request.files['fileInput']
-#         if file:
-#             # file.save('/path/to/save/' + file.filename)
-#             print('File uploaded successfully')
-#     return render_template('encode-file.html')
+@app.route('/recordvid/', methods=['GET', 'POST'])
+def recordvid():
+    if request.method=='POST':
+        lang=request.form.get('lang')
+        print(lang)
+        if lang!='None' or lang!=None:
+            res=capture_video(lang)
+            print(res)
+            return render_template('decode-video.html', res=res, lang=lang)
+        else:
+            return redirect('/video/')
+        
+    return redirect('/video/')
 
 
 if __name__=="__main__":
