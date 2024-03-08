@@ -5,7 +5,6 @@ import pandas as pd
 from screeninfo import get_monitors
 import pyttsx3
 import pickle
-# from app import translate_to_english
 
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands()
@@ -131,25 +130,21 @@ def process_video(frames, final, lang):
             frame_list = append_landmarks(left_hand_landmarks, right_hand_landmarks, pose_landmarks, n_frame, frame_list)
             
             # Adjust skip_frames based on the current progress
-            if(len(frame_list)/198 < target_frames - 1):
+            if(len(frame_list)/198 != target_frames):
                 skip_frames = max(1, int((frame_count - frame_c) / (target_frames - len(frame_list)/198)))
-            else:
-                break
             n_frame += 1
         frame_c += 1
 
     print(f'Preprocessed frames:{len(frame_list)/198}')
-    # print(frame_list.keys())
     frame_list=normalize_dict(frame_list)
-    #prediction of the model
-    # res=model.predict([list(frame_list.values())])
-    # # res=model.predict(np.array([list(frame_list.values())]))
-    # final.append(words[res[0]])
-    # speaker.say(translate_to_english(words[res[0]], lang, 'en'))
-    # speaker.runAndWait()
-    res = "Test result"
-    return res
-
+    l=list(frame_list.values())
+    if len(frame_list)/198!=19:
+        l=l[:-198]
+    res=model.predict([l])
+    # res=model.predict(np.array([list(frame_list.values())]))
+    final.append(words[res[0]])
+    speaker.say(words[res[0]])
+    speaker.runAndWait()
 
 def capture_video(lang):    
     monitors = get_monitors()
@@ -197,9 +192,11 @@ def capture_video(lang):
                     # print(frames)
                     print(len(frames))
                     if(len(frames)>18):
-                        return process_video(frames, final, lang)
+                        process_video(frames, final, lang)
                     else:
-                        cv2.putText(frame, "Please gesture slowly, the system could not catch that", (10, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
+                        cv2.putText(frame, "Wait", (10, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
+                        speaker.say('Please gesture slowly')
+                        speaker.runAndWait()
                     frames=[]
             
         else:
@@ -211,9 +208,11 @@ def capture_video(lang):
         
         
         if cv2.waitKey(1) & 0xFF == ord('q'):
-            return "Stopped by user"
             break
     
     print(final)
     cap.release()
     cv2.destroyAllWindows()
+    return ' '.join(final)   
+    
+# capture_video('Hindi')
