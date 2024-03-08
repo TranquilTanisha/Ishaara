@@ -74,44 +74,44 @@
       CWASA.getLogger("myLog", "warn");
     }
 
-    function prepSentence() {
-      var text = document.getElementsByClassName("input-sentence")[0].value;
-      var words = text.split(" ");
-      var loc = window.location.href;
-      var locDir = loc.substring(0, loc.lastIndexOf("/"));
-      var folderPath = locDir + "/SignFiles/";
+  function prepSentence(text) {
+          // var text = document.getElementsByClassName("input-sentence")[0].value;
+          var words = text.split(" ");
+          var loc = window.location.href;
+          var locDir = loc.substring(0, loc.lastIndexOf('/'));
+          var folderPath = locDir + "/SignFiles/";
 
-      const sigmlContents = [];
+          const sigmlContents = [];
 
-      // Fetch sigml content for each word
-      words.forEach((word) => {
-        var sigmlFilePath = `${folderPath}${word}.sigml`;
+          // Fetch sigml content for each word
+          words.forEach((word) => {
+              var sigmlFilePath = `${folderPath}${word}.sigml`;
 
-        fetch(sigmlFilePath)
-          .then((response) => {
-            if (!response.ok) {
-              return "";
-            }
-            return response.text();
-          })
-          .then((sigmlContent) => {
-            sigmlContent = sigmlContent.replaceAll('<sigml>', '').replaceAll('</sigml>', '');
-            // Add the sigml content to the array
-            sigmlContents.push(sigmlContent);
+              fetch(sigmlFilePath)
+                  .then(response => {
+                      if (!response.ok) {
+                          return '';
+                      }
+                      return response.text();
+                  })
+                  .then(sigmlContent => {
+                      sigmlContent = sigmlContent.replaceAll('<sigml>', '').replaceAll('</sigml>', '');
+                      // Add the sigml content to the array
+                      sigmlContents.push(sigmlContent);
 
-            // If all sigml contents are fetched, you can proceed further
-            if (sigmlContents.length === words.length) {
-              finalSigml = sigmlContents.join("");
-              console.log(finalSigml);
+                      // If all sigml contents are fetched, you can proceed further
+                      if (sigmlContents.length === words.length) {
+                          finalSigml = sigmlContents.join('');
+                          console.log(finalSigml);
 
-              playText(finalSigml);
-            }
-          })
-          .catch((error) => {
-            console.log(error.message);
+                          playText(finalSigml);
+                      }
+                  })
+                  .catch(error => {
+                      console.log(error.message);
+                  });
           });
-      });
-    }
+      }
 
     function clickedtext() {
       location.href = "/";

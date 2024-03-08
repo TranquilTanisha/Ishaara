@@ -18,11 +18,11 @@ voices=speaker.getProperty('voices')
 speaker.setProperty('voice', voices[1].id)
 speaker.setProperty('rate', 120)
 
-with open('model.pkl', 'rb') as f:
-    model = pickle.load(f)
+# with open('model.pkl', 'rb') as f:
+#     model = pickle.load(f)
     
-with open ('words.txt', 'r') as f:
-    words = f.read().splitlines()
+# with open ('words.txt', 'r') as f:
+#     words = f.read().splitlines()
     
 languages={'Hindi': 'hi-IN',
 'Bengali': 'bn-IN',
@@ -142,11 +142,11 @@ def process_video(frames, final, lang):
     # print(frame_list.keys())
     frame_list=normalize_dict(frame_list)
     #prediction of the model
-    res=model.predict([list(frame_list.values())])
+    # res=model.predict([list(frame_list.values())])
     # # res=model.predict(np.array([list(frame_list.values())]))
-    final.append(words[res[0]])
-    speaker.say(translate_to_english(words[res[0]], lang, 'en'))
-    speaker.runAndWait()
+    # final.append(words[res[0]])
+    # speaker.say(translate_to_english(words[res[0]], lang, 'en'))
+    # speaker.runAndWait()
     res = "Test result"
     return res
 

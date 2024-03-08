@@ -52,8 +52,8 @@
                     'text': text,
                 }),
                 success: function (response) {
-                    document.getElementsByClassName("input-sentence")[0].value = response['preprocess_text'];
-                    prepSentence();
+                    // document.getElementsByClassName("input-sentence")[0].value = response['preprocess_text'];
+                    prepSentence(response['preprocess_text']);
                 }
             });
         }
@@ -101,8 +101,8 @@
             CWASA.getLogger("myLog", "warn");
         }
 
-        function prepSentence() {
-            var text = document.getElementsByClassName("input-sentence")[0].value;
+        function prepSentence(text) {
+            // var text = document.getElementsByClassName("input-sentence")[0].value;
             var words = text.split(" ");
             var loc = window.location.href;
             var locDir = loc.substring(0, loc.lastIndexOf('/'));
