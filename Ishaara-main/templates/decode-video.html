@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>ISHAARA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" type="text/css" media="screen" href="{{url_for('static',filename='./style.css')}}" />
+
+  <meta http-equiv="Access-Control-Allow-Methods" content="GET" />
+  <style type="text/css">
+    body {
+      overflow-y: scroll !important;
+      overflow-x: hidden !important;
+    }
+  </style>
+</head>
+
+<body>
+  <script language="javascript">
+    function captureVideo() {
+      var result = document.getElementsByClassName("result_sentence")[0];
+
+    }
+
+    function clickedtext() {
+      location.href = "/";
+    }
+    function clickedaudio() {
+      location.href = "/audio";
+    }
+    function clickedisl() {
+      location.href = "/video";
+    }
+  </script>
+  <div class="main">
+    <nav class="navbar">
+      <div class="logo flex items-center" style="display: flex; justify-content: center; align-items: center">
+        <div class="heading text-lg" style="font-size: 1.25rem; justify-content: center">
+          <h2 class="font-bold" style="padding-left: 2rem;">Ishaara</h2>
+        </div>
+      </div>
+      <div class="menu-items flex flex-row items-center justify-end"
+        style="display: flex; flex-direction: row; justify-items: center; justify-content: end;">
+        <a class="menu-item mx-8" style="margin: 1rem; font-size: 20px;" onclick="clickedaudio()">Audio To ISL</a>
+        <a class="menu-item mx-8" style="margin: 1rem; font-size: 20px;" onclick="clickedtext()">Text To ISL</a>
+        <a class="menu-item mx-8" style="margin: 1rem; font-size: 20px;" onclick="clickedisl()">ISL To Text</a>
+      </div>
+    </nav>
+    <div class="fullBg">
+      <div class="col1" style="width: 50%;height: 100%; padding: 2rem; overflow: hidden;">
+        <!-- Write instructions to use the ISL to Text tool -->
+        <div style="margin-top: 2rem;">
+          <h1 style="font-size: 2rem; font-weight: 700; margin-bottom: 2rem; color: rgb(60, 60, 60);">ISL to Text</h1>
+          <p style="font-size: 1.25rem; font-weight: 500; margin-bottom: 2rem; color: gray">Record a video of the sign language
+            sentence you want to convert to text. Click on the button on the right to start recording.</p>
+          <p style="font-size: 1.25rem; font-weight: 500; margin-bottom: 2rem; color: gray">There are a few things to keep in mind
+            while recording the video:</p>
+          <ol style="font-size: 1.25rem; font-weight: 500; margin-bottom: 2rem; color: gray">
+            <li>Make sure that the your shoulders are always visible</li>
+            <li>The system will keep recording till you move your hands out of the frame</li>
+            <li>Move at a reasonable speed or the system will not be able to detect it</li>
+            <li>Make sure that the lighting is good</li>
+            <li>The hands and body should be facing the camera while signing</li>
+            <li>To close the video window, press 'q' after focusing the window</li>
+          </ol>
+        </div>
+      </div>
+      <div class="col2" style="width: 50%; height: 100vh; padding: 2rem; margin-top: 2rem; overflow-y: auto; display: flex; flex-direction: column;align-items: center;">
+        <h3 style="width: 100%">Choose Language:</h3>
+          <form action="/recordvid" method="post" style="width: 100%;">
+            <select id="dropdown" name="lang" required>
+              <option value="None">None</option>
+              <option value="English">English</option>
+              <option value="Hindi">Hindi</option>
+              <option value="Bengali">Bengali</option>
+              <option value="Telugu">Telugu</option>
+              <option value="Marathi">Marathi</option>
+              <option value="Tamil">Tamil</option>
+              <option value="Urdu">Urdu</option>
+              <option value="Gujarati">Gujarati</option>
+              <option value="Malayalam">Malayalam</option>
+              <option value="Kannada">Kannada</option>
+              <option value="Odia">Odia</option>
+              <option value="Punjabi">Punjabi</option>
+              <option value="Assamese">Assamese</option>
+            </select>
+            <button type="submit" style="padding: 4rem; width: 100%; background-color: rgb(37, 37, 68); color: white; border: none; border-radius: 0.75rem; font-weight: 700;">
+              Record Video For Signing
+            </button>
+          </form>
+        <input type="text" class="result_sentence" name="result_sentence" value="{{ res }}" placeholder="Your Signed Video Will Appear Here" style="width: 100%; margin-top: 2rem; padding: 1rem;border-radius: 0.25rem; border-radius: 0.75rem;" readonly>
+        <!-- <textarea class="result_sentence" style="width: 100%; height: 50%; margin-top: 2rem; padding: 1rem; border-radius: 0.25rem; border-radius: 0.75rem;" placeholder="Your Signed Video Will Appear Here" readonly>{{ res }}</textarea> -->
+
+      </div>
+    </div>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+
+</html>

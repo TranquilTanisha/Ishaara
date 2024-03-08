@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>ISHAARA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" type="text/css" media="screen" href="{{url_for('static',filename='./style.css')}}" />
+
+  <meta http-equiv="Access-Control-Allow-Methods" content="GET" />
+  <link rel="stylesheet" href="{{url_for('static',filename='css/cwasa.css')}}" />
+  <script type="text/javascript" src="{{url_for('static',filename='js/allcsa.js')}}"></script>
+  <!-- player css and js files -->
+  <!-- <link rel="stylesheet" href="css/cwasa.css" /> -->
+  <!-- <script type="text/javascript" src="js/allcsa.js"></script> -->
+
+  <script language="javascript">
+    // Initial configuration
+    var initCfg = {
+      avsbsl: ["luna", "siggi", "anna", "marc", "francoise"],
+      avSettings: { avList: "avsbsl", initAv: "marc" },
+    };
+
+    // global variable to store the sigmal list
+    var sigmlList = null;
+
+    // global variable to tell if avatar is ready or not
+    var tuavatarLoaded = false;
+
+    var playerAvailableToPlay = true;
+  </script>
+  <style type="text/css">
+    body {
+      overflow-y: scroll !important;
+      overflow-x: hidden !important;
+    }
+  </style>
+</head>
+
+<body onload="CWASA.init(initCfg);">
+  <script language="javascript">
+    function playText(stext) {
+      var sigml = "<sigml>" + stext + "</sigml>";
+      CWASA.playSiGMLText(sigml);
+    }
+
+    // sets url for sigml
+    function setSiGMLURL() {
+      var e = document.getElementById("word");
+      var sigmlURL = e.value;
+      var loc = window.location.href;
+      var locDir = loc.substring(0, loc.lastIndexOf("/"));
+      // console.log("SiGML: "+sigmlURL);
+      // console.log("Location Dir: "+locDir);
+      sigmlURL = locDir + "/SignFiles/" + sigmlURL + ".sigml";
+      // console.log("here");
+      console.log("URL " + sigmlURL);
+      document.getElementById("URLText").value = sigmlURL;
+      startPlayer(sigmlURL);
+      // return sigmlURL;
+    }
+    // starts the player animation
+    function startPlayer(sigmlURL) {
+      // sigmlURL = setSiGMLURL(sigmlURL);
+      console.log("URL " + sigmlURL);
+      // Equivalent to click on Sign button
+      CWASA.getLogger("myLog", "warn");
+      CWASA.playSiGMLURL(sigmlURL);
+      CWASA.getLogger("myLog", "warn");
+    }
+
+  function prepSentence(text) {
+          // var text = document.getElementsByClassName("input-sentence")[0].value;
+          var words = text.split(" ");
+          var loc = window.location.href;
+          var locDir = loc.substring(0, loc.lastIndexOf('/'));
+          var folderPath = locDir + "/SignFiles/";
+
+          const sigmlContents = [];
+
+          // Fetch sigml content for each word
+          words.forEach((word) => {
+              var sigmlFilePath = `${folderPath}${word}.sigml`;
+
+              fetch(sigmlFilePath)
+                  .then(response => {
+                      if (!response.ok) {
+                          return '';
+                      }
+                      return response.text();
+                  })
+                  .then(sigmlContent => {
+                      sigmlContent = sigmlContent.replaceAll('<sigml>', '').replaceAll('</sigml>', '');
+                      // Add the sigml content to the array
+                      sigmlContents.push(sigmlContent);
+
+                      // If all sigml contents are fetched, you can proceed further
+                      if (sigmlContents.length === words.length) {
+                          finalSigml = sigmlContents.join('');
+                          console.log(finalSigml);
+
+                          playText(finalSigml);
+                      }
+                  })
+                  .catch(error => {
+                      console.log(error.message);
+                  });
+          });
+      }
+
+    function clickedtext() {
+      location.href = "/";
+    }
+    function clickedaudio() {
+      location.href = "/audio";
+    }
+    function clickedisl() {
+      location.href = "/video";
+    }
+
+  </script>
+  <div class="main">
+    <nav class="navbar">
+      <div class="logo flex items-center" style="display: flex;justify-content: center; align-items: center;">
+        <div class="heading text-lg" style="font-size:1.25rem ; justify-content: center; margin-left: 2rem;">
+          <h2 class='font-bold'>Ishaara</h2>
+        </div>
+      </div>
+      <div class='menu-items flex flex-row items-center justify-end'
+        style="display: flex;flex-direction: row; justify-items: center;justify-content: end;">
+        <a class="menu-item mx-8" style="margin: 1rem; font-size: 20px;" onclick="clickedaudio()">Audio To ISL</a>
+        <a class="menu-item mx-8" style="margin: 1rem; font-size: 20px;" onclick="clickedtext()">Text To ISL</a>
+        <a class="menu-item mx-8" style="margin: 1rem; font-size: 20px;" onclick="clickedisl()">ISL To Text</a>
+      </div>
+    </nav>
+    <div class="fullBg">
+      <div class="col2" style="width: 50%; height: 100vh; padding: 2rem; overflow-y: auto">
+        <button type="button" class="heading-button">Default</button>
+
+        <div class="worNo" style="display: flex; align-items: center; margin-top: 1rem">
+          <h3 style="width: 30%">Choose Language:</h3>
+          <form action="/transcript" method="post">
+            <select id="dropdown" name="lang" required>
+              <option value="None">None</option>
+              <option value="English">English</option>
+              <option value="Hindi">Hindi</option>
+              <option value="Bengali">Bengali</option>
+              <option value="Telugu">Telugu</option>
+              <option value="Marathi">Marathi</option>
+              <option value="Tamil">Tamil</option>
+              <option value="Urdu">Urdu</option>
+              <option value="Gujarati">Gujarati</option>
+              <option value="Malayalam">Malayalam</option>
+              <option value="Kannada">Kannada</option>
+              <option value="Odia">Odia</option>
+              <option value="Punjabi">Punjabi</option>
+              <option value="Assamese">Assamese</option>
+            </select>
+            <button type="submit" class="record-audio"
+              style="margin-left: 2rem; padding: 0.75rem; border-radius: 0.25rem; border: 1px solid rgb(37, 37, 68); background-color: rgb(255, 255, 255); font-weight: 700; color: rgb(37, 37, 68);">Record
+              Audio</button>
+          </form>
+        </div>
+        <div class="input-text" style="display: flex; align-items: center; margin-top: 1rem">
+          <h3 style="width: 30%">Transcripted Text:</h3>
+          {% if text %}
+          <input type="text" class="input-sentence" style="
+                margin-left: 2rem;
+                padding: 0.75rem;
+                border-radius: 0.25rem;
+                padding-left: 1rem;
+                background-color: rgb(37, 37, 68);
+                color: white;
+                border: none;
+              " value="{{ text }}" readonly />
+          {% else %}
+          <input type="text" class="input-sentence" style="
+                margin-left: 2rem;
+                padding: 0.75rem;
+                border-radius: 0.25rem;
+                padding-left: 1rem;
+                background-color: rgb(37, 37, 68);
+                color: white;
+                border: none;
+              " placeholder="No audio recorded" readonly />
+          {% endif %}
+        </div>
+        <div class="Gloss" style="display: flex; align-items: center; margin-top: 1rem">
+          <h3 style="width: 30%">Current Word:</h3>
+          <input class="txtGloss av0" value="[none]" type="text" style="
+                  margin-left: 2rem;
+                  padding: 0.75rem;
+                  border-radius: 0.25rem;
+                  padding-left: 1rem;
+                  background-color: rgb(37, 37, 68);
+                  color: white;
+                  border: none;
+                " value="[None]" />
+        </div>
+        <div class="substring" style="
+              display: flex;
+              align-items: center;
+              margin-top: 1rem;
+              width: 100%;
+              justify-content: end;
+            ">
+          <input type="button" style="
+                margin-left: 2rem;
+                padding: 0.75rem;
+                border-radius: 0.25rem;
+                padding-left: 1rem;
+                background-color: rgb(37, 37, 68);
+                color: white;
+                border: none;
+              " value="Sign" onclick="prepSentence()" />
+        </div>
+        <button type="button" class="collapsible heading-button">
+          Advanced
+        </button>
+        <div class="content">
+          <div class="avat" style="display: flex; align-items: center">
+            <h3 style="width: 30%">Avatar:</h3>
+            <span class="CWASAAvMenu av0"></span>
+          </div>
+          <div class="speedd" style="display: flex; align-items: center; margin-top: 1rem">
+            <h3 style="width: 30%">Speed:</h3>
+            <span class="CWASASpeed av0"></span>
+          </div>
+          <div class="frameNo" style="display: flex; align-items: center; margin-top: 1rem">
+            <h3 style="width: 30%">No of Frame:</h3>
+            <input class="txtSF av0" value="0/0" type="text" style="
+                  margin-left: 2rem;
+                  padding: 0.75rem;
+                  border-radius: 0.25rem;
+                  padding-left: 1rem;
+                  background-color: rgb(37, 37, 68);
+                  color: white;
+                  border: none;
+                " />
+          </div>
+          <input type="text" id="URLText" class="txtSiGMLURL av0 undisplayed" value="" />
+        </div>
+      </div>
+      <div class="col1" style="width: 50%;height: 100%; padding: 1rem; overflow: hidden;">
+        <div class="CWASAAvatar av0" align="center"></div>
+      </div>
+    </div>
+    <script language="javascript">
+      setSiGMLURL("SignFiles/A.sigml");
+    </script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/player.js') }}"></script>
+    <script>
+      var coll = document.getElementsByClassName("collapsible");
+      var i;
+
+      for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function () {
+          this.classList.toggle("active");
+          var content = this.nextElementSibling;
+          if (content.style.display === "block") {
+            content.style.display = "none";
+          } else {
+            content.style.display = "block";
+          }
+        });
+      }
+    </script>
+    <script>
+      var coll = document.getElementsByClassName("record-audio");
+      var i;
+
+      for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function () {
+          alert("Your voice is being recorded\nTo stop recording, you can stop speaking");
+        });
+      }
+    </script>
+
+</body>
+
+</html>
