@@ -74,44 +74,72 @@
       CWASA.getLogger("myLog", "warn");
     }
 
-    function prepSentence() {
-      var text = document.getElementsByClassName("input-sentence")[0].value;
-      var words = text.split(" ");
-      var loc = window.location.href;
-      var locDir = loc.substring(0, loc.lastIndexOf("/"));
-      var folderPath = locDir + "/SignFiles/";
+    function prepSentence(text) {
+            var words = text.split(" ");
+            var loc = window.location.href;
+            var locDir = loc.substring(0, loc.lastIndexOf('/'));
+            var folderPath = locDir + "/SignFiles/";
 
-      const sigmlContents = [];
+            const sigmlContents = [];
 
-      // Fetch sigml content for each word
-      words.forEach((word) => {
-        var sigmlFilePath = `${folderPath}${word}.sigml`;
+            // Fetch sigml content for each word
+            words.forEach((word, index) => {
+                var sigmlFilePath = `${folderPath}${word}.sigml`;
 
-        fetch(sigmlFilePath)
-          .then((response) => {
-            if (!response.ok) {
-              return "";
-            }
-            return response.text();
-          })
-          .then((sigmlContent) => {
-            sigmlContent = sigmlContent.replaceAll('<sigml>', '').replaceAll('</sigml>', '');
-            // Add the sigml content to the array
-            sigmlContents.push(sigmlContent);
+                fetch(sigmlFilePath)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Sigml file not found');
+                        }
+                        return response.text();
+                    })
+                    .then(sigmlContent => {
+                        sigmlContent = sigmlContent.replaceAll('<sigml>', '').replaceAll('</sigml>', '');
+                        // Add the sigml content to the array
+                        sigmlContents.push(sigmlContent);
 
-            // If all sigml contents are fetched, you can proceed further
-            if (sigmlContents.length === words.length) {
-              finalSigml = sigmlContents.join("");
-              console.log(finalSigml);
+                        // If all sigml contents are fetched, you can proceed further
+                        if (sigmlContents.length === words.length) {
+                            finalSigml = sigmlContents.join('');
+                            console.log(finalSigml);
 
-              playText(finalSigml);
-            }
-          })
-          .catch((error) => {
-            console.log(error.message);
-          });
-      });
-    }
+                            playText(finalSigml);
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error.message);
+                        // If sigml file for the word is not found, split the word into letters
+                        word.split('').forEach((letter, ind) => {
+                            var letterSigmlFilePath = `${folderPath}${letter.toUpperCase()}.sigml`;
+
+                            fetch(letterSigmlFilePath)
+                                .then(response => {
+                                    if (!response.ok) {
+                                        console.log(`Sigml file for letter ${letter} not found`);
+                                        return '';
+                                    }
+                                    return response.text();
+                                })
+                                .then(sigmlContent => {
+                                    sigmlContent = sigmlContent.replaceAll('<sigml>', '').replaceAll('</sigml>', '');
+                                    // Add the sigml content to the array
+                                    sigmlContents.push(sigmlContent);
+
+                                    // If all sigml contents are fetched, you can proceed further
+                                    if (index === words.length - 1 && ind === word.length - 1) {
+                                        finalSigml = sigmlContents.join('');
+                                        console.log(finalSigml);
+
+                                        playText(finalSigml);
+                                    }
+                                })
+                                .catch(error => {
+                                    console.log(`Error fetching sigml file for letter ${letter}: ${error.message}`);
+                                });
+                        });
+                    });
+            });
+        }
 
     function clickedtext() {
       location.href = "/";
