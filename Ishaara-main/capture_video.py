@@ -139,7 +139,7 @@ def process_video(frames, final, lang):
     # frame_list=normalize_dict(frame_list)
     l=list(frame_list.values())
     # k=list(frame_list.keys())
-    if len(frame_list)/198==20:
+    if len(frame_list)/198==21:
         l=l[:19*198]
         # k=l[:19*198]
     print(f'Preprocessed frames:{len(l)/198}')
@@ -196,7 +196,7 @@ def capture_video(lang):
                     print('Collected frames')
                     # print(frames)
                     print(len(frames))
-                    if(len(frames)>18):
+                    if(len(frames)>19):
                         process_video(frames, final, lang)
                     else:
                         cv2.putText(frame, "Wait", (10, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
