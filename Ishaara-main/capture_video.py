@@ -96,7 +96,7 @@ def append_landmarks(left_hand_landmarks, right_hand_landmarks, pose_landmarks, 
 
 def process_video(frames, final, lang):
     frame_count = len(frames)
-    target_frames = 20
+    target_frames = 21
     skip_frames = max(1, int(frame_count/target_frames))
     # print(f'Interval: {skip_frames}')
     frame_c = 0
