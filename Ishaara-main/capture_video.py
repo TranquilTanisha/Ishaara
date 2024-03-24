@@ -140,8 +140,19 @@ def process_video(frames, final, lang):
     l=list(frame_list.values())
     # k=list(frame_list.keys())
     if len(frame_list)/198==21:
-        l=l[:19*198]
-        # k=l[:19*198]
+        l=l[:20*198]
+    elif len(frame_list)/198==19:
+        print('Adding extra frames')
+        dummy_values = {
+            f'X{"{:02d}".format(i)}20': 0 for i in range(66)
+        } + {
+            f'Y{"{:02d}".format(i)}20': 0 for i in range(66)
+        } + {
+            f'Z{"{:02d}".format(i)}20': 0 for i in range(66)
+        }
+        # Add the dummy values to frame_list
+        frame_list.update(dummy_values)
+    
     print(f'Preprocessed frames:{len(l)/198}')
     # res=model.predict(pd.DataFrame([l], columns=k))
     res=model.predict([l])
