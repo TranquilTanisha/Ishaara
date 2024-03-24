@@ -87,9 +87,9 @@ def append_landmarks(left_hand_landmarks, right_hand_landmarks, pose_landmarks, 
         frame_list[f'Z{"{:02d}".format(i)}{"{:02d}".format(n_frame)}'] -= frame_list[f'Z54{"{:02d}".format(n_frame)}']
     #Normalize the points with respect to the shoulder landmarks (index 53--)
     for i in range(66):
-        frame_list[f'X{"{:02d}".format(i)}{"{:02d}".format(n_frame)}'] -= frame_list[f'X53{"{:02d}".format(n_frame)}']
-        frame_list[f'Y{"{:02d}".format(i)}{"{:02d}".format(n_frame)}'] -= frame_list[f'Y53{"{:02d}".format(n_frame)}']
-        frame_list[f'Z{"{:02d}".format(i)}{"{:02d}".format(n_frame)}'] -= frame_list[f'Z53{"{:02d}".format(n_frame)}']
+        frame_list[f'X{"{:02d}".format(i)}{"{:02d}".format(n_frame)}'] /= frame_list[f'X53{"{:02d}".format(n_frame)}']
+        frame_list[f'Y{"{:02d}".format(i)}{"{:02d}".format(n_frame)}'] /= frame_list[f'Y53{"{:02d}".format(n_frame)}']
+        frame_list[f'Z{"{:02d}".format(i)}{"{:02d}".format(n_frame)}'] /= frame_list[f'Z53{"{:02d}".format(n_frame)}']
 
     return frame_list 
 
@@ -146,6 +146,7 @@ def process_video(frames, final, lang):
     res=model.predict([l])
     # res=model.predict(np.array([list(frame_list.values())]))
     final.append(words[res[0]])
+    print(words[res[0]])
     speaker.say(words[res[0]])
     speaker.runAndWait()
 
