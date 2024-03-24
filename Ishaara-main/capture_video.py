@@ -22,6 +22,7 @@ with open('model.pkl', 'rb') as f:
     
 with open ('words.txt', 'r') as f:
     words = f.read().splitlines()
+print(words)
     
 languages={'Hindi': 'hi-IN',
 'Bengali': 'bn-IN',

@@ -144,3 +144,8 @@ look_for_videos_in_folder(folder_path)
 process_videos_in_folder(folder_path)
 # df.to_csv('sign_language_data.csv')
 
+
+data = np.load('dataset.npy')
+
+# Save the NumPy array as a CSV file
+np.savetxt('dataset.csv', data, delimiter=',')
