@@ -1,4 +1,5 @@
 import spacy
+# python -m spacy download en_core_web_sm
 from string import punctuation
 
 nlp=spacy.load('en_core_web_sm')

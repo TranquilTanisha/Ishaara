@@ -17,11 +17,11 @@ voices=speaker.getProperty('voices')
 speaker.setProperty('voice', voices[1].id)
 speaker.setProperty('rate', 120)
 
-# with open('model.pkl', 'rb') as f:
-#     model = pickle.load(f)
+with open('model.pkl', 'rb') as f:
+    model = pickle.load(f)
     
-# with open ('words.txt', 'r') as f:
-#     words = f.read().splitlines()
+with open ('words.txt', 'r') as f:
+    words = f.read().splitlines()
     
 languages={'Hindi': 'hi-IN',
 'Bengali': 'bn-IN',
@@ -135,11 +135,14 @@ def process_video(frames, final, lang):
             n_frame += 1
         frame_c += 1
 
-    print(f'Preprocessed frames:{len(frame_list)/198}')
     frame_list=normalize_dict(frame_list)
     l=list(frame_list.values())
-    if len(frame_list)/198!=19:
-        l=l[:-198]
+    # k=list(frame_list.keys())
+    if len(frame_list)/198==20:
+        l=l[:19*198]
+        # k=l[:19*198]
+    print(f'Preprocessed frames:{len(l)/198}')
+    # res=model.predict(pd.DataFrame([l], columns=k))
     res=model.predict([l])
     # res=model.predict(np.array([list(frame_list.values())]))
     final.append(words[res[0]])
@@ -207,7 +210,7 @@ def capture_video(lang):
         cv2.imshow('Sign Detection', frame)
         
         
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+        if cv2.waitKey(2) & 0xFF == ord('q'):
             break
     
     print(final)
@@ -215,4 +218,4 @@ def capture_video(lang):
     cv2.destroyAllWindows()
     return ' '.join(final)   
     
-# capture_video('Hindi')
+capture_video('Hindi')
