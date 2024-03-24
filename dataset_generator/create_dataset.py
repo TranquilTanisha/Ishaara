@@ -36,6 +36,8 @@ def process_videos_in_folder(folder_path):
             # np.save('dataset\\' + video_path.split('\\')[-1].replace(".mp4", "") + '.npy', data)
             # df.loc[len(df)] = data
     np.save('dataset.npy', final_data)
+    df = pd.DataFrame.from_records(final_data)
+    df.to_csv('dataset.csv', index=False)
 
 def process_video(video_path):
     cap = cv2.VideoCapture(video_path)
@@ -137,8 +139,7 @@ def append_landmarks(left_hand_landmarks, right_hand_landmarks, pose_landmarks, 
     return frame_list 
 
 
-folder_path = 'words'
-# folder_path = 'dataset_generator\words'
+folder_path = 'dataset_generator\words'
 look_for_videos_in_folder(folder_path)
 # process_videos_in_folder(folder_path)
 # df.to_csv('sign_language_data.csv')
