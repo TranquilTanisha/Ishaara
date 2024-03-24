@@ -135,7 +135,7 @@ def process_video(frames, final, lang):
             n_frame += 1
         frame_c += 1
 
-    frame_list=normalize_dict(frame_list)
+    # frame_list=normalize_dict(frame_list)
     l=list(frame_list.values())
     # k=list(frame_list.keys())
     if len(frame_list)/198==20:

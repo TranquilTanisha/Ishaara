@@ -14,6 +14,7 @@ mp_drawing = mp.solutions.drawing_utils
 
 def look_for_videos_in_folder(folder_path):
     for folder in os.listdir(folder_path):
+        print(folder)
         current_folder_path = os.path.join(folder_path, folder)
         if os.path.isdir(current_folder_path):
             process_videos_in_folder(current_folder_path)
@@ -130,14 +131,15 @@ def append_landmarks(left_hand_landmarks, right_hand_landmarks, pose_landmarks, 
         frame_list[f'Z{"{:02d}".format(i)}{"{:02d}".format(n_frame)}'] -= frame_list[f'Z54{"{:02d}".format(n_frame)}']
     #Normalize the points with respect to the shoulder landmarks (index 53--)
     for i in range(66):
-        frame_list[f'X{"{:02d}".format(i)}{"{:02d}".format(n_frame)}'] -= frame_list[f'X53{"{:02d}".format(n_frame)}']
-        frame_list[f'Y{"{:02d}".format(i)}{"{:02d}".format(n_frame)}'] -= frame_list[f'Y53{"{:02d}".format(n_frame)}']
-        frame_list[f'Z{"{:02d}".format(i)}{"{:02d}".format(n_frame)}'] -= frame_list[f'Z53{"{:02d}".format(n_frame)}']
+        frame_list[f'X{"{:02d}".format(i)}{"{:02d}".format(n_frame)}'] /= frame_list[f'X53{"{:02d}".format(n_frame)}']
+        frame_list[f'Y{"{:02d}".format(i)}{"{:02d}".format(n_frame)}'] /= frame_list[f'Y53{"{:02d}".format(n_frame)}']
+        frame_list[f'Z{"{:02d}".format(i)}{"{:02d}".format(n_frame)}'] /= frame_list[f'Z53{"{:02d}".format(n_frame)}']
 
     return frame_list 
 
 
-folder_path = 'Words'
+# folder_path = 'words'
+folder_path = 'dataset_generator\words'
 look_for_videos_in_folder(folder_path)
 process_videos_in_folder(folder_path)
 # df.to_csv('sign_language_data.csv')
