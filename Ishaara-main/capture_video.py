@@ -23,19 +23,6 @@ with open('model.pkl', 'rb') as f:
 with open ('words.txt', 'r') as f:
     words = f.read().splitlines()
 print(words)
-    
-languages={'Hindi': 'hi-IN',
-'Bengali': 'bn-IN',
-'Telugu': 'te-IN',
-'Marathi': 'mr-IN',
-'Tamil': 'ta-IN',
-'Urdu': 'ur-IN',
-'Gujarati': 'gu-IN',
-'Malayalam': 'ml-IN',
-'Kannada': 'kn-IN',
-'Odia': 'or-IN',
-'Punjabi': 'pa-IN',
-'Assamese': 'as-IN'}
 
 def normalize_dict(data):
     values=list(data.values())
@@ -229,6 +216,7 @@ def capture_video(lang):
     print(final)
     cap.release()
     cv2.destroyAllWindows()
-    return ' '.join(final)   
+    # return ' '.join(final)  
+    return final 
     
 capture_video('Hindi')
