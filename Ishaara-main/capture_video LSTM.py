@@ -26,19 +26,6 @@ print(words)
 
 with open ('scaler.pkl', 'rb') as f:
     scaler = pickle.load(f)
-    
-languages={'Hindi': 'hi-IN',
-'Bengali': 'bn-IN',
-'Telugu': 'te-IN',
-'Marathi': 'mr-IN',
-'Tamil': 'ta-IN',
-'Urdu': 'ur-IN',
-'Gujarati': 'gu-IN',
-'Malayalam': 'ml-IN',
-'Kannada': 'kn-IN',
-'Odia': 'or-IN',
-'Punjabi': 'pa-IN',
-'Assamese': 'as-IN'}
 
     
 def append_landmarks(left_hand_landmarks, right_hand_landmarks, pose_landmarks, n_frame, frame_list):
@@ -232,6 +219,7 @@ def capture_video(lang):
     print(final)
     cap.release()
     cv2.destroyAllWindows()
-    return ' '.join(final)   
+    # return ' '.join(final)   
+    return final
     
 capture_video('Hindi')

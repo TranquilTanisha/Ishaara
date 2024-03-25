@@ -106,6 +106,12 @@ def recordvid():
         if lang!='None' or lang!=None:
             res=capture_video(lang)
             print(res)
+            tr=[]
+            for r in res:
+                if lang!='English':
+                    r = translate_to_english(r, languages[lang].split('-')[0], 'en')
+                    tr.append(r)
+            print(tr)
             return render_template('decode-video.html', res=res, lang=lang)
         else:
             return redirect('/video/')
