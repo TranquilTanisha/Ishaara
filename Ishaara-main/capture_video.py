@@ -17,7 +17,7 @@ voices=speaker.getProperty('voices')
 speaker.setProperty('voice', voices[1].id)
 speaker.setProperty('rate', 120)
 
-with open('lstmmodel.pkl', 'rb') as f:
+with open('model.pkl', 'rb') as f:
     model = pickle.load(f)
     
 with open ('words.txt', 'r') as f:
