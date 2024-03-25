@@ -12,10 +12,10 @@ mp_pose = mp.solutions.pose
 pose = mp_pose.Pose()
 mp_drawing = mp.solutions.drawing_utils
 
-speaker=pyttsx3.init()
-voices=speaker.getProperty('voices')
-speaker.setProperty('voice', voices[1].id)
-speaker.setProperty('rate', 120)
+# speaker=pyttsx3.init()
+# voices=speaker.getProperty('voices')
+# speaker.setProperty('voice', voices[1].id)
+# speaker.setProperty('rate', 120)
 
 with open('lstmmodel.pkl', 'rb') as f:
     model = pickle.load(f)
@@ -25,6 +25,18 @@ with open ('words.txt', 'r') as f:
 
 with open ('scaler.pkl', 'rb') as f:
     scaler = pickle.load(f)
+
+class _TTS:
+
+    engine = None
+    rate = None
+    def __init__(self):
+        self.engine = pyttsx3.init()
+
+
+    def start(self,text_):
+        self.engine.say(text_)
+        self.engine.runAndWait()
 
     
 def append_landmarks(left_hand_landmarks, right_hand_landmarks, pose_landmarks, n_frame, frame_list):
@@ -148,14 +160,17 @@ def process_video(frames, final, lang):
     pred = np.argmax(prediction, axis=1) 
     final.append(words[pred[0]])
     print(words[pred[0]])
-    speaker.say(words[pred[0]])
-    speaker.runAndWait()
+    tts = _TTS()
+    tts.start(words[pred[0]])
+    del(tts)
+    # speaker.say(words[pred[0]])
+    # speaker.runAndWait()
 
 def capture_video(lang):    
     monitors = get_monitors()
     monitor = monitors[0]
     width, height = monitor.width, monitor.height
-    cap = cv2.VideoCapture(1)
+    cap = cv2.VideoCapture(0)
     cap.set(3, width)
     cap.set(4, height)
     cap.set(5, 20) 
@@ -174,21 +189,14 @@ def capture_video(lang):
         results_hands = hands.process(image)
         results_pose = pose.process(image)
         
-        if results_pose.pose_landmarks:
-            left_shoulder = results_pose.pose_landmarks.landmark[11].visibility>=0.86
-            right_shoulder=results_pose.pose_landmarks.landmark[12].visibility>=0.86
-        else:
-            left_shoulder = False
-            right_shoulder = False
-        
-        if left_shoulder and right_shoulder:
+        if results_pose.pose_landmarks.landmark[11].visibility>=0.86 and results_pose.pose_landmarks.landmark[12].visibility>=0.86:
             if results_hands.multi_hand_landmarks:
                 frames.append(frame)
                 threshold = 0
                 cv2.putText(frame, "Detecting gestures", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
                 
             else:
-                if threshold < 5 or len(frames) == 0:
+                if threshold < 8 or len(frames) == 0:
                     threshold += 1
                     cv2.putText(frame, "No hands detected", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
                 else:
@@ -199,20 +207,21 @@ def capture_video(lang):
                     if(len(frames)>19):
                         process_video(frames, final, lang)
                     else:
-                        cv2.putText(frame, "Wait", (10, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
-                        speaker.say('Please gesture slowly')
-                        speaker.runAndWait()
+                        tts = _TTS()
+                        tts.start("Please gesture slowly")
+                        del(tts)
+                        # speaker.say('Please gesture slowly')
+                        # speaker.runAndWait()
                     frames=[]
             
         else:
-            # speaker.say(translate_to_english("Shouders not detected", lang, 'en'))
-            # speaker.say(translate_to_english("Start now", lang, 'en'))
-            cv2.putText(frame, "Both shoulders not detected. Kindly repeat your gesture.", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 5)
+            cv2.putText(frame, "Shoulders not detected", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 5)
             frames=[]
         cv2.imshow('Sign Detection', frame)
+        cv2.waitKey(1)
         
         
-        if cv2.waitKey(2) & 0xFF == ord('q'):
+        if cv2.waitKey(10) & 0xFF == ord('q'):
             break
     
     print(final)
