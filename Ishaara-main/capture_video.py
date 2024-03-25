@@ -17,7 +17,7 @@ voices=speaker.getProperty('voices')
 speaker.setProperty('voice', voices[1].id)
 speaker.setProperty('rate', 120)
 
-with open('model.pkl', 'rb') as f:
+with open('lstmmodel.pkl', 'rb') as f:
     model = pickle.load(f)
     
 with open ('words.txt', 'r') as f:
@@ -219,4 +219,4 @@ def capture_video(lang):
     # return ' '.join(final)  
     return final 
     
-capture_video('Hindi')
+# capture_video('Hindi')
