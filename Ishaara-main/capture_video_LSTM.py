@@ -22,7 +22,6 @@ with open('lstmmodel.pkl', 'rb') as f:
     
 with open ('words.txt', 'r') as f:
     words = f.read().splitlines()
-print(words)
 
 with open ('scaler.pkl', 'rb') as f:
     scaler = pickle.load(f)
