@@ -1,11 +1,12 @@
+from flask import Flask,request,render_template,send_from_directory,jsonify, redirect
+
 from langdetect import detect
 from mtranslate import translate
-# import requests
+import requests
 import speech_recognition as sr
-# from googletrans import Translator
+
 from capture_video_LSTM import capture_video
 from preprocess import preprocess
-from flask import Flask,request,render_template,send_from_directory,jsonify, redirect
 
 app =Flask(__name__,static_folder='static', static_url_path='')
 app.config['TEMPLATES_AUTO_RELOAD'] = True
@@ -23,6 +24,27 @@ languages={'Hindi': 'hi-IN',
 'Odia': 'or-IN',
 'Punjabi': 'pa-IN',
 'Assamese': 'as-IN'}
+
+def check_internet_connection():
+    try:
+        response = requests.get("http://www.google.com", timeout=5)
+        return True
+    except (requests.ConnectionError, requests.Timeout):
+        return False
+
+def correct_grammar_with_languagetool(text):
+    # global translated_text
+    api_url = "https://api.languagetool.org/v2/check"
+    payload = {"text": text, "language": "en-US"}
+
+    response = requests.post(api_url, data=payload)
+    grammar_errors = response.json()["matches"]
+
+    corrected_text = text
+    for error in grammar_errors:
+        corrected_text = corrected_text[:error['offset']] + error['replacements'][0]['value'] + corrected_text[error['offset'] + error['length']:]
+
+    return corrected_text
 
 def translate_to_english(text, target_language, current_language):
     try:
@@ -106,6 +128,8 @@ def recordvid():
         if lang!='None' or lang!=None:
             res=capture_video(lang)
             print(res)
+            if check_internet_connection():
+                res=correct_grammar_with_languagetool(res)
             tr=''
             for r in res:
                 if lang!='English':

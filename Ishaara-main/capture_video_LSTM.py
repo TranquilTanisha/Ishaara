@@ -160,9 +160,12 @@ def process_video(frames, final, lang):
     pred = np.argmax(prediction, axis=1) 
     final.append(words[pred[0]])
     print(words[pred[0]])
-    tts = _TTS()
-    tts.start(words[pred[0]])
-    del(tts)
+    return words[pred[0]]
+#####-----
+    # tts = _TTS()
+    # tts.start(words[pred[0]])
+    # del(tts)
+    #######----
     # speaker.say(words[pred[0]])
     # speaker.runAndWait()
 
@@ -205,11 +208,19 @@ def capture_video(lang):
                     # print(frames)
                     print(len(frames))
                     if(len(frames)>19):
-                        process_video(frames, final, lang)
+                        res=process_video(frames, final, lang)
+                        res='Prediction: '+res
                     else:
-                        tts = _TTS()
-                        tts.start("Please gesture slowly")
-                        del(tts)
+                        res='Please gesture slowly'
+                        # tts = _TTS()
+                        # tts.start(res)
+                        # del(tts)
+                    ###-----
+                    cv2.putText(frame,res, (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
+                    tts = _TTS()
+                    tts.start(res)
+                    del(tts)
+                    ####------
                         # speaker.say('Please gesture slowly')
                         # speaker.runAndWait()
                     frames=[]
