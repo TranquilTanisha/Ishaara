@@ -182,6 +182,7 @@ def capture_video(lang):
     final=[]
     frames=[]
     threshold = 0
+    res = None
     while cap.isOpened():
         ret, frame = cap.read()
         if not ret:
@@ -209,25 +210,21 @@ def capture_video(lang):
                     print(len(frames))
                     if(len(frames)>19):
                         res=process_video(frames, final, lang)
-                        res='Prediction: '+res
                     else:
                         res='Please gesture slowly'
-                        # tts = _TTS()
-                        # tts.start(res)
-                        # del(tts)
-                    ###-----
-                    cv2.putText(frame,res, (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
+
                     tts = _TTS()
                     tts.start(res)
                     del(tts)
-                    ####------
-                        # speaker.say('Please gesture slowly')
-                        # speaker.runAndWait()
                     frames=[]
             
         else:
             cv2.putText(frame, "Shoulders not detected", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 5)
             frames=[]
+        
+        if res is not None:
+            cv2.putText(frame , res, (10, 680), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
+
         cv2.imshow('Sign Detection', frame)
         cv2.waitKey(1)
         
