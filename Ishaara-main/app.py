@@ -3,7 +3,7 @@ from mtranslate import translate
 # import requests
 import speech_recognition as sr
 # from googletrans import Translator
-from capture_video import capture_video
+from capture_video_LSTM import capture_video
 from preprocess import preprocess
 from flask import Flask,request,render_template,send_from_directory,jsonify, redirect
 
