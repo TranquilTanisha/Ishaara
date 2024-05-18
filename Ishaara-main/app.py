@@ -134,7 +134,7 @@ def recordvid():
             for r in res:
                 if lang!='English':
                     r = translate_to_english(r, languages[lang].split('-')[0], 'en')
-                    tr+=r+' '
+                tr+=r+' '
             print(tr)
             return render_template('decode-video.html', res=tr, lang=lang)
         else:

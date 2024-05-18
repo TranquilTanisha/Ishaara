@@ -12,11 +12,6 @@ mp_pose = mp.solutions.pose
 pose = mp_pose.Pose()
 mp_drawing = mp.solutions.drawing_utils
 
-# speaker=pyttsx3.init()
-# voices=speaker.getProperty('voices')
-# speaker.setProperty('voice', voices[1].id)
-# speaker.setProperty('rate', 120)
-
 with open('lstmmodel.pkl', 'rb') as f:
     model = pickle.load(f)
     
@@ -90,7 +85,6 @@ def process_video(frames, final, lang):
     frame_count = len(frames)
     target_frames = 21
     skip_frames = max(1, int(frame_count/target_frames))
-    # print(f'Interval: {skip_frames}')
     frame_c = 0
     coord_frames = []
     n_frame = 1
@@ -161,13 +155,6 @@ def process_video(frames, final, lang):
     final.append(words[pred[0]])
     print(words[pred[0]])
     return words[pred[0]]
-#####-----
-    # tts = _TTS()
-    # tts.start(words[pred[0]])
-    # del(tts)
-    #######----
-    # speaker.say(words[pred[0]])
-    # speaker.runAndWait()
 
 def capture_video(lang):    
     monitors = get_monitors()

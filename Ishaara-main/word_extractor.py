@@ -1,3 +1,5 @@
+#not in use
+#was used to extract words from the sign files in the static folder
 import re
 import os
 

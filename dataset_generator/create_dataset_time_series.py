@@ -1,7 +1,6 @@
 import cv2
 import mediapipe as mp
 import os
-import csv
 import numpy as np
 import pandas as pd
 
@@ -11,7 +10,6 @@ mp_pose = mp.solutions.pose
 pose = mp_pose.Pose()
 mp_drawing = mp.solutions.drawing_utils
 final = [ ]
-# df = pd.DataFrame(columns=['Class Label', 'Landmarks'])
 
 def look_for_videos_in_folder(folder_path):
     for folder in os.listdir(folder_path):
@@ -31,11 +29,8 @@ def process_videos_in_folder(folder_path):
 
             final_data += frames
 
-            # data = np.array(frame_list, dtype=object)
-            # np.save('dataset.npy', final_data)
             file_path = 'dataset\\' + folder_path.split("\\")[-1] + '.npy'
             np.save(file_path, final_data)
-            # df.loc[len(df)] = data
     np.save('dataset.npy', final_data)
     df = pd.DataFrame.from_records(final_data)
     df.to_csv('dataset.csv', index=False)
