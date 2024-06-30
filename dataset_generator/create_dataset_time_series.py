@@ -52,7 +52,6 @@ def process_video(video_path):
         if not ret:
             break
         
-        # temp = [0] * 198  # 42*3 for hands, 24*3 for poses
         # Convert the BGR image to RGB
         image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
@@ -139,5 +138,3 @@ def append_landmarks(left_hand_landmarks, right_hand_landmarks, pose_landmarks, 
 
 folder_path = 'Words'
 look_for_videos_in_folder(folder_path)
-# process_videos_in_folder(folder_path)
-# df.to_csv('sign_language_data.csv')
