@@ -28,6 +28,11 @@
 
     }
 
+     function toggleMenu() {
+            const menuItems = document.querySelector('.menu-items');
+            menuItems.classList.toggle('active');
+        }
+
     function clickedtext() {
       location.href = "/";
     }
@@ -39,7 +44,7 @@
     }
   </script>
   <div class="main">
-    <nav class="navbar">
+<!--     <nav class="navbar">
       <div class="logo flex items-center" style="display: flex; justify-content: center; align-items: center">
         <div class="heading text-lg" style="font-size: 1.25rem; justify-content: center">
           <h2 class="font-bold" style="padding-left: 2rem;">Ishaara</h2>
@@ -51,7 +56,24 @@
         <a class="menu-item mx-8" style="margin: 1rem; font-size: 20px;" onclick="clickedtext()">Text To ISL</a>
         <a class="menu-item mx-8" style="margin: 1rem; font-size: 20px;" onclick="clickedisl()">ISL To Text</a>
       </div>
-    </nav>
+    </nav> -->
+    <nav class="navbar">
+            <div class="logo flex items-center">
+                <div class="heading text-lg">
+                    <h2 class='font-bold'>Ishaara</h2>
+                </div>
+            </div>
+            <div class='menu-items flex flex-row items-center justify-end' >
+                <a class="menu-item mx-8" onclick="clickedaudio()">Audio To ISL</a>
+                <a class="menu-item mx-8" onclick="clickedtext()">Text To ISL</a>
+                <a class="menu-item mx-8" onclick="clickedisl()">ISL To Text</a>
+            </div>
+            <div class="hamburger" onclick="toggleMenu()">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+        </nav>
     <div class="fullBg">
       <div class="col1" style="padding: 2rem; overflow: hidden;">
         <!-- Write instructions to use the ISL to Text tool -->
