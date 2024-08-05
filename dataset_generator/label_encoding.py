@@ -11,4 +11,3 @@ label_encoding={label:num for num,label in enumerate(words)}
 
 with open('data.json', 'w') as f:
     json.dump(label_encoding, f)
-    

@@ -4,7 +4,6 @@ from langdetect import detect
 from mtranslate import translate
 import requests
 import speech_recognition as sr
-
 from capture_video_LSTM import capture_video
 from preprocess import preprocess
 

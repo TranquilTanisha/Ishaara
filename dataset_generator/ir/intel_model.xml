@@ -1,0 +1,1270 @@
+<?xml version="1.0"?>
+<net name="TensorFlow_Frontend_IR" version="11">
+	<layers>
+		<layer id="0" name="inputs" type="Parameter" version="opset1">
+			<data shape="?,20,199" element_type="f32" />
+			<output>
+				<port id="0" precision="FP32" names="inputs">
+					<dim>-1</dim>
+					<dim>20</dim>
+					<dim>199</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="1" name="Constant_201" type="Const" version="opset1">
+			<data element_type="i32" shape="" offset="0" size="4" />
+			<output>
+				<port id="0" precision="I32" />
+			</output>
+		</layer>
+		<layer id="2" name="sequential_2_1/lstm_2_1/while/LogicalAnd" type="Const" version="opset1">
+			<data element_type="boolean" shape="" offset="4" size="1" />
+			<output>
+				<port id="0" precision="BOOL" />
+			</output>
+		</layer>
+		<layer id="3" name="sequential_2_1/lstm_2_1/while/loop_counter" type="Const" version="opset1">
+			<data element_type="i32" shape="" offset="5" size="4" />
+			<output>
+				<port id="0" precision="I32" />
+			</output>
+		</layer>
+		<layer id="4" name="sequential_2_1/lstm_2_1/Max" type="Const" version="opset1">
+			<data element_type="i32" shape="" offset="9" size="4" />
+			<output>
+				<port id="0" precision="I32" />
+			</output>
+		</layer>
+		<layer id="5" name="sequential_2_1/lstm_2_1/time" type="Const" version="opset1">
+			<data element_type="i32" shape="" offset="5" size="4" />
+			<output>
+				<port id="0" precision="I32" />
+			</output>
+		</layer>
+		<layer id="6" name="sequential_2_1/lstm_2_1/TensorArrayV2_1" type="Const" version="opset1">
+			<data element_type="f32" shape="1, 1, 1" offset="5" size="4" />
+			<output>
+				<port id="0" precision="FP32">
+					<dim>1</dim>
+					<dim>1</dim>
+					<dim>1</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="7" name="sequential_2_1/lstm_2_1/zeros/Const" type="Const" version="opset1">
+			<data element_type="f32" shape="" offset="5" size="4" />
+			<output>
+				<port id="0" precision="FP32" />
+			</output>
+		</layer>
+		<layer id="8" name="sequential_2_1/lstm_2_1/Shape" type="ShapeOf" version="opset3">
+			<data output_type="i32" />
+			<input>
+				<port id="0" precision="FP32">
+					<dim>-1</dim>
+					<dim>20</dim>
+					<dim>199</dim>
+				</port>
+			</input>
+			<output>
+				<port id="1" precision="I32">
+					<dim>3</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="9" name="sequential_2_1/lstm_2_1/strided_slice/stack" type="Const" version="opset1">
+			<data element_type="i32" shape="1" offset="5" size="4" />
+			<output>
+				<port id="0" precision="I32">
+					<dim>1</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="10" name="sequential_2_1/lstm_2_1/strided_slice/stack_1" type="Const" version="opset1">
+			<data element_type="i32" shape="1" offset="13" size="4" />
+			<output>
+				<port id="0" precision="I32">
+					<dim>1</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="11" name="sequential_2_1/lstm_2_1/strided_slice/stack_2" type="Const" version="opset1">
+			<data element_type="i32" shape="1" offset="13" size="4" />
+			<output>
+				<port id="0" precision="I32">
+					<dim>1</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="12" name="sequential_2_1/lstm_2_1/strided_slice" type="StridedSlice" version="opset1">
+			<data begin_mask="0" end_mask="0" new_axis_mask="0" shrink_axis_mask="1" ellipsis_mask="0" />
+			<input>
+				<port id="0" precision="I32">
+					<dim>3</dim>
+				</port>
+				<port id="1" precision="I32">
+					<dim>1</dim>
+				</port>
+				<port id="2" precision="I32">
+					<dim>1</dim>
+				</port>
+				<port id="3" precision="I32">
+					<dim>1</dim>
+				</port>
+			</input>
+			<output>
+				<port id="4" precision="I32" />
+			</output>
+		</layer>
+		<layer id="13" name="Constant_41" type="Const" version="opset1">
+			<data element_type="i64" shape="" offset="17" size="8" />
+			<output>
+				<port id="0" precision="I64" />
+			</output>
+		</layer>
+		<layer id="14" name="Unsqueeze_42" type="Unsqueeze" version="opset1">
+			<input>
+				<port id="0" precision="I32" />
+				<port id="1" precision="I64" />
+			</input>
+			<output>
+				<port id="2" precision="I32">
+					<dim>1</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="15" name="Unsqueeze_43" type="Const" version="opset1">
+			<data element_type="i32" shape="1" offset="25" size="4" />
+			<output>
+				<port id="0" precision="I32">
+					<dim>1</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="16" name="sequential_2_1/lstm_2_1/zeros/packed" type="Concat" version="opset1">
+			<data axis="0" />
+			<input>
+				<port id="0" precision="I32">
+					<dim>1</dim>
+				</port>
+				<port id="1" precision="I32">
+					<dim>1</dim>
+				</port>
+			</input>
+			<output>
+				<port id="2" precision="I32">
+					<dim>2</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="17" name="sequential_2_1/lstm_2_1/zeros" type="Broadcast" version="opset3">
+			<data mode="numpy" />
+			<input>
+				<port id="0" precision="FP32" />
+				<port id="1" precision="I32">
+					<dim>2</dim>
+				</port>
+			</input>
+			<output>
+				<port id="2" precision="FP32">
+					<dim>-1</dim>
+					<dim>50</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="18" name="sequential_2_1/lstm_2_1/zeros_1/Const" type="Const" version="opset1">
+			<data element_type="f32" shape="" offset="5" size="4" />
+			<output>
+				<port id="0" precision="FP32" />
+			</output>
+		</layer>
+		<layer id="19" name="Constant_30" type="Const" version="opset1">
+			<data element_type="i64" shape="" offset="17" size="8" />
+			<output>
+				<port id="0" precision="I64" />
+			</output>
+		</layer>
+		<layer id="20" name="Unsqueeze_31" type="Unsqueeze" version="opset1">
+			<input>
+				<port id="0" precision="I32" />
+				<port id="1" precision="I64" />
+			</input>
+			<output>
+				<port id="2" precision="I32">
+					<dim>1</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="21" name="Unsqueeze_32" type="Const" version="opset1">
+			<data element_type="i32" shape="1" offset="25" size="4" />
+			<output>
+				<port id="0" precision="I32">
+					<dim>1</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="22" name="sequential_2_1/lstm_2_1/zeros_1/packed" type="Concat" version="opset1">
+			<data axis="0" />
+			<input>
+				<port id="0" precision="I32">
+					<dim>1</dim>
+				</port>
+				<port id="1" precision="I32">
+					<dim>1</dim>
+				</port>
+			</input>
+			<output>
+				<port id="2" precision="I32">
+					<dim>2</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="23" name="sequential_2_1/lstm_2_1/zeros_1" type="Broadcast" version="opset3">
+			<data mode="numpy" />
+			<input>
+				<port id="0" precision="FP32" />
+				<port id="1" precision="I32">
+					<dim>2</dim>
+				</port>
+			</input>
+			<output>
+				<port id="2" precision="FP32">
+					<dim>-1</dim>
+					<dim>50</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="24" name="sequential_2_1/lstm_2_1/transpose/perm" type="Const" version="opset1">
+			<data element_type="i32" shape="3" offset="29" size="12" />
+			<output>
+				<port id="0" precision="I32">
+					<dim>3</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="25" name="sequential_2_1/lstm_2_1/transpose" type="Transpose" version="opset1">
+			<input>
+				<port id="0" precision="FP32">
+					<dim>-1</dim>
+					<dim>20</dim>
+					<dim>199</dim>
+				</port>
+				<port id="1" precision="I32">
+					<dim>3</dim>
+				</port>
+			</input>
+			<output>
+				<port id="2" precision="FP32">
+					<dim>20</dim>
+					<dim>-1</dim>
+					<dim>199</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="26" name="sequential_2/lstm_2/lstm_cell/kernel" type="Const" version="opset1">
+			<data element_type="f32" shape="199, 200" offset="41" size="159200" />
+			<output>
+				<port id="0" precision="FP32" names="sequential_2/lstm_2/lstm_cell/kernel:0">
+					<dim>199</dim>
+					<dim>200</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="27" name="sequential_2/lstm_2/lstm_cell/recurrent_kernel" type="Const" version="opset1">
+			<data element_type="f32" shape="50, 200" offset="159241" size="40000" />
+			<output>
+				<port id="0" precision="FP32" names="sequential_2/lstm_2/lstm_cell/recurrent_kernel:0">
+					<dim>50</dim>
+					<dim>200</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="28" name="sequential_2/lstm_2/lstm_cell/bias" type="Const" version="opset1">
+			<data element_type="f32" shape="200" offset="199241" size="800" />
+			<output>
+				<port id="0" precision="FP32" names="sequential_2/lstm_2/lstm_cell/bias:0">
+					<dim>200</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="29" name="sequential_2_1/lstm_2_1/while" type="Loop" version="opset5">
+			<port_map>
+				<input external_port_id="2" internal_layer_id="9" />
+				<input external_port_id="3" internal_layer_id="8" />
+				<input external_port_id="4" internal_layer_id="7" />
+				<input external_port_id="5" internal_layer_id="6" />
+				<input external_port_id="6" internal_layer_id="5" />
+				<input external_port_id="7" internal_layer_id="4" />
+				<input external_port_id="8" internal_layer_id="3" />
+				<input external_port_id="9" internal_layer_id="2" />
+				<input external_port_id="10" internal_layer_id="1" />
+				<input external_port_id="11" internal_layer_id="0" />
+				<output external_port_id="12" internal_layer_id="53" />
+				<output external_port_id="13" internal_layer_id="52" />
+				<output external_port_id="14" internal_layer_id="51" />
+				<output external_port_id="15" internal_layer_id="38" />
+				<output external_port_id="16" internal_layer_id="34" />
+				<output external_port_id="-1" internal_layer_id="18" purpose="execution_condition" />
+			</port_map>
+			<back_edges>
+				<edge from-layer="53" to-layer="9" />
+				<edge from-layer="52" to-layer="7" />
+				<edge from-layer="51" to-layer="6" />
+				<edge from-layer="38" to-layer="5" />
+				<edge from-layer="34" to-layer="4" />
+			</back_edges>
+			<input>
+				<port id="0" precision="I32" />
+				<port id="1" precision="BOOL" />
+				<port id="2" precision="I32" />
+				<port id="3" precision="I32" />
+				<port id="4" precision="I32" />
+				<port id="5" precision="FP32">
+					<dim>1</dim>
+					<dim>1</dim>
+					<dim>1</dim>
+				</port>
+				<port id="6" precision="FP32">
+					<dim>-1</dim>
+					<dim>50</dim>
+				</port>
+				<port id="7" precision="FP32">
+					<dim>-1</dim>
+					<dim>50</dim>
+				</port>
+				<port id="8" precision="FP32">
+					<dim>20</dim>
+					<dim>-1</dim>
+					<dim>199</dim>
+				</port>
+				<port id="9" precision="FP32">
+					<dim>199</dim>
+					<dim>200</dim>
+				</port>
+				<port id="10" precision="FP32">
+					<dim>50</dim>
+					<dim>200</dim>
+				</port>
+				<port id="11" precision="FP32">
+					<dim>200</dim>
+				</port>
+			</input>
+			<output>
+				<port id="12" precision="I32" />
+				<port id="13" precision="I32" />
+				<port id="14" precision="FP32">
+					<dim>1</dim>
+					<dim>-1</dim>
+					<dim>50</dim>
+				</port>
+				<port id="15" precision="FP32">
+					<dim>-1</dim>
+					<dim>50</dim>
+				</port>
+				<port id="16" precision="FP32">
+					<dim>-1</dim>
+					<dim>50</dim>
+				</port>
+			</output>
+			<body>
+				<layers>
+					<layer id="9" name="sequential_2_1_lstm_2_1_while_sequential_2_1_lstm_2_1_while_loop_counter" type="Parameter" version="opset1">
+						<data shape="" element_type="i32" />
+						<output>
+							<port id="0" precision="I32" />
+						</output>
+					</layer>
+					<layer id="8" name="sequential_2_1_lstm_2_1_while_sequential_2_1_lstm_2_1_max" type="Parameter" version="opset1">
+						<data shape="" element_type="i32" />
+						<output>
+							<port id="0" precision="I32" />
+						</output>
+					</layer>
+					<layer id="7" name="sequential_2_1_lstm_2_1_while_placeholder" type="Parameter" version="opset1">
+						<data shape="" element_type="i32" />
+						<output>
+							<port id="0" precision="I32" />
+						</output>
+					</layer>
+					<layer id="6" name="sequential_2_1_lstm_2_1_while_placeholder_1" type="Parameter" version="opset1">
+						<data shape="1,?,?" element_type="f32" />
+						<output>
+							<port id="0" precision="FP32">
+								<dim>1</dim>
+								<dim>-1</dim>
+								<dim>-1</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="5" name="sequential_2_1_lstm_2_1_while_placeholder_2" type="Parameter" version="opset1">
+						<data shape="?,50" element_type="f32" />
+						<output>
+							<port id="0" precision="FP32">
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="4" name="sequential_2_1_lstm_2_1_while_placeholder_3" type="Parameter" version="opset1">
+						<data shape="?,50" element_type="f32" />
+						<output>
+							<port id="0" precision="FP32">
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="3" name="sequential_2_1_lstm_2_1_while_tensorarrayv2read_tensorlistgetitem_sequential_2_1_lstm_2_1_tensorarrayunstack_tensorlistfromtensor_0" type="Parameter" version="opset1">
+						<data shape="20,?,199" element_type="f32" />
+						<output>
+							<port id="0" precision="FP32">
+								<dim>20</dim>
+								<dim>-1</dim>
+								<dim>199</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="2" name="sequential_2_1_lstm_2_1_while_lstm_cell_1_cast_readvariableop_resource_0" type="Parameter" version="opset1">
+						<data shape="199,200" element_type="f32" />
+						<output>
+							<port id="0" precision="FP32">
+								<dim>199</dim>
+								<dim>200</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="1" name="sequential_2_1_lstm_2_1_while_lstm_cell_1_cast_1_readvariableop_resource_0" type="Parameter" version="opset1">
+						<data shape="50,200" element_type="f32" />
+						<output>
+							<port id="0" precision="FP32">
+								<dim>50</dim>
+								<dim>200</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="0" name="sequential_2_1_lstm_2_1_while_lstm_cell_1_add_1_readvariableop_resource_0" type="Parameter" version="opset1">
+						<data shape="200" element_type="f32" />
+						<output>
+							<port id="0" precision="FP32">
+								<dim>200</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="10" name="sequential_2_1/lstm_2_1/while/add_1/y" type="Const" version="opset1">
+						<data element_type="i32" shape="" offset="13" size="4" />
+						<output>
+							<port id="0" precision="I32" />
+						</output>
+					</layer>
+					<layer id="11" name="sequential_2_1/lstm_2_1/while/add_1" type="Add" version="opset1">
+						<data auto_broadcast="numpy" />
+						<input>
+							<port id="0" precision="I32" />
+							<port id="1" precision="I32" />
+						</input>
+						<output>
+							<port id="2" precision="I32" />
+						</output>
+					</layer>
+					<layer id="12" name="sequential_2_1/lstm_2_1/while/Less_1" type="Less" version="opset1">
+						<data auto_broadcast="numpy" />
+						<input>
+							<port id="0" precision="I32" />
+							<port id="1" precision="I32" />
+						</input>
+						<output>
+							<port id="2" precision="BOOL" />
+						</output>
+					</layer>
+					<layer id="13" name="sequential_2_1/lstm_2_1/while/add/y" type="Const" version="opset1">
+						<data element_type="i32" shape="" offset="13" size="4" />
+						<output>
+							<port id="0" precision="I32" />
+						</output>
+					</layer>
+					<layer id="14" name="sequential_2_1/lstm_2_1/while/add" type="Add" version="opset1">
+						<data auto_broadcast="numpy" />
+						<input>
+							<port id="0" precision="I32" />
+							<port id="1" precision="I32" />
+						</input>
+						<output>
+							<port id="2" precision="I32" />
+						</output>
+					</layer>
+					<layer id="15" name="sequential_2_1/lstm_2_1/while/Less/y" type="Const" version="opset1">
+						<data element_type="i32" shape="" offset="9" size="4" />
+						<output>
+							<port id="0" precision="I32" />
+						</output>
+					</layer>
+					<layer id="16" name="sequential_2_1/lstm_2_1/while/Less" type="Less" version="opset1">
+						<data auto_broadcast="numpy" />
+						<input>
+							<port id="0" precision="I32" />
+							<port id="1" precision="I32" />
+						</input>
+						<output>
+							<port id="2" precision="BOOL" />
+						</output>
+					</layer>
+					<layer id="17" name="sequential_2_1/lstm_2_1/while/LogicalAnd_1" type="LogicalAnd" version="opset1">
+						<data auto_broadcast="numpy" />
+						<input>
+							<port id="0" precision="BOOL" />
+							<port id="1" precision="BOOL" />
+						</input>
+						<output>
+							<port id="2" precision="BOOL" />
+						</output>
+					</layer>
+					<layer id="19" name="Constant_758" type="Const" version="opset1">
+						<data element_type="i32" shape="1" offset="5" size="4" />
+						<output>
+							<port id="0" precision="I32">
+								<dim>1</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="20" name="Gather_759" type="Gather" version="opset8">
+						<data batch_dims="0" />
+						<input>
+							<port id="0" precision="FP32">
+								<dim>20</dim>
+								<dim>-1</dim>
+								<dim>199</dim>
+							</port>
+							<port id="1" precision="I32" />
+							<port id="2" precision="I32">
+								<dim>1</dim>
+							</port>
+						</input>
+						<output>
+							<port id="3" precision="FP32">
+								<dim>-1</dim>
+								<dim>199</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="21" name="sequential_2_1/lstm_2_1/while/TensorArrayV2Read/TensorListGetItem" type="Convert" version="opset1">
+						<data destination_type="f32" />
+						<input>
+							<port id="0" precision="FP32">
+								<dim>-1</dim>
+								<dim>199</dim>
+							</port>
+						</input>
+						<output>
+							<port id="1" precision="FP32">
+								<dim>-1</dim>
+								<dim>199</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="22" name="sequential_2_1/lstm_2_1/while/lstm_cell_1/MatMul" type="MatMul" version="opset1">
+						<data transpose_a="false" transpose_b="false" />
+						<input>
+							<port id="0" precision="FP32">
+								<dim>-1</dim>
+								<dim>199</dim>
+							</port>
+							<port id="1" precision="FP32">
+								<dim>199</dim>
+								<dim>200</dim>
+							</port>
+						</input>
+						<output>
+							<port id="2" precision="FP32">
+								<dim>-1</dim>
+								<dim>200</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="23" name="sequential_2_1/lstm_2_1/while/lstm_cell_1/MatMul_1" type="MatMul" version="opset1">
+						<data transpose_a="false" transpose_b="false" />
+						<input>
+							<port id="0" precision="FP32">
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+							<port id="1" precision="FP32">
+								<dim>50</dim>
+								<dim>200</dim>
+							</port>
+						</input>
+						<output>
+							<port id="2" precision="FP32">
+								<dim>-1</dim>
+								<dim>200</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="24" name="sequential_2_1/lstm_2_1/while/lstm_cell_1/add" type="Add" version="opset1">
+						<data auto_broadcast="numpy" />
+						<input>
+							<port id="0" precision="FP32">
+								<dim>-1</dim>
+								<dim>200</dim>
+							</port>
+							<port id="1" precision="FP32">
+								<dim>-1</dim>
+								<dim>200</dim>
+							</port>
+						</input>
+						<output>
+							<port id="2" precision="FP32">
+								<dim>-1</dim>
+								<dim>200</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="25" name="sequential_2_1/lstm_2_1/while/lstm_cell_1/add_1" type="Add" version="opset1">
+						<data auto_broadcast="numpy" />
+						<input>
+							<port id="0" precision="FP32">
+								<dim>-1</dim>
+								<dim>200</dim>
+							</port>
+							<port id="1" precision="FP32">
+								<dim>200</dim>
+							</port>
+						</input>
+						<output>
+							<port id="2" precision="FP32">
+								<dim>-1</dim>
+								<dim>200</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="26" name="sequential_2_1/lstm_2_1/while/lstm_cell_1/split/split_dim" type="Const" version="opset1">
+						<data element_type="i32" shape="" offset="13" size="4" />
+						<output>
+							<port id="0" precision="I32" />
+						</output>
+					</layer>
+					<layer id="27" name="sequential_2_1/lstm_2_1/while/lstm_cell_1/split" type="Split" version="opset1">
+						<data num_splits="4" />
+						<input>
+							<port id="0" precision="FP32">
+								<dim>-1</dim>
+								<dim>200</dim>
+							</port>
+							<port id="1" precision="I32" />
+						</input>
+						<output>
+							<port id="2" precision="FP32">
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+							<port id="3" precision="FP32">
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+							<port id="4" precision="FP32">
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+							<port id="5" precision="FP32">
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="28" name="sequential_2_1/lstm_2_1/while/lstm_cell_1/Sigmoid_1" type="Sigmoid" version="opset1">
+						<input>
+							<port id="0" precision="FP32">
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+						</input>
+						<output>
+							<port id="1" precision="FP32">
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="29" name="sequential_2_1/lstm_2_1/while/lstm_cell_1/mul" type="Multiply" version="opset1">
+						<data auto_broadcast="numpy" />
+						<input>
+							<port id="0" precision="FP32">
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+							<port id="1" precision="FP32">
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+						</input>
+						<output>
+							<port id="2" precision="FP32">
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="30" name="sequential_2_1/lstm_2_1/while/lstm_cell_1/Sigmoid" type="Sigmoid" version="opset1">
+						<input>
+							<port id="0" precision="FP32">
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+						</input>
+						<output>
+							<port id="1" precision="FP32">
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="31" name="sequential_2_1/lstm_2_1/while/lstm_cell_1/Tanh" type="Tanh" version="opset1">
+						<input>
+							<port id="0" precision="FP32">
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+						</input>
+						<output>
+							<port id="1" precision="FP32">
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="32" name="sequential_2_1/lstm_2_1/while/lstm_cell_1/mul_1" type="Multiply" version="opset1">
+						<data auto_broadcast="numpy" />
+						<input>
+							<port id="0" precision="FP32">
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+							<port id="1" precision="FP32">
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+						</input>
+						<output>
+							<port id="2" precision="FP32">
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="33" name="sequential_2_1/lstm_2_1/while/lstm_cell_1/add_2" type="Add" version="opset1">
+						<data auto_broadcast="numpy" />
+						<input>
+							<port id="0" precision="FP32">
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+							<port id="1" precision="FP32">
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+						</input>
+						<output>
+							<port id="2" precision="FP32">
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="35" name="sequential_2_1/lstm_2_1/while/lstm_cell_1/Sigmoid_2" type="Sigmoid" version="opset1">
+						<input>
+							<port id="0" precision="FP32">
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+						</input>
+						<output>
+							<port id="1" precision="FP32">
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="36" name="sequential_2_1/lstm_2_1/while/lstm_cell_1/Tanh_1" type="Tanh" version="opset1">
+						<input>
+							<port id="0" precision="FP32">
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+						</input>
+						<output>
+							<port id="1" precision="FP32">
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="37" name="sequential_2_1/lstm_2_1/while/lstm_cell_1/mul_2" type="Multiply" version="opset1">
+						<data auto_broadcast="numpy" />
+						<input>
+							<port id="0" precision="FP32">
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+							<port id="1" precision="FP32">
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+						</input>
+						<output>
+							<port id="2" precision="FP32">
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="39" name="ShapeOf_741" type="ShapeOf" version="opset3">
+						<data output_type="i32" />
+						<input>
+							<port id="0" precision="FP32">
+								<dim>1</dim>
+								<dim>-1</dim>
+								<dim>-1</dim>
+							</port>
+						</input>
+						<output>
+							<port id="1" precision="I32">
+								<dim>3</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="40" name="Constant_742" type="Const" version="opset1">
+						<data element_type="i32" shape="1" offset="5" size="4" />
+						<output>
+							<port id="0" precision="I32">
+								<dim>1</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="41" name="Constant_743" type="Const" version="opset1">
+						<data element_type="i32" shape="1" offset="13" size="4" />
+						<output>
+							<port id="0" precision="I32">
+								<dim>1</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="42" name="Constant_745" type="Const" version="opset1">
+						<data element_type="i64" shape="1" offset="17" size="8" />
+						<output>
+							<port id="0" precision="I64">
+								<dim>1</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="43" name="Slice_744" type="Slice" version="opset8">
+						<input>
+							<port id="0" precision="I32">
+								<dim>3</dim>
+							</port>
+							<port id="1" precision="I32">
+								<dim>1</dim>
+							</port>
+							<port id="2" precision="I32">
+								<dim>1</dim>
+							</port>
+							<port id="3" precision="I32">
+								<dim>1</dim>
+							</port>
+							<port id="4" precision="I64">
+								<dim>1</dim>
+							</port>
+						</input>
+						<output>
+							<port id="5" precision="I32">
+								<dim>1</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="44" name="ShapeOf_746" type="ShapeOf" version="opset3">
+						<data output_type="i32" />
+						<input>
+							<port id="0" precision="FP32">
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+						</input>
+						<output>
+							<port id="1" precision="I32">
+								<dim>2</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="45" name="Concat_747" type="Concat" version="opset1">
+						<data axis="0" />
+						<input>
+							<port id="0" precision="I32">
+								<dim>1</dim>
+							</port>
+							<port id="1" precision="I32">
+								<dim>2</dim>
+							</port>
+						</input>
+						<output>
+							<port id="2" precision="I32">
+								<dim>3</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="46" name="Constant_748" type="Const" version="opset1">
+						<data element_type="u8" shape="" offset="200041" size="1" />
+						<output>
+							<port id="0" precision="U8" />
+						</output>
+					</layer>
+					<layer id="47" name="Broadcast_749" type="Broadcast" version="opset1">
+						<data mode="numpy" />
+						<input>
+							<port id="0" precision="FP32">
+								<dim>1</dim>
+								<dim>-1</dim>
+								<dim>-1</dim>
+							</port>
+							<port id="1" precision="I32">
+								<dim>3</dim>
+							</port>
+							<port id="2" precision="U8" />
+						</input>
+						<output>
+							<port id="3" precision="FP32">
+								<dim>1</dim>
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="48" name="Reshape_740" type="Const" version="opset1">
+						<data element_type="i32" shape="1" offset="5" size="4" />
+						<output>
+							<port id="0" precision="I32">
+								<dim>1</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="49" name="Unsqueeze_756" type="Unsqueeze" version="opset1">
+						<input>
+							<port id="0" precision="FP32">
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+							<port id="1" precision="I32">
+								<dim>1</dim>
+							</port>
+						</input>
+						<output>
+							<port id="2" precision="FP32">
+								<dim>1</dim>
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="50" name="sequential_2_1/lstm_2_1/while/TensorArrayV2Write/TensorListSetItem" type="ScatterUpdate" version="opset3">
+						<input>
+							<port id="0" precision="FP32">
+								<dim>1</dim>
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+							<port id="1" precision="I32">
+								<dim>1</dim>
+							</port>
+							<port id="2" precision="FP32">
+								<dim>1</dim>
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+							<port id="3" precision="I32">
+								<dim>1</dim>
+							</port>
+						</input>
+						<output>
+							<port id="4" precision="FP32">
+								<dim>1</dim>
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+						</output>
+					</layer>
+					<layer id="53" name="sequential_2_1_lstm_2_1_while_identity_1" type="Result" version="opset1">
+						<input>
+							<port id="0" precision="I32" />
+						</input>
+					</layer>
+					<layer id="52" name="sequential_2_1_lstm_2_1_while_identity_2" type="Result" version="opset1">
+						<input>
+							<port id="0" precision="I32" />
+						</input>
+					</layer>
+					<layer id="51" name="sequential_2_1_lstm_2_1_while_identity_3" type="Result" version="opset1">
+						<input>
+							<port id="0" precision="FP32">
+								<dim>1</dim>
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+						</input>
+					</layer>
+					<layer id="38" name="sequential_2_1_lstm_2_1_while_identity_4" type="Result" version="opset1">
+						<input>
+							<port id="0" precision="FP32">
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+						</input>
+					</layer>
+					<layer id="34" name="sequential_2_1_lstm_2_1_while_identity_5" type="Result" version="opset1">
+						<input>
+							<port id="0" precision="FP32">
+								<dim>-1</dim>
+								<dim>50</dim>
+							</port>
+						</input>
+					</layer>
+					<layer id="18" name="sequential_2_1_lstm_2_1_while_identity" type="Result" version="opset1">
+						<input>
+							<port id="0" precision="BOOL" />
+						</input>
+					</layer>
+				</layers>
+				<edges>
+					<edge from-layer="0" from-port="0" to-layer="25" to-port="1" />
+					<edge from-layer="1" from-port="0" to-layer="23" to-port="1" />
+					<edge from-layer="2" from-port="0" to-layer="22" to-port="1" />
+					<edge from-layer="3" from-port="0" to-layer="20" to-port="0" />
+					<edge from-layer="4" from-port="0" to-layer="29" to-port="1" />
+					<edge from-layer="5" from-port="0" to-layer="23" to-port="0" />
+					<edge from-layer="6" from-port="0" to-layer="39" to-port="0" />
+					<edge from-layer="6" from-port="0" to-layer="47" to-port="0" />
+					<edge from-layer="7" from-port="0" to-layer="20" to-port="1" />
+					<edge from-layer="7" from-port="0" to-layer="14" to-port="0" />
+					<edge from-layer="8" from-port="0" to-layer="12" to-port="1" />
+					<edge from-layer="9" from-port="0" to-layer="11" to-port="0" />
+					<edge from-layer="10" from-port="0" to-layer="11" to-port="1" />
+					<edge from-layer="11" from-port="2" to-layer="12" to-port="0" />
+					<edge from-layer="11" from-port="2" to-layer="53" to-port="0" />
+					<edge from-layer="12" from-port="2" to-layer="17" to-port="0" />
+					<edge from-layer="13" from-port="0" to-layer="14" to-port="1" />
+					<edge from-layer="14" from-port="2" to-layer="16" to-port="0" />
+					<edge from-layer="14" from-port="2" to-layer="52" to-port="0" />
+					<edge from-layer="15" from-port="0" to-layer="16" to-port="1" />
+					<edge from-layer="16" from-port="2" to-layer="17" to-port="1" />
+					<edge from-layer="17" from-port="2" to-layer="18" to-port="0" />
+					<edge from-layer="19" from-port="0" to-layer="20" to-port="2" />
+					<edge from-layer="20" from-port="3" to-layer="21" to-port="0" />
+					<edge from-layer="21" from-port="1" to-layer="22" to-port="0" />
+					<edge from-layer="22" from-port="2" to-layer="24" to-port="0" />
+					<edge from-layer="23" from-port="2" to-layer="24" to-port="1" />
+					<edge from-layer="24" from-port="2" to-layer="25" to-port="0" />
+					<edge from-layer="25" from-port="2" to-layer="27" to-port="0" />
+					<edge from-layer="26" from-port="0" to-layer="27" to-port="1" />
+					<edge from-layer="27" from-port="3" to-layer="28" to-port="0" />
+					<edge from-layer="27" from-port="2" to-layer="30" to-port="0" />
+					<edge from-layer="27" from-port="4" to-layer="31" to-port="0" />
+					<edge from-layer="27" from-port="5" to-layer="35" to-port="0" />
+					<edge from-layer="28" from-port="1" to-layer="29" to-port="0" />
+					<edge from-layer="29" from-port="2" to-layer="33" to-port="0" />
+					<edge from-layer="30" from-port="1" to-layer="32" to-port="0" />
+					<edge from-layer="31" from-port="1" to-layer="32" to-port="1" />
+					<edge from-layer="32" from-port="2" to-layer="33" to-port="1" />
+					<edge from-layer="33" from-port="2" to-layer="34" to-port="0" />
+					<edge from-layer="33" from-port="2" to-layer="36" to-port="0" />
+					<edge from-layer="35" from-port="1" to-layer="37" to-port="0" />
+					<edge from-layer="36" from-port="1" to-layer="37" to-port="1" />
+					<edge from-layer="37" from-port="2" to-layer="38" to-port="0" />
+					<edge from-layer="37" from-port="2" to-layer="49" to-port="0" />
+					<edge from-layer="37" from-port="2" to-layer="44" to-port="0" />
+					<edge from-layer="39" from-port="1" to-layer="43" to-port="0" />
+					<edge from-layer="40" from-port="0" to-layer="43" to-port="1" />
+					<edge from-layer="40" from-port="0" to-layer="50" to-port="3" />
+					<edge from-layer="40" from-port="0" to-layer="49" to-port="1" />
+					<edge from-layer="41" from-port="0" to-layer="43" to-port="2" />
+					<edge from-layer="41" from-port="0" to-layer="43" to-port="3" />
+					<edge from-layer="42" from-port="0" to-layer="43" to-port="4" />
+					<edge from-layer="43" from-port="5" to-layer="45" to-port="0" />
+					<edge from-layer="44" from-port="1" to-layer="45" to-port="1" />
+					<edge from-layer="45" from-port="2" to-layer="47" to-port="1" />
+					<edge from-layer="46" from-port="0" to-layer="47" to-port="2" />
+					<edge from-layer="47" from-port="3" to-layer="50" to-port="0" />
+					<edge from-layer="48" from-port="0" to-layer="50" to-port="1" />
+					<edge from-layer="49" from-port="2" to-layer="50" to-port="2" />
+					<edge from-layer="50" from-port="4" to-layer="51" to-port="0" />
+				</edges>
+				<rt_info />
+			</body>
+		</layer>
+		<layer id="30" name="sequential_2_1/lstm_2_1/strided_slice_3/stack" type="Const" version="opset1">
+			<data element_type="i32" shape="1" offset="0" size="4" />
+			<output>
+				<port id="0" precision="I32">
+					<dim>1</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="31" name="sequential_2_1/lstm_2_1/strided_slice_3/stack_1" type="Const" version="opset1">
+			<data element_type="i32" shape="1" offset="5" size="4" />
+			<output>
+				<port id="0" precision="I32">
+					<dim>1</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="32" name="sequential_2_1/lstm_2_1/strided_slice_3/stack_2" type="Const" version="opset1">
+			<data element_type="i32" shape="1" offset="13" size="4" />
+			<output>
+				<port id="0" precision="I32">
+					<dim>1</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="33" name="sequential_2_1/lstm_2_1/strided_slice_3" type="StridedSlice" version="opset1">
+			<data begin_mask="0" end_mask="0" new_axis_mask="0" shrink_axis_mask="1" ellipsis_mask="0" />
+			<input>
+				<port id="0" precision="FP32">
+					<dim>1</dim>
+					<dim>-1</dim>
+					<dim>50</dim>
+				</port>
+				<port id="1" precision="I32">
+					<dim>1</dim>
+				</port>
+				<port id="2" precision="I32">
+					<dim>1</dim>
+				</port>
+				<port id="3" precision="I32">
+					<dim>1</dim>
+				</port>
+			</input>
+			<output>
+				<port id="4" precision="FP32">
+					<dim>-1</dim>
+					<dim>50</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="34" name="sequential_2/dense_2/kernel" type="Const" version="opset1">
+			<data element_type="f32" shape="50, 17" offset="200042" size="3400" />
+			<output>
+				<port id="0" precision="FP32" names="sequential_2/dense_2/kernel:0">
+					<dim>50</dim>
+					<dim>17</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="35" name="sequential_2_1/dense_2_1/MatMul" type="MatMul" version="opset1">
+			<data transpose_a="false" transpose_b="false" />
+			<input>
+				<port id="0" precision="FP32">
+					<dim>-1</dim>
+					<dim>50</dim>
+				</port>
+				<port id="1" precision="FP32">
+					<dim>50</dim>
+					<dim>17</dim>
+				</port>
+			</input>
+			<output>
+				<port id="2" precision="FP32">
+					<dim>-1</dim>
+					<dim>17</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="36" name="sequential_2/dense_2/bias" type="Const" version="opset1">
+			<data element_type="f32" shape="17" offset="203442" size="68" />
+			<output>
+				<port id="0" precision="FP32" names="sequential_2/dense_2/bias:0">
+					<dim>17</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="37" name="sequential_2_1/dense_2_1/Add" type="Add" version="opset1">
+			<data auto_broadcast="numpy" />
+			<input>
+				<port id="0" precision="FP32">
+					<dim>-1</dim>
+					<dim>17</dim>
+				</port>
+				<port id="1" precision="FP32">
+					<dim>17</dim>
+				</port>
+			</input>
+			<output>
+				<port id="2" precision="FP32">
+					<dim>-1</dim>
+					<dim>17</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="38" name="sequential_2_1/dense_2_1/Softmax" type="SoftMax" version="opset8">
+			<data axis="-1" />
+			<input>
+				<port id="0" precision="FP32">
+					<dim>-1</dim>
+					<dim>17</dim>
+				</port>
+			</input>
+			<output>
+				<port id="1" precision="FP32" names="output_0">
+					<dim>-1</dim>
+					<dim>17</dim>
+				</port>
+			</output>
+		</layer>
+		<layer id="39" name="output_0" type="Result" version="opset1">
+			<input>
+				<port id="0" precision="FP32">
+					<dim>-1</dim>
+					<dim>17</dim>
+				</port>
+			</input>
+		</layer>
+	</layers>
+	<edges>
+		<edge from-layer="0" from-port="0" to-layer="8" to-port="0" />
+		<edge from-layer="0" from-port="0" to-layer="25" to-port="0" />
+		<edge from-layer="1" from-port="0" to-layer="29" to-port="0" />
+		<edge from-layer="2" from-port="0" to-layer="29" to-port="1" />
+		<edge from-layer="3" from-port="0" to-layer="29" to-port="2" />
+		<edge from-layer="4" from-port="0" to-layer="29" to-port="3" />
+		<edge from-layer="5" from-port="0" to-layer="29" to-port="4" />
+		<edge from-layer="6" from-port="0" to-layer="29" to-port="5" />
+		<edge from-layer="7" from-port="0" to-layer="17" to-port="0" />
+		<edge from-layer="8" from-port="1" to-layer="12" to-port="0" />
+		<edge from-layer="9" from-port="0" to-layer="12" to-port="1" />
+		<edge from-layer="10" from-port="0" to-layer="12" to-port="2" />
+		<edge from-layer="11" from-port="0" to-layer="12" to-port="3" />
+		<edge from-layer="12" from-port="4" to-layer="14" to-port="0" />
+		<edge from-layer="12" from-port="4" to-layer="20" to-port="0" />
+		<edge from-layer="13" from-port="0" to-layer="14" to-port="1" />
+		<edge from-layer="14" from-port="2" to-layer="16" to-port="0" />
+		<edge from-layer="15" from-port="0" to-layer="16" to-port="1" />
+		<edge from-layer="16" from-port="2" to-layer="17" to-port="1" />
+		<edge from-layer="17" from-port="2" to-layer="29" to-port="6" />
+		<edge from-layer="18" from-port="0" to-layer="23" to-port="0" />
+		<edge from-layer="19" from-port="0" to-layer="20" to-port="1" />
+		<edge from-layer="20" from-port="2" to-layer="22" to-port="0" />
+		<edge from-layer="21" from-port="0" to-layer="22" to-port="1" />
+		<edge from-layer="22" from-port="2" to-layer="23" to-port="1" />
+		<edge from-layer="23" from-port="2" to-layer="29" to-port="7" />
+		<edge from-layer="24" from-port="0" to-layer="25" to-port="1" />
+		<edge from-layer="25" from-port="2" to-layer="29" to-port="8" />
+		<edge from-layer="26" from-port="0" to-layer="29" to-port="9" />
+		<edge from-layer="27" from-port="0" to-layer="29" to-port="10" />
+		<edge from-layer="28" from-port="0" to-layer="29" to-port="11" />
+		<edge from-layer="29" from-port="14" to-layer="33" to-port="0" />
+		<edge from-layer="30" from-port="0" to-layer="33" to-port="1" />
+		<edge from-layer="31" from-port="0" to-layer="33" to-port="2" />
+		<edge from-layer="32" from-port="0" to-layer="33" to-port="3" />
+		<edge from-layer="33" from-port="4" to-layer="35" to-port="0" />
+		<edge from-layer="34" from-port="0" to-layer="35" to-port="1" />
+		<edge from-layer="35" from-port="2" to-layer="37" to-port="0" />
+		<edge from-layer="36" from-port="0" to-layer="37" to-port="1" />
+		<edge from-layer="37" from-port="2" to-layer="38" to-port="0" />
+		<edge from-layer="38" from-port="1" to-layer="39" to-port="0" />
+	</edges>
+	<rt_info />
+</net>
