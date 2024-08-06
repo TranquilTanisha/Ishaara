@@ -23,12 +23,13 @@ def translate_to_english(text, target_language, current_language):
 
 @app.route('/',methods=['GET'])
 def text():
-	return render_template('encode-text.html')
+    return render_template('encode-text.html')
 
 @app.route('/audio/',methods=['GET'])
 def audio():
     # clear_all();
-    return render_template('encode-audio.html')
+    print(languages)
+    return render_template('encode-audio.html', languages=languages)
 
 @app.route('/video/',methods=['GET'])
 def video():
@@ -37,7 +38,6 @@ def video():
 # serve sigml files for animation
 @app.route('/static/<path:path>')
 def serve_signfiles(path):
-	print("here");
 	return send_from_directory('static',path)
 
 @app.route('/translate', methods=['POST'])

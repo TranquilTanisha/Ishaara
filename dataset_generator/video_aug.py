@@ -13,7 +13,7 @@ operations = [
 
 def get_unique_combinations(operations):
     """Generate all unique combinations of operations."""
-    return list(itertools.combinations(operations, 1)) + list(itertools.combinations(operations, 2)) + list(itertools.combinations(operations, 3))
+    return list(itertools.combinations(operations, 1)) + list(itertools.combinations(operations, 2)) + list(itertools.combinations(operations, 3)) + list(itertools.combinations(operations, 4))
 
 def look_for_videos_in_folder(folder_path, combinations):
     for folder in os.listdir(folder_path):
