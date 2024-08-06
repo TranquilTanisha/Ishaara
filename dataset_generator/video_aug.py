@@ -5,21 +5,15 @@ import os
 import itertools
 
 
-operations = [va.CenterCrop(size=(1080, 1080)), 
+operations = [
+    va.CenterCrop(size=(1080, 1080)),
     va.HorizontalFlip(),
     va.Upsample(),
-    va.RandomRotate(-10, 10),
-    va.RandomShear([-50, 50], [-50, 50]),
-    va.RandomTranslate([-50, 50], [-50, 50])]
-# Define the augmentation pipeline
-seq1 = va.Sequential([
-    va.CenterCrop(size=(1080, 1080)), 
-    va.HorizontalFlip() # horizontally flip the video with 50% probability
-])
+    va.RandomTranslate(x = 50, y = 50)]
 
 def get_unique_combinations(operations):
     """Generate all unique combinations of operations."""
-    return list(itertools.combinations(operations, 2)) + list(itertools.combinations(operations, 3)) + list(itertools.combinations(operations, 4))
+    return list(itertools.combinations(operations, 1)) + list(itertools.combinations(operations, 2)) + list(itertools.combinations(operations, 3))
 
 def look_for_videos_in_folder(folder_path, combinations):
     for folder in os.listdir(folder_path):
@@ -41,13 +35,17 @@ def process_video(video_path, combinations):
     ret = True
     while ret:
         ret, img = cap.read() # read one frame from the 'capture' object; img is (H, W, C)
+        
         if ret:
+            h, w = img.shape[:2]
+            aspect_ratio = w / h
+            img = cv2.resize(img, (int(1080*aspect_ratio), 1080))
             frames.append(img)
     video = np.stack(frames, axis=0) # dimensions (T, H, W, C)
     video_name = video_path.split('/')[-1].split('.')[0]
     for i, combo in enumerate(combinations):
         seq = va.Sequential(combo)
-        video_augmented = seq(video_path)
+        video_augmented = seq(video)
         
         # Save the augmented video with a unique name
         save_video(video_augmented, video_path, f'{video_name}_{i + 1}')
