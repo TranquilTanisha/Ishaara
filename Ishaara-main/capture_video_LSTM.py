@@ -26,7 +26,7 @@ output_layer = compiled_model.output(0)
 # with open('lstmmodel.h5', 'rb') as f:
     # model = pickle.load(f)
     
-with open ('scaler.h5', 'rb') as f:
+with open ('scaler.pkl', 'rb') as f:
     scaler = pickle.load(f)
     
 # model= tf.keras.models.load_model('lstmmodel.h5')
