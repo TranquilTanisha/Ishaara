@@ -17,6 +17,8 @@ def get_unique_combinations(operations):
 
 def look_for_videos_in_folder(folder_path, combinations):
     for folder in os.listdir(folder_path):
+        if(folder == 'Boy' or folder == 'Can' or folder == 'Eat' or folder == 'Fine' or folder == 'Girl' or folder == 'Help'):
+            continue
         folder_p = os.path.join(folder_path, folder)
         if os.path.isdir(folder_p):
             process_videos_in_folder(folder_p, combinations)

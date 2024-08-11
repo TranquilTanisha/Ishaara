@@ -14,6 +14,8 @@ final = [ ]
 def look_for_videos_in_folder(folder_path):
     for folder in os.listdir(folder_path):
         print(folder)
+        if(folder == 'Girl' or folder == 'Boy' or folder == 'Can' or folder == 'Eat' or folder == 'Fine'):
+            continue
         current_folder_path = os.path.join(folder_path, folder)
         if os.path.isdir(current_folder_path):
             process_videos_in_folder(current_folder_path)
@@ -91,47 +93,62 @@ def process_video(video_path):
 def append_landmarks(left_hand_landmarks, right_hand_landmarks, pose_landmarks, n_frame, frame_list):
     frame_list['Frame'] = n_frame
 
-    for i in range(66):
+    indices = [1, 4, 5, 8, 9, 12, 13, 16, 17, 20, 21]
+
+    for i in range(27):
         frame_list[f'X{"{:02d}".format(i)}'] = 0
         frame_list[f'Y{"{:02d}".format(i)}'] = 0
         frame_list[f'Z{"{:02d}".format(i)}'] = 0
 
+    index = 0
     if left_hand_landmarks is not None:
         for id, lm in enumerate(left_hand_landmarks.landmark):
             # The landmark coordinates are in normalized image space.
-            x, y, z = lm.x, lm.y, lm.z
-            frame_list[f'X{"{:02d}".format(id)}'] = x
-            frame_list[f'Y{"{:02d}".format(id)}'] = y
-            frame_list[f'Z{"{:02d}".format(id)}'] = z
+            if id in indices:
+                x, y, z = lm.x, lm.y, lm.z
+                frame_list[f'X{"{:02d}".format(index)}'] = x
+                frame_list[f'Y{"{:02d}".format(index)}'] = y
+                frame_list[f'Z{"{:02d}".format(index)}'] = z
+                index += 1
 
+    index = 0
     if right_hand_landmarks is not None:
         for id, lm in enumerate(right_hand_landmarks.landmark):
             # The landmark coordinates are in normalized image space.
-            x, y, z = lm.x, lm.y, lm.z
-            frame_list[f'X{(id+21)}'] = x
-            frame_list[f'Y{(id+21)}'] = y
-            frame_list[f'Z{(id+21)}'] = z
+            if id in indices:
+                x, y, z = lm.x, lm.y, lm.z
+                frame_list[f'X{(index+11)}'] = x
+                frame_list[f'Y{(index+11)}'] = y
+                frame_list[f'Z{(index+11)}'] = z
+                index += 1
     
+    index = 0
     if pose_landmarks is not None:
         for id, lm in enumerate(pose_landmarks.landmark):
             # The landmark coordinates are in normalized image space.
-            if id == 24:
+            if id > 14:
                 break
-            x, y, z = lm.x, lm.y, lm.z
-            frame_list[f'X{(id+42)}'] = x
-            frame_list[f'Y{(id+42)}'] = y
-            frame_list[f'Z{(id+42)}'] = z
+            if id in [0, 11, 12, 13, 14]:
+                x, y, z = lm.x, lm.y, lm.z
+                frame_list[f'X{(index+22)}'] = x
+                frame_list[f'Y{(index+22)}'] = y
+                frame_list[f'Z{(index+22)}'] = z
+                index += 1
 
     #Shift origin of the points relative to the shoulder (index 54--)
-    for i in range(66):
-        frame_list[f'X{"{:02d}".format(i)}'] -= frame_list[f'X54']
-        frame_list[f'Y{"{:02d}".format(i)}'] -= frame_list[f'Y54']
-        frame_list[f'Z{"{:02d}".format(i)}'] -= frame_list[f'Z54']
-    #Normalize the points with respect to the shoulder landmarks (index 53--)
-    for i in range(66):
-        frame_list[f'X{"{:02d}".format(i)}'] /= frame_list[f'X53']
-        frame_list[f'Y{"{:02d}".format(i)}'] /= frame_list[f'Y53']
-        frame_list[f'Z{"{:02d}".format(i)}'] /= frame_list[f'Z53']
+    for i in range(27):
+        frame_list[f'X{"{:02d}".format(i)}'] -= frame_list[f'X24']
+        frame_list[f'Y{"{:02d}".format(i)}'] -= frame_list[f'Y24']
+        frame_list[f'Z{"{:02d}".format(i)}'] -= frame_list[f'Z24']
+    
+    if frame_list[f'X23'] == 0:
+        frame_list[f'X23'] = 1
+    else:
+        #Normalize the points with respect to the shoulder landmarks (index 53--)
+        for i in range(27):
+            frame_list[f'X{"{:02d}".format(i)}'] /= frame_list[f'X23']
+            frame_list[f'Y{"{:02d}".format(i)}'] /= frame_list[f'Y23']
+            frame_list[f'Z{"{:02d}".format(i)}'] /= frame_list[f'Z23']
 
     return frame_list 
 
