@@ -97,6 +97,7 @@ def recordvid():
         if lang!='None' or lang!=None:
             res=capture_video(lang)
             if len(res)==0: return render_template('decode-video.html', res='', lang=lang)
+            if len(res)==0: return render_template('decode-video.html', res='', lang=lang)
             print(res)
             tr=' '.join(res)
             # print(tr)

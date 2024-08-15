@@ -3,7 +3,8 @@ import mediapipe as mp
 import numpy as np
 import pandas as pd
 from screeninfo import get_monitors
-import pyttsx3
+from preprocess import translate_to_english
+# import pyttsx3
 import pickle
 import tensorflow as tf
 import joblib
@@ -39,19 +40,18 @@ with open ('words.txt', 'r') as f:
     words = f.read().splitlines()
 
 
-class _TTS:
+# class _TTS:
 
-    engine = None
-    rate = None
-    def __init__(self):
-        self.engine = pyttsx3.init()
+#     engine = None
+#     rate = None
+#     def __init__(self):
+#         self.engine = pyttsx3.init()
 
 
-    def start(self,text_):
-        self.engine.say(text_)
-        self.engine.runAndWait()
+#     def start(self,text_):
+#         self.engine.say(text_)
+#         self.engine.runAndWait()
 
-    
 def append_landmarks(left_hand_landmarks, right_hand_landmarks, pose_landmarks, n_frame, frame_list):
     frame_list['Frame'] = n_frame
 
@@ -219,9 +219,14 @@ def capture_video(lang):
                     else:
                         res='Please gesture slowly'
 
-                    tts = _TTS()
-                    tts.start(res)
-                    del(tts)
+                    # tts = _TTS()
+                    # tts.start(res)
+                    # del(tts)
+                    pred=translate_to_english(res, 'en', lang)
+                    speech = gTTS(text=pred, lang='en', slow=False)
+                    speech.save("output.mp3")
+                    playsound("output.mp3")
+                    os.remove("output.mp3")
                     frames=[]
             
         else:
