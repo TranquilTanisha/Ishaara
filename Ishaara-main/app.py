@@ -103,7 +103,7 @@ def recordvid():
             # print(tr)
             # tr=check_grammar(tr)
             # print(res)
-            tr=translate_to_english(res, 'en', languages[lang].split('-')[0])
+            # tr=translate_to_english(res, 'en', languages[lang].split('-')[0])
             print(tr)
             return render_template('decode-video.html', res=tr, lang=lang)
         else:

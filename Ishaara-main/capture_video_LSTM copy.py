@@ -4,104 +4,104 @@ import numpy as np
 import pandas as pd
 from screeninfo import get_monitors
 from preprocess import translate_to_english
-import pyttsx3
+# import pyttsx3
 import pickle
 import tensorflow as tf
+import joblib
 
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands()
 mp_pose = mp.solutions.pose
 pose = mp_pose.Pose()
 mp_drawing = mp.solutions.drawing_utils
+
+#only for openvino
+# from openvino.runtime import Core
+
+# core = Core()
+# # with open('dataset_generator\ir\intel_model.xml', 'rb') as f:
+# model= core.read_model('dataset_generator\ir\intel_model.xml')
+# compiled_model = core.compile_model(model, "CPU")
+# input_layer = compiled_model.input(0)
+# output_layer = compiled_model.output(0)
+
+# with open('lstmmodel.h5', 'rb') as f:
+#     model = pickle.load(f)
     
 with open ('scaler.pkl', 'rb') as f:
     scaler = pickle.load(f)
     
 model= tf.keras.models.load_model('lstmmodel.h5')
-
+# with open('scaler.h5', 'r') as file:
+    # data = file.read()
 # scaler= tf.keras.models.load_model('scaler.h5')
     
 with open ('words.txt', 'r') as f:
     words = f.read().splitlines()
 
 
-class _TTS:
+# class _TTS:
 
-    engine = None
-    rate = None
-    def __init__(self):
-        self.engine = pyttsx3.init()
+#     engine = None
+#     rate = None
+#     def __init__(self):
+#         self.engine = pyttsx3.init()
 
 
-    def start(self,text_):
-        self.engine.say(text_)
-        self.engine.runAndWait()
+#     def start(self,text_):
+#         self.engine.say(text_)
+#         self.engine.runAndWait()
 
 def append_landmarks(left_hand_landmarks, right_hand_landmarks, pose_landmarks, n_frame, frame_list):
     frame_list['Frame'] = n_frame
 
-    indices = [0, 1, 4, 5, 8, 9, 12, 13, 16, 17, 20]
-
-    for i in range(27):
+    for i in range(66):
         frame_list[f'X{"{:02d}".format(i)}'] = 0
         frame_list[f'Y{"{:02d}".format(i)}'] = 0
         frame_list[f'Z{"{:02d}".format(i)}'] = 0
 
-    index = 0
     if left_hand_landmarks is not None:
         for id, lm in enumerate(left_hand_landmarks.landmark):
             # The landmark coordinates are in normalized image space.
-            if id in indices:
-                x, y, z = lm.x, lm.y, lm.z
-                frame_list[f'X{"{:02d}".format(index)}'] = x
-                frame_list[f'Y{"{:02d}".format(index)}'] = y
-                frame_list[f'Z{"{:02d}".format(index)}'] = z
-                index += 1
+            x, y, z = lm.x, lm.y, lm.z
+            frame_list[f'X{"{:02d}".format(id)}'] = x
+            frame_list[f'Y{"{:02d}".format(id)}'] = y
+            frame_list[f'Z{"{:02d}".format(id)}'] = z
 
-    index = 0
     if right_hand_landmarks is not None:
         for id, lm in enumerate(right_hand_landmarks.landmark):
             # The landmark coordinates are in normalized image space.
-            if id in indices:
-                x, y, z = lm.x, lm.y, lm.z
-                frame_list[f'X{(index+11)}'] = x
-                frame_list[f'Y{(index+11)}'] = y
-                frame_list[f'Z{(index+11)}'] = z
-                index += 1
-
-    index = 0
+            x, y, z = lm.x, lm.y, lm.z
+            frame_list[f'X{(id+21)}'] = x
+            frame_list[f'Y{(id+21)}'] = y
+            frame_list[f'Z{(id+21)}'] = z
+    
     if pose_landmarks is not None:
         for id, lm in enumerate(pose_landmarks.landmark):
             # The landmark coordinates are in normalized image space.
-            if id > 14:
+            if id == 24:
                 break
-            if id in [0, 11, 12, 13, 14]:
-                x, y, z = lm.x, lm.y, lm.z
-                frame_list[f'X{(index+22)}'] = x
-                frame_list[f'Y{(index+22)}'] = y
-                frame_list[f'Z{(index+22)}'] = z
-                index += 1
+            x, y, z = lm.x, lm.y, lm.z
+            frame_list[f'X{(id+42)}'] = x
+            frame_list[f'Y{(id+42)}'] = y
+            frame_list[f'Z{(id+42)}'] = z
 
     #Shift origin of the points relative to the shoulder (index 54--)
-    for i in range(27):
-        frame_list[f'X{"{:02d}".format(i)}'] -= frame_list[f'X24']
-        frame_list[f'Y{"{:02d}".format(i)}'] -= frame_list[f'Y24']
-        frame_list[f'Z{"{:02d}".format(i)}'] -= frame_list[f'Z24']
-
-    if frame_list[f'X23'] == 0:
-        frame_list[f'X23'] = 1
-    else:
-        #Normalize the points with respect to the shoulder landmarks (index 53--)
-        for i in range(27):
-            frame_list[f'X{"{:02d}".format(i)}'] /= frame_list[f'X23']
-            frame_list[f'Y{"{:02d}".format(i)}'] /= frame_list[f'Y23']
-            frame_list[f'Z{"{:02d}".format(i)}'] /= frame_list[f'Z23']
+    for i in range(66):
+        frame_list[f'X{"{:02d}".format(i)}'] -= frame_list[f'X54']
+        frame_list[f'Y{"{:02d}".format(i)}'] -= frame_list[f'Y54']
+        frame_list[f'Z{"{:02d}".format(i)}'] -= frame_list[f'Z54']
+    #Normalize the points with respect to the shoulder landmarks (index 53--)
+    for i in range(66):
+        frame_list[f'X{"{:02d}".format(i)}'] /= frame_list[f'X53']
+        frame_list[f'Y{"{:02d}".format(i)}'] /= frame_list[f'Y53']
+        frame_list[f'Z{"{:02d}".format(i)}'] /= frame_list[f'Z53']
 
     return frame_list 
 
 def process_video(frames, final, lang):
     frame_count = len(frames)
-    target_frames = 20
+    target_frames = 21
     skip_frames = max(1, int(frame_count/target_frames))
     frame_c = 0
     coord_frames = []
@@ -159,20 +159,21 @@ def process_video(frames, final, lang):
     frames_array = np.array(frames_2d)
 
     print(f'Preprocessed frames:{len(coord_frames)}')
-    if(len(coord_frames)==20):
+    if(len(coord_frames)==21):
         #delete the last frame
         frames_array = np.delete(frames_array, -1, axis=0)
 
     new_data_scaled = scaler.transform(frames_array)
-    new_data_reshaped = new_data_scaled.reshape((-1, 19, 82))
+    new_data_reshaped = new_data_scaled.reshape((-1, 20, new_data_scaled.shape[1]))
     
 
 
     prediction = model.predict(new_data_reshaped)
+    # prediction = compiled_model([new_data_reshaped])[output_layer] #for openvino
     pred = np.argmax(prediction, axis=1) 
     final.append(words[pred[0]])
     print(words[pred[0]])
-    return words[pred[0]], final
+    return words[pred[0]]
 
 def capture_video(lang):    
     monitors = get_monitors()
@@ -181,7 +182,7 @@ def capture_video(lang):
     cap = cv2.VideoCapture(0)
     cap.set(3, width)
     cap.set(4, height)
-    cap.set(5, 30) 
+    cap.set(5, 20) 
     cap.set(10, 150) #brightness
 
     final=[]
@@ -198,7 +199,7 @@ def capture_video(lang):
         results_hands = hands.process(image)
         results_pose = pose.process(image)
         
-        if results_pose.pose_landmarks and results_pose.pose_landmarks.landmark[11].visibility>=0.86 and results_pose.pose_landmarks.landmark[12].visibility>=0.86:
+        if results_pose.pose_landmarks.landmark[11].visibility>=0.86 and results_pose.pose_landmarks.landmark[12].visibility>=0.86:
             if results_hands.multi_hand_landmarks:
                 frames.append(frame)
                 threshold = 0
@@ -213,14 +214,19 @@ def capture_video(lang):
                     print('Collected frames')
                     # print(frames)
                     print(len(frames))
-                    if(len(frames)>=19):
-                        res, final = process_video(frames, final, lang)
+                    if(len(frames)>19):
+                        res=process_video(frames, final, lang)
                     else:
                         res='Please gesture slowly'
 
-                    tts = _TTS()
-                    tts.start(res)
-                    del(tts)
+                    # tts = _TTS()
+                    # tts.start(res)
+                    # del(tts)
+                    pred=translate_to_english(res, 'en', lang)
+                    speech = gTTS(text=pred, lang='en', slow=False)
+                    speech.save("output.mp3")
+                    playsound("output.mp3")
+                    os.remove("output.mp3")
                     frames=[]
             
         else:
