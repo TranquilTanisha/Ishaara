@@ -6,6 +6,7 @@ from screeninfo import get_monitors
 import pyttsx3
 import pickle
 import tensorflow as tf
+import joblib
 
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands()
@@ -14,22 +15,22 @@ pose = mp_pose.Pose()
 mp_drawing = mp.solutions.drawing_utils
 
 #only for openvino
-from openvino.runtime import Core
+# from openvino.runtime import Core
 
-core = Core()
-# with open('dataset_generator\ir\intel_model.xml', 'rb') as f:
-model= core.read_model('dataset_generator\ir\intel_model.xml')
-compiled_model = core.compile_model(model, "CPU")
-input_layer = compiled_model.input(0)
-output_layer = compiled_model.output(0)
+# core = Core()
+# # with open('dataset_generator\ir\intel_model.xml', 'rb') as f:
+# model= core.read_model('dataset_generator\ir\intel_model.xml')
+# compiled_model = core.compile_model(model, "CPU")
+# input_layer = compiled_model.input(0)
+# output_layer = compiled_model.output(0)
 
 # with open('lstmmodel.h5', 'rb') as f:
-    # model = pickle.load(f)
+#     model = pickle.load(f)
     
 with open ('scaler.pkl', 'rb') as f:
     scaler = pickle.load(f)
     
-# model= tf.keras.models.load_model('lstmmodel.h5')
+model= tf.keras.models.load_model('lstmmodel.h5')
 # with open('scaler.h5', 'r') as file:
     # data = file.read()
 # scaler= tf.keras.models.load_model('scaler.h5')
@@ -167,8 +168,8 @@ def process_video(frames, final, lang):
     
 
 
-    # prediction = model.predict(new_data_reshaped)
-    prediction = compiled_model([new_data_reshaped])[output_layer] #for openvino
+    prediction = model.predict(new_data_reshaped)
+    # prediction = compiled_model([new_data_reshaped])[output_layer] #for openvino
     pred = np.argmax(prediction, axis=1) 
     final.append(words[pred[0]])
     print(words[pred[0]])

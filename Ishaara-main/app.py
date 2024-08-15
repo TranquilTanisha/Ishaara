@@ -1,25 +1,28 @@
 from flask import Flask,request,render_template,send_from_directory, redirect, jsonify
 
 from langdetect import detect
-from mtranslate import translate
 import requests
 import speech_recognition as sr
 from capture_video_LSTM import capture_video
-from preprocess import preprocess, return_languages
+from preprocess import preprocess, return_languages, translate_to_english
 
 app =Flask(__name__,static_folder='static', static_url_path='')
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
-languages=return_languages()
-# print('Length: ', len(languages.keys())) #108 languages
+languages=return_languages() # 108 languages
 
-def translate_to_english(text, target_language, current_language):
-    try:
-        translated_text = translate(text, target_language, current_language)
-        return translated_text
-    except Exception as e:
-        return str(e)
+# from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+
+# # Load the saved model and tokenizer
+# save_directory = "./saved_grammar_model"
+# tokenizer = AutoTokenizer.from_pretrained(save_directory)
+# translation = AutoModelForSeq2SeqLM.from_pretrained(save_directory)
+
+# def check_grammar(text):
+#     input_ids = tokenizer(f"grammar: {text}", return_tensors="pt").input_ids
+#     outputs = translation.generate(input_ids, max_new_tokens=100)
+#     return tokenizer.decode(outputs[0], skip_special_tokens=True)
 
 @app.route('/',methods=['GET'])
 def text():
@@ -93,11 +96,12 @@ def recordvid():
         print(lang)
         if lang!='None' or lang!=None:
             res=capture_video(lang)
+            if len(res)==0: return render_template('decode-video.html', res='', lang=lang)
             print(res)
-            tr=' '.join(res.lower())
-            print(tr)
-            tr=translate_to_english(tr, 'en', 'en')
-            print(res)
+            tr=' '.join(res)
+            # print(tr)
+            # tr=check_grammar(tr)
+            # print(res)
             tr=translate_to_english(res, 'en', languages[lang].split('-')[0])
             print(tr)
             return render_template('decode-video.html', res=tr, lang=lang)

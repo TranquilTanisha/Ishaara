@@ -130,3 +130,11 @@ def return_languages():
         'Zulu': 'zu-ZA'
         }
     return languages
+
+from mtranslate import translate
+def translate_to_english(text, target_language, current_language):
+    try:
+        translated_text = translate(text, target_language, current_language)
+        return translated_text
+    except Exception as e:
+        return str(e)
