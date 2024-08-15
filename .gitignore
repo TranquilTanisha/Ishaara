@@ -161,3 +161,4 @@ cython_debug/
 
 dataset_generator/Words/
 dataset_generator\Words\
+saved_grammar_model/
