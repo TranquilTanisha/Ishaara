@@ -98,18 +98,11 @@
           <form action="/recordvid" method="post" style="width: 100%;">
             <select id="dropdown" name="lang" required>
               <option value="English">English</option>
-              <option value="Hindi">Hindi</option>
-              <option value="Bengali">Bengali</option>
-              <option value="Telugu">Telugu</option>
-              <option value="Marathi">Marathi</option>
-              <option value="Tamil">Tamil</option>
-              <option value="Urdu">Urdu</option>
-              <option value="Gujarati">Gujarati</option>
-              <option value="Malayalam">Malayalam</option>
-              <option value="Kannada">Kannada</option>
-              <option value="Odia">Odia</option>
-              <option value="Punjabi">Punjabi</option>
-              <option value="Assamese">Assamese</option>
+                {% if languages %}
+                {% for k in languages.keys() %}
+                  <option value="{{ k }}">{{ k }}</option>
+                {% endfor %}
+                {% endif %}
             </select>
             <button type="submit" style="padding: 4rem; width: 100%; background-color: rgb(37, 37, 68); color: white; border: none; border-radius: 0.75rem; font-weight: 700;">
               Record Video For Signing

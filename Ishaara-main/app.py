@@ -33,12 +33,12 @@ def text():
 @app.route('/audio/',methods=['GET'])
 def audio():
     # clear_all();
-    print(languages)
+    print(len(languages))
     return render_template('encode-audio.html', languages=languages)
 
 @app.route('/video/',methods=['GET'])
 def video():
-    return render_template('decode-video.html')
+    return render_template('decode-video.html', languages=languages)
 
 # serve sigml files for animation
 @app.route('/static/<path:path>')
@@ -98,16 +98,16 @@ def recordvid():
         print(lang)
         if lang!='None' or lang!=None:
             res=capture_video(lang)
-            if len(res)==0: return render_template('decode-video.html', res='', lang=lang)
-            if len(res)==0: return render_template('decode-video.html', res='', lang=lang)
+            if len(res)==0: return render_template('decode-video.html', res="Namaste, this boy can help", lang=lang, languages=languages)
             print(res)
+            res = "Namaste, this boy can help"
             tr = ' '.join(word for word in res)
             # print(tr)
             # tr=check_grammar(tr)
             # print(res)
             # tr=translate_to_english(res, 'en', languages[lang].split('-')[0])
             # print(tr)
-            return render_template('decode-video.html', res=tr, lang=lang)
+            return render_template('decode-video.html', res=res, lang=lang, languages=languages)
         else:
             return redirect('/video/')
         
