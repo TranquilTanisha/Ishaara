@@ -1,4 +1,6 @@
 from flask import Flask,request,render_template,send_from_directory, redirect, jsonify
+import os
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 
 from langdetect import detect
 import requests
@@ -99,12 +101,12 @@ def recordvid():
             if len(res)==0: return render_template('decode-video.html', res='', lang=lang)
             if len(res)==0: return render_template('decode-video.html', res='', lang=lang)
             print(res)
-            tr=' '.join(res)
+            tr = ' '.join(word for word in res)
             # print(tr)
             # tr=check_grammar(tr)
             # print(res)
             # tr=translate_to_english(res, 'en', languages[lang].split('-')[0])
-            print(tr)
+            # print(tr)
             return render_template('decode-video.html', res=tr, lang=lang)
         else:
             return redirect('/video/')
