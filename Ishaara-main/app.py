@@ -98,9 +98,8 @@ def recordvid():
         print(lang)
         if lang!='None' or lang!=None:
             res=capture_video(lang)
-            if len(res)==0: return render_template('decode-video.html', res="Namaste, this boy can help", lang=lang, languages=languages)
+            if len(res)==0: return render_template('decode-video.html', res="", lang=lang, languages=languages)
             print(res)
-            res = "Namaste, this boy can help"
             tr = ' '.join(word for word in res)
             # print(tr)
             # tr=check_grammar(tr)
