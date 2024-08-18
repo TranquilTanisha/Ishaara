@@ -5,6 +5,7 @@ os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 from langdetect import detect
 import requests
 import speech_recognition as sr
+# from openvino_capture_video_LSTM import capture_video
 from capture_video_LSTM import capture_video
 from preprocess import preprocess, return_languages, translate_to_english
 
@@ -14,17 +15,17 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 languages=return_languages() # 108 languages
 
-# from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 
-# # Load the saved model and tokenizer
-# save_directory = "./saved_grammar_model"
-# tokenizer = AutoTokenizer.from_pretrained(save_directory)
-# translation = AutoModelForSeq2SeqLM.from_pretrained(save_directory)
+# Load the saved model and tokenizer
+save_directory = "./saved_grammar_model"
+tokenizer = AutoTokenizer.from_pretrained(save_directory)
+translation = AutoModelForSeq2SeqLM.from_pretrained(save_directory)
 
-# def check_grammar(text):
-#     input_ids = tokenizer(f"grammar: {text}", return_tensors="pt").input_ids
-#     outputs = translation.generate(input_ids, max_new_tokens=100)
-#     return tokenizer.decode(outputs[0], skip_special_tokens=True)
+def check_grammar(text):
+    input_ids = tokenizer(f"grammar: {text}", return_tensors="pt").input_ids
+    outputs = translation.generate(input_ids, max_new_tokens=100)
+    return tokenizer.decode(outputs[0], skip_special_tokens=True)
 
 @app.route('/',methods=['GET'])
 def text():
@@ -96,23 +97,18 @@ def recordvid():
     if request.method=='POST':
         lang=request.form.get('lang')
         print(lang)
-        if lang!='None' or lang!=None:
-            res=capture_video(lang)
-            if len(res)==0: return render_template('decode-video.html', res="", lang=lang, languages=languages)
-            print(res)
-            tr = ' '.join(word for word in res)
-            # print(tr)
-            # tr=check_grammar(tr)
-            # print(res)
-            # tr=translate_to_english(res, 'en', languages[lang].split('-')[0])
-            # print(tr)
-            return render_template('decode-video.html', res=res, lang=lang, languages=languages)
-        else:
-            return redirect('/video/')
+        res=capture_video(lang)
+        print(res)
+        a=' '.join(res)
+        print(a)
+        tr=check_grammar(a.lower())
+        print(tr)
+        tr=translate_to_english(res, 'en', languages[lang].split('-')[0])
+        return render_template('decode-video.html', res=tr, lang=lang, languages=languages)
         
     return redirect('/video/')
 
 if __name__=="__main__":
-	app.run(debug=False)
+	app.run(debug=True)
 
 
