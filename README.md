@@ -67,7 +67,7 @@ Ishaara uses AI ethically as:
 Hence, Ishaara is safe and secure to use and treats all users equally.
 
 <h2>Demonstration Video</h2>
-[![Ishaara](https://img.youtube.com/vi/-6xGOxjrXUY/0.jpg)](https://www.youtube.com/watch?v=-6xGOxjrXUY)
+Check out the complete demonstration <a href="https://www.youtube.com/watch?v=-6xGOxjrXUY">here.</a>
 
 <h2>Conclusion</h2>
 <ol>
