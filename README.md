@@ -1,4 +1,4 @@
-<h1>Ishaara- A Gesture of Communication</h1>
+<h1>Ishaara(इशारा)- A Gesture of Communication</h1>
 
 <h2>Achievements</h2>
 <ul>
@@ -67,7 +67,7 @@ Ishaara uses AI ethically as:
 Hence, Ishaara is safe and secure to use and treats all users equally.
 
 <h2>Demonstration Video</h2>
-[![Ishaara](https://img.youtube.com/vi/6xGOxjrXUY/0.jpg)](https://www.youtube.com/watch?v=6xGOxjrXUY)
+[![Ishaara](https://img.youtube.com/vi/-6xGOxjrXUY/0.jpg)](https://www.youtube.com/watch?v=-6xGOxjrXUY)
 
 <h2>Conclusion</h2>
 <ol>
